@@ -31,3 +31,7 @@ npm-debug.log*
 # Temporary files
 *.tmp
 *.temp
+
+# OpenClaw skills (not part of this project)
+skills/
+skills-lock.json

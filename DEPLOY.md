@@ -1,192 +1,168 @@
-# DSE Enhancer - 部署文档
+# DSE Enhancer - 部署指南
 
-## 前置准备
+## 前置要求
 
-### 1. 需要的资源
+- Node.js 18+ 
+- PostgreSQL 15+
+- Docker（可选，用于容器化部署）
 
-- ✅ GitHub 仓库
-- ✅ 腾讯云轻量级服务器（推荐配置：2核4G以上）
-- ✅ 域名（可选，用于SSL）
-- ✅ Docker Hub 账号（用于存储Docker镜像）
+## 本地开发
 
----
-
-## 第一步：配置 GitHub Secrets
-
-在 GitHub 仓库中配置以下 Secrets：
-
-### 1. 打开 GitHub Secrets 配置页面
-
-- 访问：https://github.com/swj19821119/dse-enhancer/settings/secrets/actions
-- 点击 "New repository secret"
-
-### 2. 添加以下 Secrets
-
-| Secret 名称 | 值 | 说明 |
-|------------|-----|------|
-| `DOCKER_HUB_USERNAME` | 你的 Docker Hub 用户名 | |
-| `DOCKER_HUB_TOKEN` | 你的 Docker Hub Access Token | 在 Docker Hub 账号设置中生成 |
-| `SERVER_HOST` | 你的腾讯云轻量级服务器 IP | 例如：`123.45.67.89` |
-| `SERVER_USERNAME` | 服务器用户名 | 通常是 `root` 或 `ubuntu` |
-| `SSH_PRIVATE_KEY` | 服务器 SSH 私钥 | 私钥内容，包括 `-----BEGIN RSA PRIVATE KEY-----` 等 |
-
----
-
-## 第二步：在腾讯云轻量级服务器上准备环境
-
-### 1. 登录到服务器
+### 1. 安装依赖
 
 ```bash
-ssh root@your-server-ip
+npm install
 ```
 
-### 2. 安装 Docker 和 Docker Compose
+### 2. 配置环境变量
+
+复制 `.env.example` 为 `.env`：
 
 ```bash
-# 安装 Docker
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-
-# 启动 Docker
-sudo systemctl start docker
-sudo systemctl enable docker
-
-# 安装 Docker Compose
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-# 验证安装
-docker --version
-docker-compose --version
-```
-
-### 3. 创建项目目录
-
-```bash
-mkdir -p /root/dse-enhancer
-cd /root/dse-enhancer
-```
-
-### 4. 上传配置文件
-
-从你的本地电脑上传以下文件到服务器 `/root/dse-enhancer/` 目录：
-
-- `docker-compose.yml`
-- `nginx.conf`
-- `.env` (从 `.env.example` 复制并填写你的值)
-
-### 5. 配置 `.env` 文件
-
-```bash
-cd /root/dse-enhancer
 cp .env.example .env
-nano .env  # 或用 vim .env
 ```
 
-填写以下内容：
+编辑 `.env` 文件，配置数据库连接：
 
 ```env
-DATABASE_URL=postgresql://dse:your_password@postgres:5432/dse_enhancer
-POSTGRES_PASSWORD=your_password_here
-POSTGRES_USER=dse
-POSTGRES_DB=dse_enhancer
-REDIS_URL=redis://redis:6379
-ARK_API_KEY=your_ark_api_key_here
-JWT_SECRET=your_jwt_secret_key_here
-NEXT_PUBLIC_APP_URL=https://your-domain.com
+DATABASE_URL="postgresql://user:password@localhost:5432/dse_enhancer?schema=public"
+JWT_SECRET="your-super-secret-jwt-key-change-in-production"
 ```
 
----
-
-## 第三步：首次部署
-
-### 1. 在服务器上启动服务
+### 3. 初始化数据库
 
 ```bash
-cd /root/dse-enhancer
+# 生成 Prisma Client
+npm run db:generate
+
+# 推送数据库 schema
+npm run db:push
+
+# 或者使用迁移（推荐）
+npm run db:migrate
+```
+
+### 4. 启动开发服务器
+
+```bash
+npm run dev
+```
+
+访问 http://localhost:3000
+
+## 生产部署
+
+### 使用 Docker Compose（推荐）
+
+1. 确保 Docker 和 Docker Compose 已安装
+
+2. 配置环境变量（`.env` 文件）
+
+3. 启动服务：
+
+```bash
 docker-compose up -d
 ```
 
-### 2. 检查服务状态
+4. 查看日志：
 
 ```bash
-docker-compose ps
 docker-compose logs -f
 ```
 
----
+### 手动部署
 
-## 第四步：配置 SSL（可选但推荐）
-
-### 1. 安装 Certbot
+1. 构建应用：
 
 ```bash
-sudo apt-get update
-sudo apt-get install certbot
+npm run build
 ```
 
-### 2. 申请 SSL 证书
+2. 启动生产服务器：
 
 ```bash
-certbot certonly --standalone -d your-domain.com
+npm start
 ```
 
-### 3. 更新 nginx.conf
+3. 使用 Nginx 反向代理（推荐）：
 
-修改 `nginx.conf` 中的证书路径：
+配置文件见 `nginx.conf`
 
-```nginx
-ssl_certificate /etc/letsencrypt/live/your-domain.com/fullchain.pem;
-ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
-```
+## 数据库管理
 
-### 4. 重启 Nginx
+### 查看和编辑数据
 
 ```bash
-docker-compose restart nginx
+npm run db:studio
 ```
 
----
+这会打开 Prisma Studio Web 界面。
 
-## 自动化部署
+### 重置数据库（小心使用！）
 
-完成以上配置后，以后每次 push 代码到 GitHub main 分支，GitHub Actions 会自动：
-
-1. 构建 Docker 镜像
-2. 推送到 Docker Hub
-3. SSH 登录到你的服务器
-4. 拉取最新镜像
-5. 重启容器
-
----
+```bash
+# 警告：这会删除所有数据！
+npx prisma migrate reset
+```
 
 ## 常见问题
 
-### 如何查看日志？
+### 数据库连接失败
+
+检查 PostgreSQL 是否运行，以及 `.env` 中的 `DATABASE_URL` 是否正确。
+
+### 端口被占用
+
+修改 `next.config.js` 或 `docker-compose.yml` 中的端口配置。
+
+### 构建失败
+
+确保 Node.js 版本符合要求（18+），并重新安装依赖：
 
 ```bash
-cd /root/dse-enhancer
-docker-compose logs -f app
-docker-compose logs -f postgres
+rm -rf node_modules package-lock.json
+npm install
 ```
 
-### 如何重启服务？
+## 技术栈
 
-```bash
-cd /root/dse-enhancer
-docker-compose restart
+- **框架**: Next.js 14
+- **语言**: TypeScript
+- **ORM**: Prisma
+- **数据库**: PostgreSQL
+- **样式**: Tailwind CSS
+- **UI组件**: 自定义 Shadcn UI 风格
+- **状态管理**: Zustand
+- **认证**: JWT + bcryptjs
+
+## 项目结构
+
 ```
-
-### 如何更新服务？
-
-```bash
-cd /root/dse-enhancer
-docker-compose pull
-docker-compose up -d
+dse-enhancer/
+├── app/                    # Next.js App Router
+│   ├── api/               # API 路由
+│   ├── dashboard/         # 仪表板页面
+│   ├── login/            # 登录页面
+│   ├── register/         # 注册页面
+│   ├── study/            # 学习页面
+│   ├── vocabulary/       # 词汇页面
+│   ├── questions/        # 题库页面
+│   ├── globals.css       # 全局样式
+│   ├── layout.tsx        # 根布局
+│   └── page.tsx          # 首页
+├── components/           # React 组件
+│   └── ui/              # UI 基础组件
+├── lib/                  # 工具库
+│   ├── auth.ts          # 认证逻辑
+│   ├── prisma.ts        # Prisma 客户端
+│   └── utils.ts         # 工具函数
+├── store/                # Zustand 状态管理
+│   └── auth.ts          # 认证状态
+├── prisma/               # Prisma Schema
+│   └── schema.prisma    # 数据库模型
+├── docker-compose.yml    # Docker Compose 配置
+├── Dockerfile           # Docker 镜像配置
+├── nginx.conf           # Nginx 配置
+├── tailwind.config.js   # Tailwind 配置
+└── package.json         # 项目依赖
 ```
-
----
-
-## 技术支持
-
-如有问题，请查看日志或联系开发者。
