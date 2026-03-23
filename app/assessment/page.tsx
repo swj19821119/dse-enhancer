@@ -134,15 +134,72 @@ export default function AssessmentPage() {
   };
 
   const calculateLevel = () => {
-    const accuracy = score / totalQuestions;
-    if (accuracy >= 0.8) return 5;
-    if (accuracy >= 0.6) return 4;
-    if (accuracy >= 0.4) return 3;
-    if (accuracy >= 0.2) return 2;
+    // 计算加权分数（考虑题目难度）
+    let weightedScore = 0;
+    let maxWeightedScore = 0;
+    
+    answers.forEach((answer, index) => {
+      const question = mockQuestions[index % mockQuestions.length];
+      const weight = question.difficulty; // 难度作为权重
+      
+      maxWeightedScore += weight;
+      if (answer.isCorrect) {
+        weightedScore += weight;
+      }
+    });
+
+    const weightedAccuracy = maxWeightedScore > 0 ? weightedScore / maxWeightedScore : 0;
+    const rawAccuracy = score / totalQuestions;
+    
+    // 综合考虑加权正确率和原始正确率
+    const finalAccuracy = (weightedAccuracy * 0.7 + rawAccuracy * 0.3);
+
+    // 更精细的分级
+    if (finalAccuracy >= 0.85) return 5;
+    if (finalAccuracy >= 0.70) return 4;
+    if (finalAccuracy >= 0.50) return 3;
+    if (finalAccuracy >= 0.30) return 2;
     return 1;
   };
 
+  const getStrengthsAndWeaknesses = () => {
+    // 简单分析强项和弱项
+    const difficultyStats: Record<number, { total: number; correct: number }> = {
+      1: { total: 0, correct: 0 },
+      2: { total: 0, correct: 0 },
+      3: { total: 0, correct: 0 },
+      4: { total: 0, correct: 0 },
+      5: { total: 0, correct: 0 },
+    };
+
+    answers.forEach((answer, index) => {
+      const question = mockQuestions[index % mockQuestions.length];
+      difficultyStats[question.difficulty].total++;
+      if (answer.isCorrect) {
+        difficultyStats[question.difficulty].correct++;
+      }
+    });
+
+    // 找出强项（正确率高的难度）
+    const strengths: number[] = [];
+    const weaknesses: number[] = [];
+
+    Object.entries(difficultyStats).forEach(([diff, stats]) => {
+      if (stats.total >= 2) {
+        const accuracy = stats.correct / stats.total;
+        if (accuracy >= 0.8) {
+          strengths.push(parseInt(diff));
+        } else if (accuracy <= 0.4) {
+          weaknesses.push(parseInt(diff));
+        }
+      }
+    });
+
+    return { strengths, weaknesses, difficultyStats };
+  };
+
   const userLevel = calculateLevel();
+  const { strengths, weaknesses } = getStrengthsAndWeaknesses();
 
   const getDifficultyColor = (diff: number) => {
     const colors = {
@@ -337,6 +394,34 @@ export default function AssessmentPage() {
                     </p>
                   </div>
                 </div>
+
+                {/* 能力分析 */}
+                {(strengths.length > 0 || weaknesses.length > 0) && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    {strengths.length > 0 && (
+                      <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-6 border border-green-500/30">
+                        <h3 className="text-xl font-bold text-white mb-3">
+                          💪 你的强项
+                        </h3>
+                        <ul className="text-white/80 text-left space-y-2">
+                          <li>• 难度 {strengths.join('、')} 的题目表现很好！</li>
+                          <li>• 继续保持这个优势！</li>
+                        </ul>
+                      </div>
+                    )}
+                    {weaknesses.length > 0 && (
+                      <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-xl p-6 border border-red-500/30">
+                        <h3 className="text-xl font-bold text-white mb-3">
+                          📚 需要加强
+                        </h3>
+                        <ul className="text-white/80 text-left space-y-2">
+                          <li>• 难度 {weaknesses.join('、')} 的题目需要多练习</li>
+                          <li>• 建议重点复习这部分内容！</li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <div className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-xl p-6 border border-blue-500/30 mb-6">
                   <h3 className="text-xl font-bold text-white mb-3">
