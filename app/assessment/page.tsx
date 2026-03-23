@@ -69,6 +69,10 @@ const mockQuestions: Question[] = [
 ];
 
 const grades = [
+  { value: 'primary', label: '小学 (小学三年级以上)' },
+  { value: 'pre-secondary', label: '预初' },
+  { value: 'form1', label: '中一 (Form 1)' },
+  { value: 'form2', label: '中二 (Form 2)' },
   { value: 'form3', label: '中三 (Form 3)' },
   { value: 'form4', label: '中四 (Form 4)' },
   { value: 'form5', label: '中五 (Form 5)' },
