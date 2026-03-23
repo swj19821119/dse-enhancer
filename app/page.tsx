@@ -33,11 +33,11 @@ export default function Home() {
                 免费注册
               </Button>
             </Link>
-            <Link href="/study" onClick={(e) => {
+            <Link href="/dashboard" onClick={(e) => {
               e.preventDefault();
               localStorage.setItem('guestMode', 'true');
               localStorage.setItem('guestId', 'guest_' + Date.now());
-              window.location.href = '/study';
+              window.location.href = '/dashboard';
             }}>
               <Button variant="ghost" className="text-lg px-10 py-7 bg-transparent text-white hover:bg-white/10 border-2 border-white/40">
                 跳过注册，直接体验
