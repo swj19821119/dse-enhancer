@@ -24,15 +24,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install missing types
+        run: npm install --save-dev @types/jsonwebtoken
+
       - name: Build project
         run: npm run build
 
       - name: Check build output
         run: |
           echo "Checking build output..."
-          ls -la out/ || echo "out directory not found"
-          echo "Root directory:"
-          ls -la
+          if [ -d "out" ]; then
+            echo "✓ out directory exists"
+            ls -la out/
+          else
+            echo "✗ out directory not found"
+            exit 1
+          fi
 
       - name: Setup SSH
         run: |
@@ -40,17 +47,24 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H 43.139.84.228 >> ~/.ssh/known_hosts
+          echo "SSH setup completed"
+
+      - name: Test SSH connection
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@43.139.84.228 "echo '✓ SSH connection successful' && ls -la /var/www/dse-english/"
 
       - name: Deploy to server
         run: |
-          echo "Deploying files to server..."
+          echo "Starting deployment..."
           if [ -d "out" ]; then
-            scp -i ~/.ssh/deploy_key -r out/* ubuntu@43.139.84.228:/var/www/dse-english/
+            echo "Deploying files from out/ directory"
+            scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r out/* ubuntu@43.139.84.228:/var/www/dse-english/
+            echo "✓ Files deployed successfully"
           else
-            echo "Error: out directory not found"
+            echo "✗ Error: out directory not found"
             exit 1
           fi
 
       - name: Restart Nginx
         run: |
-          ssh -i ~/.ssh/deploy_key ubuntu@43.139.84.228 "sudo systemctl reload nginx"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@43.139.84.228 "sudo systemctl reload nginx && echo '✓ Nginx reloaded successfully'"
