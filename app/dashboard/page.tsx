@@ -170,7 +170,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Access */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Link href="/assessment">
             <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
               <CardHeader>
@@ -211,6 +211,20 @@ export default function DashboardPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-white/70">词汇、语法、阅读、错题复习</p>
+                  </CardContent>
+                </Card>
+              </Link>
+
+              <Link href="/error-questions">
+                <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
+                  <CardHeader>
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-3">
+                      <XCircle className="w-7 h-7 text-red-400" />
+                    </div>
+                    <CardTitle className="text-white text-xl">错题本</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-white/70">复习错题，巩固知识点</p>
                   </CardContent>
                 </Card>
               </Link>
