@@ -23,9 +23,9 @@ export default function Home() {
             每天40分钟，精准提高DSE英语成绩
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
-            <Link href="/login">
+            <Link href="/assessment">
               <Button className="text-lg px-10 py-7 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-xl shadow-blue-500/30">
-                开始学习
+                开始测试
               </Button>
             </Link>
             <Link href="/register">
