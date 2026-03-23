@@ -1,31 +1,45 @@
 import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import { registerUser, loginUser } from '@/lib/auth';
+
+const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password, action } = body;
+    const { email, password, nickname, action } = body;
 
-    // TODO: 实现真正的认证逻辑
-    // 这里是临时的 mock 响应
-    if (action === 'login') {
+    if (action === 'register') {
+      if (!email || !password || !nickname) {
+        return NextResponse.json({
+          success: false,
+          error: '请填写完整信息',
+        }, { status: 400 });
+      }
+
+      const result = await registerUser(email, password, nickname);
+
       return NextResponse.json({
         success: true,
-        user: {
-          id: 'temp-user-id',
-          email,
-          nickname: '临时用户',
-        },
+        user: result.user,
+        token: result.token,
       });
     }
 
-    if (action === 'register') {
+    if (action === 'login') {
+      if (!email || !password) {
+        return NextResponse.json({
+          success: false,
+          error: '请填写邮箱和密码',
+        }, { status: 400 });
+      }
+
+      const result = await loginUser(email, password);
+
       return NextResponse.json({
         success: true,
-        user: {
-          id: 'temp-user-id',
-          email,
-          nickname: '新用户',
-        },
+        user: result.user,
+        token: result.token,
       });
     }
 
@@ -34,11 +48,13 @@ export async function POST(request: Request) {
       error: '未知操作',
     }, { status: 400 });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Auth error:', error);
     return NextResponse.json({
       success: false,
-      error: '服务器错误',
+      error: error.message || '服务器错误',
     }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
   }
 }
