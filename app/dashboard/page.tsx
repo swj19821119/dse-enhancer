@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/auth';
-import { BookOpen, Trophy, GraduationCap, Clock, LogOut } from 'lucide-react';
+import { BookOpen, Trophy, GraduationCap, Clock, LogOut, BrainCircuit } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -28,15 +28,19 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <header className="bg-white/10 backdrop-blur-lg border-b border-white/10">
+        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">DSE Enhancer</h1>
-            <p className="text-gray-600">欢迎回来，{user.nickname}！</p>
+            <h1 className="text-3xl font-extrabold text-white">DSE Enhancer</h1>
+            <p className="text-white/70">欢迎回来，{user.nickname}！</p>
           </div>
-          <Button variant="secondary" onClick={handleLogout}>
+          <Button
+            variant="secondary"
+            className="bg-white/10 text-white hover:bg-white/20 border border-white/30"
+            onClick={handleLogout}
+          >
             <LogOut className="w-4 h-4 mr-2" />
             退出
           </Button>
@@ -44,94 +48,110 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-10">
         {/* Quick Actions */}
-        <div className="mb-8">
+        <div className="mb-10">
           <Link href="/study">
-            <Button className="text-xl px-8 py-6 w-full md:w-auto">
-              <Clock className="w-5 h-5 mr-2" />
+            <Button className="text-xl px-10 py-8 w-full md:w-auto bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-xl shadow-blue-500/30">
+              <Clock className="w-6 h-6 mr-3" />
               一键开始今日40分钟学习
             </Button>
           </Link>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">学习天数</CardTitle>
-              <GraduationCap className="w-4 h-4 text-blue-600" />
+              <CardTitle className="text-sm font-medium text-white/70">学习天数</CardTitle>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center">
+                <GraduationCap className="w-5 h-5 text-blue-400" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0 天</div>
+              <div className="text-3xl font-extrabold text-white">0 天</div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">当前等级</CardTitle>
-              <Trophy className="w-4 h-4 text-yellow-600" />
+              <CardTitle className="text-sm font-medium text-white/70">当前等级</CardTitle>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-500/20 flex items-center justify-center">
+                <Trophy className="w-5 h-5 text-yellow-400" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">Level {user.currentLevel || 1}</div>
+              <div className="text-3xl font-extrabold text-white">
+                Level {user.currentLevel || 1}
+              </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">累计词汇</CardTitle>
-              <BookOpen className="w-4 h-4 text-green-600" />
+              <CardTitle className="text-sm font-medium text-white/70">累计词汇</CardTitle>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-green-400" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0 词</div>
+              <div className="text-3xl font-extrabold text-white">0 词</div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">连续学习</CardTitle>
-              <Clock className="w-4 h-4 text-orange-600" />
+              <CardTitle className="text-sm font-medium text-white/70">连续学习</CardTitle>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center">
+                <Clock className="w-5 h-5 text-orange-400" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0 天</div>
+              <div className="text-3xl font-extrabold text-white">0 天</div>
             </CardContent>
           </Card>
         </div>
 
         {/* Quick Access */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link href="/vocabulary">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Link href="/assessment">
+            <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
               <CardHeader>
-                <BookOpen className="w-8 h-8 text-blue-600 mb-2" />
-                <CardTitle>词汇闯关</CardTitle>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mb-3">
+                  <BrainCircuit className="w-7 h-7 text-purple-400" />
+                </div>
+                <CardTitle className="text-white text-xl">入学测试</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">背单词、练发音、生词本</p>
+                <p className="text-white/70">15分钟精准评估你的DSE英语水平</p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/vocabulary">
+            <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
+              <CardHeader>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center mb-3">
+                  <BookOpen className="w-7 h-7 text-blue-400" />
+                </div>
+                <CardTitle className="text-white text-xl">词汇闯关</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/70">背单词、生词本、间隔重复</p>
               </CardContent>
             </Card>
           </Link>
 
           <Link href="/study">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
               <CardHeader>
-                <GraduationCap className="w-8 h-8 text-purple-600 mb-2" />
-                <CardTitle>每日学习</CardTitle>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center mb-3">
+                  <GraduationCap className="w-7 h-7 text-green-400" />
+                </div>
+                <CardTitle className="text-white text-xl">每日学习</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">词汇、语法、阅读、听力</p>
-              </CardContent>
-            </Card>
-          </Link>
-
-          <Link href="/questions">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <Trophy className="w-8 h-8 text-green-600 mb-2" />
-                <CardTitle>题库练习</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">历年真题、AI 新题</p>
+                <p className="text-white/70">词汇、语法、阅读、错题复习</p>
               </CardContent>
             </Card>
           </Link>
