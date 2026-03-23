@@ -1,0 +1,24 @@
+{
+  "name": "dse-enhancer",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.x",
+    "react": "18.x",
+    "react-dom": "18.x",
+    "pg": "8.x",
+    "redis": "4.x",
+    "jsonwebtoken": "9.x"
+  },
+  "devDependencies": {
+    "typescript": "5.x",
+    "@types/node": "20.x",
+    "@types/react": "18.x",
+    "@types/react-dom": "18.x"
+  }
+}
