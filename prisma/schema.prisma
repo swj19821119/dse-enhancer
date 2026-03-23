@@ -10,142 +10,18 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
-  phone     String?
+  password  String
   nickname  String
   avatarUrl String?
-  grade     String   @default("form3")
-  targetLevel Int    @default(2)
-  currentLevel Int    @default(2)
-  learningMode String @default("easy")
-  isVip     Boolean  @default(false)
-  vipExpireAt DateTime?
-  parentAccountId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  abilities UserAbility[]
-  answers UserAnswer[]
-  errors UserErrorQuestion[]
-  records DailyStudyRecord[]
-  badges UserBadge[]
-}
-
-model UserAbility {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
-  readingLevel Int    @default(1)
-  listeningLevel Int  @default(1)
-  writingLevel Int    @default(1)
-  speakingLevel Int   @default(1)
-  vocabularyLevel Int @default(1)
-  grammarLevel Int    @default(1)
-  updatedAt DateTime @updatedAt
-}
-
-model Vocabulary {
-  id        String   @id @default(uuid())
-  word      String
-  phonetic  String?
-  definition String
-  frequency Int
-  topic     String?
-  example   String?
-  difficulty Int    @default(1)
-  part      String   @default("part_a")
-  createdAt DateTime @default(now())
-
-  userVocabularies UserVocabulary[]
-}
-
-model UserVocabulary {
-  id        String   @id @default(uuid())
-  userId    String
-  vocabularyId String
-  user      User     @relation(fields: [userId], references: [id])
-  vocabulary Vocabulary @relation(fields: [vocabularyId], references: [id])
-  status    String   @default("unknown")
-  lastReviewed DateTime?
-  nextReview DateTime?
-  difficultyFactor Float?
-  createdAt DateTime @default(now())
-
-  @@unique([userId, vocabularyId])
 }
 
 model Question {
   id        String   @id @default(uuid())
   type      String
-  subType   String?
-  part      String   @default("part_a")
-  topic     String?
-  difficulty Int    @default(1)
-  targetGrade String?
-  content   Json
-  answer    Json?
-  explanation String?
-  source    String?
-  year      Int?
-  isApproved Boolean  @default(false)
+  content   String
+  options   Json?
+  answer    String?
   createdAt DateTime @default(now())
-
-  answers UserAnswer[]
-  errors UserErrorQuestion[]
-}
-
-model UserAnswer {
-  id        String   @id @default(uuid())
-  userId    String
-  questionId String
-  user      User     @relation(fields: [userId], references: [id])
-  question  Question @relation(fields: [questionId], references: [id])
-  userAnswer Json?
-  isCorrect Boolean
-  score     Int?
-  timeSpent Int?
-  createdAt DateTime @default(now())
-}
-
-model UserErrorQuestion {
-  id        String   @id @default(uuid())
-  userId    String
-  questionId String
-  user      User     @relation(fields: [userId], references: [id])
-  question  Question @relation(fields: [questionId], references: [id])
-  errorCount Int    @default(1)
-  lastWrongAt DateTime @default(now())
-  nextReview DateTime?
-  createdAt DateTime @default(now())
-
-  @@unique([userId, questionId])
-}
-
-model DailyStudyRecord {
-  id        String   @id @default(uuid())
-  userId    String
-  studyDate Date
-  user      User     @relation(fields: [userId], references: [id])
-  totalMinutes Int
-  totalScore Int
-  vocabularyScore Int?
-  grammarScore Int?
-  readingScore Int?
-  listeningScore Int?
-  writingScore Int?
-  speakingScore Int?
-  learningMode String @default("easy")
-  completed Boolean  @default(false)
-  speedBonus Int?
-  createdAt DateTime @default(now())
-
-  @@unique([userId, studyDate])
-}
-
-model UserBadge {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  badgeType String
-  badgeName String
-  earnedAt DateTime @default(now())
 }
