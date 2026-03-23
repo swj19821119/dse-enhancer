@@ -6,6 +6,17 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  webpack: (config) => {
+    config.ignoreWarnings = [
+      {
+        module: /node_modules\/skills/
+      },
+      {
+        module: /skills/
+      }
+    ];
+    return config;
+  },
 };
 
 module.exports = nextConfig;
