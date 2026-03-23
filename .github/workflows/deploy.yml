@@ -27,6 +27,13 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Check build output
+        run: |
+          echo "Checking build output..."
+          ls -la out/ || echo "out directory not found"
+          echo "Root directory:"
+          ls -la
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -36,7 +43,13 @@ jobs:
 
       - name: Deploy to server
         run: |
-          scp -i ~/.ssh/deploy_key -r out/* ubuntu@43.139.84.228:/var/www/dse-english/
+          echo "Deploying files to server..."
+          if [ -d "out" ]; then
+            scp -i ~/.ssh/deploy_key -r out/* ubuntu@43.139.84.228:/var/www/dse-english/
+          else
+            echo "Error: out directory not found"
+            exit 1
+          fi
 
       - name: Restart Nginx
         run: |
