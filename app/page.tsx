@@ -15,7 +15,7 @@ export default function Home() {
           <p className="text-xl text-gray-600 mb-8">
             每天40分钟，精准提高DSE英语成绩
           </p>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 flex-wrap">
             <Link href="/login">
               <Button className="text-lg px-8 py-6">
                 开始学习
@@ -24,6 +24,16 @@ export default function Home() {
             <Link href="/register">
               <Button variant="secondary" className="text-lg px-8 py-6">
                 免费注册
+              </Button>
+            </Link>
+            <Link href="/study" onClick={(e) => {
+              e.preventDefault();
+              localStorage.setItem('guestMode', 'true');
+              localStorage.setItem('guestId', 'guest_' + Date.now());
+              window.location.href = '/study';
+            }}>
+              <Button variant="ghost" className="text-lg px-8 py-6 border border-gray-300">
+                跳过注册，直接体验
               </Button>
             </Link>
           </div>
