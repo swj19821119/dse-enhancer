@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/auth';
-import { BookOpen, Trophy, GraduationCap, Clock, LogOut, BrainCircuit } from 'lucide-react';
+import { BookOpen, Trophy, GraduationCap, Clock, LogOut, BrainCircuit, XCircle, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -59,7 +59,7 @@ export default function DashboardPage() {
                 onClick={() => {
                   localStorage.removeItem('guestMode');
                   localStorage.removeItem('guestId');
-                  setGuest(false, null);
+                  setGuest(false, undefined);
                   router.push('/');
                 }}
               >
@@ -139,7 +139,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-extrabold text-white">
-                Level {user.currentLevel || 1}
+                Level {user?.currentLevel || 1}
               </div>
             </CardContent>
           </Card>
