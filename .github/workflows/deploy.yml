@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - master
   workflow_dispatch:
 
 jobs:
@@ -26,38 +25,20 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Check build output
-        run: |
-          echo "Checking build output..."
-          if [ -d ".next" ]; then
-            echo "✓ .next directory exists"
-            ls -la .next/
-          else
-            echo "✗ .next directory not found"
-            exit 1
-          fi
-
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H 43.139.84.228 >> ~/.ssh/known_hosts
-          echo "SSH setup completed"
 
-      - name: Test SSH connection
+      - name: Deploy .next and package files only
         run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@43.139.84.228 "echo '✓ SSH connection successful' && ls -la /var/www/dse-english/"
-
-      - name: Deploy to server
-        run: |
-          echo "Deploying .next, node_modules and package files..."
+          echo "Deploying .next and package.json..."
           scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r .next ubuntu@43.139.84.228:/var/www/dse-english/
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r node_modules ubuntu@43.139.84.228:/var/www/dse-english/
           scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no package.json ubuntu@43.139.84.228:/var/www/dse-english/
           scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no package-lock.json ubuntu@43.139.84.228:/var/www/dse-english/
-          echo "✓ Files deployed successfully"
 
-      - name: Restart application
+      - name: Install dependencies and restart on server
         run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@43.139.84.228 "cd /var/www/dse-english && pm2 restart dse-enhancer || pm2 start npm --name dse-enhancer -- start && echo '✓ Application restarted successfully'"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@43.139.84.228 "cd /var/www/dse-english && npm install && pm2 restart dse-enhancer"
