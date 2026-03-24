@@ -1,1 +1,1286 @@
-<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{box-sizing:border-box;margin:0;padding:0}html{line-height:1.15;-webkit-text-size-adjust:100%;color:#313131;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"}body{display:flex;flex-direction:column;height:100vh;min-height:100vh}.main-content{margin:8rem auto;padding-left:1.5rem;max-width:60rem}@media (width <= 720px){.main-content{margin-top:4rem}}#challenge-error-text{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI0IyMEYwMyIgZD0iTTE2IDNhMTMgMTMgMCAxIDAgMTMgMTNBMTMuMDE1IDEzLjAxNSAwIDAgMCAxNiAzbTAgMjRhMTEgMTEgMCAxIDEgMTEtMTEgMTEuMDEgMTEuMDEgMCAwIDEtMTEgMTEiLz48cGF0aCBmaWxsPSIjQjIwRjAzIiBkPSJNMTcuMDM4IDE4LjYxNUgxNC44N0wxNC41NjMgOS41aDIuNzgzem0tMS4wODQgMS40MjdxLjY2IDAgMS4wNTcuMzg4LjQwNy4zODkuNDA3Ljk5NCAwIC41OTYtLjQwNy45ODQtLjM5Ny4zOS0xLjA1Ny4zODktLjY1IDAtMS4wNTYtLjM4OS0uMzk4LS4zODktLjM5OC0uOTg0IDAtLjU5Ny4zOTgtLjk4NS40MDYtLjM5NyAxLjA1Ni0uMzk3Ii8+PC9zdmc+");background-repeat:no-repeat;background-size:contain;padding-left:34px}</style><meta http-equiv="refresh" content="360"></head><body><div class="main-wrapper" role="main"><div class="main-content"><noscript><div class="h2"><span id="challenge-error-text">Enable JavaScript and cookies to continue</span></div></noscript></div></div><script>(function(){window._cf_chl_opt = {cvId: '3',cZone: 'claude.ai',cType: 'managed',cRay: '9e14cb26ead10c15',cH: 'IfqG81gZYYapsSsbp.QZkVht0VnBduzATNsMnOAewm8-1774346056-1.2.1.1-_KIdZk5ZKS1i9BwkRzUYMZqq6RnDygfG.54K5P3VFh3DMDLWXvf_lfDAe_uXYm89',cUPMDTk:"\/api\/organizations\/271f71f3-4386-48cb-a2ae-116a48d455db\/conversations\/2fe58cae-e59c-4a55-91fd-3f427adafefe\/wiggle\/download-file?path=%2Fmnt%2Fuser-data%2Foutputs%2Fdse-enhancer-prd-v2.1.md&__cf_chl_tk=Y8cFcq5F2XYbc.ApLByMWQwTcb0eUtjv_CYUwJ4Jzs8-1774346056-1.0.1.1-3.Fkvaex67Ck7cKPek06oJ1NsVWP7tcNwGS5qOqpWG8",cFPWv: 'g',cITimeS: '1774346056',cTplC:0,cTplO:0,cTplV:5,cTplB: '0',fa:"\/api\/organizations\/271f71f3-4386-48cb-a2ae-116a48d455db\/conversations\/2fe58cae-e59c-4a55-91fd-3f427adafefe\/wiggle\/download-file?path=%2Fmnt%2Fuser-data%2Foutputs%2Fdse-enhancer-prd-v2.1.md&__cf_chl_f_tk=Y8cFcq5F2XYbc.ApLByMWQwTcb0eUtjv_CYUwJ4Jzs8-1774346056-1.0.1.1-3.Fkvaex67Ck7cKPek06oJ1NsVWP7tcNwGS5qOqpWG8",md: 'AALEdFfXwP5RKJJyNNqqT6KvZafnUHSWNniZFuVNAZg-1774346056-1.2.1.1-j_ZJ3hREVBv3Kd.S8bxCwHAv1wHfH0TXs0mkTXV.GDZhPALj5Ln.XES8p.wmJHEr9uvrUyLo_.QcsdEcbqxmGNIOJqw1XC1ZoyV3IzMxEVxipp2mS4b2RtOzFwjeItEjUbZt7UiXLljZbKiGdCUmvtdQ32dUGMdtiXyHw4AEiwkGHxvzCbtC4gJsxf5QJ.NWETclr78NNdsX_B_Jlf5UrFSUd45fKU8.TfwLGBzLWObJBASTO.XcStzgMQfNiInv9cW6W9jHFxi1GAEJTkhGXgriQneFcL41SmKuhWdOJVZC9S73w1IvAts0CtD5NqAMvUEKuFDO1xA78iMrG6i48yDta87PHUulOGy8YpqkIJn4Ge.NLkackwjV5XmPzDI1pUzwoM.Fq89TTmT13Lrt_MhrH7b5h894Q2iwO1uDtVuMHIs.W14SYo6eH4iOgsVbRZc1b0ivr2aaB8aKAY.p5ozbmfFJKLrZ2sqwVyr8IzBBnpwQ6O32_l4V84HzL9ErnoIHNM5TMGwt9V0sFyD.hFbaZi3hPKuyFunDTVC1nOL5FpGYWQUhkDGdd7qdDTd6Q2oY7cz7Zbop6rOHuuoaFLKfAQRZEOzi177N2xc_maPPc0dVtQSk.JM6uvZuh4Nt4xyOpQq4VH79l_xS3i8Rfn3lcAPEElLBL0QFvYauoELsn7rfglsre.i1TtKdVllb6H_s2RXDXEIsx8eejQe.lOKcclSQ0lKExNGgnxHpMR5pBFAp_5_u5_7g150fxp85l3TnDYHmZ1L9YBu29XBbkdtcYZlTkGtVTRK7Nqf8J7PjNHKZaRh9N.5j.2YXeouCxdrxVqT5.jWELaYHtB_7nqOq7zwBy8uGrB5KZw7Zn2HFhCUx6vtT9mYHRccT0C37yIrJsLS_4s0bHmwR98D4kSLU.gfEweeLtbDtxUVhDMLhcxkUJRjvq7uYPPAvNI51oJvNh9FqdQcv33wCH7B4XnK9qeRjmOVW.OwTlr7TDzWF0rlcMmf_ufKISNMONpoAzMzLdi9uszLtdAaoDPXA1Mx5jpMi83YrtRT0LB7nda.LjQ1wxyo0vrmOKSbgqKPJLTDD2fAQh0Xw7Ba0qQ9Re7vTwLYjqOhdjCz_8FM1c6AgsP3w6vrCfko9yeooaBQB7Y_xbYqh.wh1qsa0L5xYphNtJSTKxMncIjB0H7b7Wu9TOg2rsjG_GskzTle21vgMb77sR7rZZzokMZUs6jaLxEeMBOUYH0RfCJPJeQqq4XE5uw8VwSg4341xhYQ56pvk.Z6EtsBW5_AHBp5vOD43b5NJ8FHMj3d3HGIirpQBmRwXo5hgvwKpV7xxBphg1y.cnDlteUOTHqo5ingpI4qVlcCorLZ22743JGdyRUKXNDGqgRTWdGYJwiVgDraFDSLdiU4ZZ5WKGp_fFpEAb5RPfLiIQHeVzO8q5nncovKnr4A',mdrd: '2jcA9zo36GqPU0p6hn5c2d.lLz_75oniElkhjmBJYgw-1774346056-1.2.1.1-LVMM__GNR0dhxbFRNBMgGN.fS4mKuUWBZKYMkRvuOkycaGRh.KFxX1xxvDIIl.GAjNnwPFssjK9_9jCi2X5oDLxi_qaCzT.OfEBO324_0cBW8VG1f9RJEPNJ6TKW2gJcs8Aa2Dsomiw1Zoqz5c6DkVTcpReBx3ApTC1aK3_KbECm_JHJkAn0FG2iAyhBP5nIzOmuSPzQgqwkYW93bcoBqLGxEumuYeF2LzEbebZLMd9N6_fScfXkBSM4j879ZcLbN9S_blwUhp60wF5ngC1HcWoAXChZjB0Pb_HBg0KylwTEKmtouZs1BrlyCMYA3fG4i6MaosVQDueHLc8Txl3GruISPH.FL4ooBGedgOp8isdzcz8js1ZiseGTGZohc4y9_fgvBl6Jczn3y1uC.ri0b51C8FK9KzGLawUIGQY2cwr01ufcaWkClAfmzpMFbNuXzQDLCRlmfw5RCNvOsewtcYQPqHe6UQmFx1FzcAGZGk_IqguO.UsYD5rNzmXtlK_CXaDKfrdxplUAwgxBp5K8qOf8y6094ji65K0HOpn0ahzBuzadMJ.R4aZ22DaZfDUR6VbJqASQRKlgORODBnf98570h4cIqr381JjmV1Rnf.S_aNCy8bIouiuJF9HvPqeHMdzT3t900qop5odbiSx7XuPzZuXFq7r8PHOgMTQ1fzoOzQD.ivWc6e3eii.MuY1aHH.zlSwCtx5ToeUD3Ka60AbcPGCLyf5FeSqQkpStkFoAUXSigORTixWoK8.PoQ3vwPttgBOXIwvjfPcas8ZYyc3DZPoWzGIODFannEb4w0ocRnXMlrawX8erDli17b7hMK18sUESwccpGXNeN_sky7DGza7ATmK.b7eos2c27SlweJ4De.gnNyfynjjbJmFE83g6dJKvWK_hDrjO103.5CZxIqnnIkZUU2dE2xZpMECSylYrR3fXw56iYX._fbRqj07f5lOh8sfhibyyk4lAHGBBr4SEGdiBeGCrchC8YrCWpvQOcWxlP_t3vKXduXkS3.yjEQ3ygTWujTX3Q.IsAM90ZlEl5alb80pVMjS5587T1Nxgmi7j86_S52w5gmudnSll_Bny6YMJy1KlTyrIhK.aVdCRihIcEZH.C1CG3XwnLmQmfklnl2In_igxXdF8LYwXDebafw1GGSc.57WRl3KwC1azIrhPxd8oDrH5hJDrJo9FI9aN9jAamK29WKESTKudWTchCAHmame9T6HoOVfnQ9bIh07eUsRRjwGDOuxwN48gtm6mSoVzIzhUK4EJgn6uAHZKuePquGbYwQNOQANijwIg_sraoQLSr0jHPxU_vU_Q2yhuW8VJrSVnyeC8O590dJaghWqcmgpyJSckCBoG0PgV1OYOJGCChHcGNlN21ILra2L47LGIVeHw1bSGXEk12RBZEfQRskMXKtJzUiadQHWjV4PyOKTN3bPR7AF6mAb5iKmCm58nQmtZ1w1oRucisNa8lNB0hBKipw4x03zlcpPTbOohwpAPJD2LVna0.kC5ol7pBLM3zct17p7pndQxuy.68uw9jeepjp8wiF57Hei2fOFNgtiasPKVlGXAjRJb_ZSFVV6sAD_1kCyiKLeNT2Q8j0sCOaenBjQWvBBbRzWmcYUdFTKK7JAxkWCkj06Pfx79M68mtYaBMnoIZromzU5EBzKYO_S4ZGrF9oi7MpsqbMzcLo5S5twTephkp3xz_HL2CMk4XOfvjKydYq2zJ3.P6KhufXN_2nHtgYZkSYCKKQ2zNw1SuTeBm7_TvLxWCLjw_teC_ShXAakPJdnd4u4JNVBVQV4swnsDmEzAeKb8pfUKLGAGC.k86cxpH6iNnymRZorxAO9T12IWS0EPGJkU_MvXJsAWKl61.f2Pl5rAdQDHwQ9K7vy_L48IGb1aEAbmxxiEsOh4hkk3empMVLe0VUL9Rjru9eEi6JQ3QINuaKOuKfaFk9lyPKVSIUCqmj9KcppdQ22qsr3_UQ55KYymiZPZQ8TraFmuLcjUjL7oRTVpzODKb83fynymoX1P_dYp2qEPnUXSRmsKVzIM1qsDa_UiMxuinVwKiLNgabt0uyHLrbRarJdmsjGA0uqADPpBK_ZsHzM5KrPEqVDnTb7y88RzWayP_MxlFA.y14LLRXwu5ykzm3YXsITN01LTglajRi5XK.56h6EhwnPF0kXEKmKwUKy5GIo9H9UB7AqoYESohvg9G2OG4.QMKhU3T3Mdns9unB4W8YTqbUUYwGJlTJw.LuAXwTGlS2Q47a5Q9kYzk9FN4v1RxR5mTH35MTwfdL_u8dQ6a9IWH2Gj7bL7m8fD8q.uCvYDbAFLe3EFNX826be3WLl6V5MQqPKU_coTX7iubGMhkxH69ZXKkEU7VYS7PyjgN5IbK9L8ZYLzemxL5uU7cmTzB.vZ88iCzQMpez8swQ6j0ynZWtdZBZhM8W67wlgJB5dLfXHMNW2Fek_4bJOxPAXNkiTwOtC9XrjqFbrQliXkhbYhpR2a2L2rtPCJRibytnXuaRWdohdxcKBjuNjGxp.Z.z5CxJknHU.nLPKLlakP1TiGFo4aXepABYhOf_kSzo9PUfkEiZ5CbO2bl8H5LOIwpKylFqWNp_aHZBPELcjntMjlLoDiZr6MVY7KiNVnaqquQTBtJHCFLhqQLEj4GDcKMCG37mYmZPyLIGy6BK9pYo2YijXiZJH32RBzAPqs1yVCpVlXGsDfOqZbSQCAeFsGXH9Ooe2l_1en5HLBRIRZ11TCY3OBU2XtHXNWWjYTc8tput8umnUnkvwxIi0qQaApd95rDWmctO2.2qoMcjwxySXLD7NHxh5HrzXj23mbvbRwYh9MeZijPu33QeF6C16nLj64YDK0CSW6EH8Sav_7mjnIjI2b2MfyPkl8mINDqGUcXyaM6vq3LofbZaUfsb1tYrizGwUE0lz_5QKZIssQzpe5oQsMZQ6p1Gd.rh8ac97Hy6XLXaSmQXubv1918q5f4yzhy2.P_bBASAnZsBV7zq3isx_W4_aUKkeni8K0wNy1VlLPFxl4lVRtrL0x5t.T3tzlPSLPpcl94BVzfDI_xcD.KNOsskmLj5IzSq1_mTlrl9YFkFQA.D1x9X0tfNfXtL6TqKk7IaFeF07YqfjZ1ejNsYjXeKMUdI72mxeDg52hVQRl4IQufOeBamR.OhNv4BRIzjTN3Lf8Z_gpapxkm.2vI.R4EVRo0MCT3F9V.b8cidccsx5kylb6BuwzuT0JooNyEakIIQp5pzGZK3KgG0afaFjnA4eGlyd2EuItOjhgD6NZrLSyT1gYWuywI8XeSfwmP3UquGI2AG9NllvqUR7vq8oAiXgU45k2orhNCC67WXrDJIcyLaFwgtrTVbhMyCg1SA5tQl_MVEtuIzU55tNkQgujRUmS1GQDMEXY2W2_y7_UVtMbwmCxLCWQLoT59PmPCLgNIwYS7n_jShBlqCQk4.KYInTdvsd.GFUoR31wgtPbpd4Ok4lxtzgzaFZ6vjGPxlShKF48MILQONQPSvUTakD7s7TCM5ECOUsdswNbop0tNE_qdfvh3Lty4h_YRlIu1kY82miDvpvuH9bl4aoV6wt80vDlK9MLoZYJG4fmIRPfryMT9BRUWojeaxQr9qWODwYjyQBC2mn9IoU3uZtgr62b_fvt6KFsPR7HyJoBArkCLayRljr5xyJhdzwTTE60QbORfjPMlvKlOD2CYXINAYhT7J0duyzZNjxCvjRecE3Vh9r88NLl9fYzhcRgZXnj767Yl0EFZprazjuDwRMTfXRoe03lQ8T77x23u7mM6KSJmaEt4l9PxxinuBJIMOATGvSgER3j18nWi07QG.JTLxryYJZm57M3LpIDRdrL180oh5AR2ZmfvU1KWmNRdOm8ahgpLgrxLMcrw_G8fjxQVgHSW45IBTHPqvP_6lyoXfOjGIo7lxw2BQxkH1WDPtLV13wolahJF3aPrqSd8rShC7355NUzO2vFWOKjJOkSX_EVTMdLa._hP_sfFq2QE_CbTkghhZnjvmVtoagHebZnednWsHU5aQ9EszHVayDvVZIsKmY_FaCjc.f9C_jGS_iFjsXAOyhljAJX1Xe93u_BM3ruU43AqfODtjYJS.6zK5p.HnTBW7N2fvftKKeMjL2t0_zsicK365mFmib8JYrVg9ynA7t.hX4LDXS2FxNQYe_2Y9wNax.wS9hYXEyTq5azKbeJvMQYFsoIN1aA9izqCQ2szjPzfBW5WbE5cQZ_StIiwAVjJ5vUjftWzCxDv6UZPHlqW8knOUt.TN5Vkcn8aPA4r0nViEcEVp3xwY.w3TpMJiEBrrOtdLyW1vCGX71LTgnv4FALAH2c0pIgmvsd5DJiHLn_PnS_twqo9WqE9NLEqug6UyfzF54sb5K3pInXmgPoCJa2kVi5.ocJVfsxoAHOmuxhccpUzm6nlO3u6vnKmgn0jWlqNVPdEIqv.YtrY_sm7m_jn1usWyv95MXF_TnNN6I50IwwOH8OYDVwc9eYjxAlRgpSQ6Ay3Kj1SXSCEYeE_iUXmUJj6xmMhEbpekwDFPuzd6cKrXeXzz6PPhS7p3HKzZrPSXuKzID.X8wxC4h3VZMY29AA6pTeMN0FspVxaXZXqwI0flBEu3mSZDTC91tL4jXlPnsDhlxK38eFoFTMQ3JTQTzs6qg6KQCkGP8hoDWOe7dsyeRqoTMYx0CkHwNkxwvYZqn90oqzsENIvfABVFB78IUVl4QCPdrImQzxgL2LtiOvYgIvRAZNcptgvwjLRz22l_25PVTIAwDdnMyOtBtNmpxd15Sd0lp1bHTXhpSiD74v.vs8pNBfuWehxg95Htb3yakbjjpLjJEWcnChbfyUcolcS6p.3KvBt9vLag9M2xah3kVTrqnKkuc9I.4wy9oRDLfmH5axaH9ByDNG4QrBTvLb65d4Sze1N.bQZvxRUZU.cMvM921qzS8AWuv7SfwOzu3vglqLmBeu.gLHCzrX50Eke38aOFcnvYa0QyS5ITFIfqqb17RTIw',};var a = document.createElement('script');a.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1?ray=9e14cb26ead10c15';window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;history.replaceState(null, null,"\/api\/organizations\/271f71f3-4386-48cb-a2ae-116a48d455db\/conversations\/2fe58cae-e59c-4a55-91fd-3f427adafefe\/wiggle\/download-file?path=%2Fmnt%2Fuser-data%2Foutputs%2Fdse-enhancer-prd-v2.1.md&__cf_chl_rt_tk=Y8cFcq5F2XYbc.ApLByMWQwTcb0eUtjv_CYUwJ4Jzs8-1774346056-1.0.1.1-3.Fkvaex67Ck7cKPek06oJ1NsVWP7tcNwGS5qOqpWG8"+ window._cf_chl_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}());</script></body></html>
+# DSE Enhancer - Product Requirements Document
+
+**项目名称**: DSE Enhancer
+**定位**: 香港DSE英语AI自适应学习平台，专为在港大陆学生设计
+**核心 slogan**: 每天40分钟，精准提高DSE英语成绩
+**MVP阶段**: 2026-Q1
+**版本**: v2.1
+**最后更新**: 2026-03-24
+**产品负责人**: 梅
+**技术负责人**: 兰
+
+> **v2.1 更新说明**：在v2.0基础上修复以下问题：①免费/付费功能边界明确化；②亲子账号VIP继承逻辑；③daily_study_records补充写作/口语得分字段；④无注册体验冷启动处理；⑤Part B"额外"时间定义；⑥自适应算法冷启动逻辑；⑦写作评分多维度存储结构；⑧年级范围与词汇分级对齐；⑨SQLite不支持JSONB的注意事项；⑩前端路由统一为App Router；⑪断点续学机制；⑫隐私与数据安全说明；⑬API权限分级；⑭第三方API降级方案。
+
+---
+
+## 目录
+
+1. 产品定位
+2. 核心业务流程
+3. 功能模块详情
+4. 题库建设策略
+5. 商业模型与权限分级
+6. MVP范围确认
+7. 获客推广策略
+8. 关键运营数据监控
+9. 技术架构
+10. 数据库表结构设计
+11. API接口设计与权限分级
+12. 前后端目录结构
+13. 编码规范
+14. 部署方案
+15. 隐私与数据安全
+16. 开发顺序建议
+17. 风险与注意事项
+
+---
+
+## 1. 产品定位
+
+### 目标用户
+
+- 在港就读的大陆学生
+- DSE英语成绩普遍在2-3级，目标提升到3-5级
+- 每天放学后可以抽出40分钟集中学习
+
+### 核心痛点
+
+1. 大陆学生基础不差，但不适应DSE的题型和出题思路
+2. 香港本地培训班太贵，时间不灵活
+3. 现有线上平台内容太泛，不针对DSE垂直场景
+4. 缺乏个性化自适应，不知道每天该练什么
+
+### 差异化
+
+- ✅ 垂直只做DSE英语，完全贴合考纲
+- ✅ **无注册体验** - 用户不注册也能进行首次测试评估和练习体验，降低使用门槛
+- ✅ AI自适应学习，每天自动安排针对性练习
+- ✅ 一键开始，40分钟完成，碎片化设计贴合课后场景
+- ✅ AI评分写作口语，即时反馈，不需要等老师批改
+- ✅ 游戏化PK排行榜，激励坚持学习
+- ✅ 大陆学生针对性弱项强化，完全不同于香港本地平台
+- ✅ 繁简体切换，阅读体验友好
+
+---
+
+## 2. 核心业务流程
+
+### 整体流程
+
+```
+用户访问 → 【无注册体验】→ 可直接进行入学快测（5题）和体验练习
+    ↓
+    ↓ (体验后引导注册，提示"注册后可保存进度、开启自适应学习")
+    ↓
+注册/登录 → 选择年级（小三~中六）→ 完整入学自适应测试（15题）→ 能力定级
+    → 输入目标等级 + 考试日期 → 生成初始学习计划
+    ↓
+每日访问 → 点击【一键开始今日40分钟】→ 系统自动组合内容 → 按顺序完成四个模块
+    ↓
+每日结算 → 各模块计分 → 生成总分 → 分析弱项 → 调整明日练习 → 打卡完成
+    ↓
+持续迭代 → 能力提升 → 调整难度 → 直到达到目标分数
+```
+
+### 无注册体验说明（修复#4）
+
+| 用户类型 | 可以做 | 不能做 |
+| --- | --- | --- |
+| 未注册访客 | 5题入学快测、每种题型各体验3题 | 成绩保存、自适应推送、错题本、排行榜、PK对战 |
+| 免费注册（试用期内） | 全部功能，每日练习题量有限制 | 超出题量限制的内容 |
+| 免费注册（试用到期） | 每日10题词汇、查看能力图谱、查看错题本 | 完整40分钟流程、AI写作/口语评分、PK对战 |
+| 付费会员 | 全部功能，无限制 | — |
+
+**无注册体验冷启动逻辑**：访客完成5题快测后，系统根据答对率给出粗略定级（低/中/高），并推送对应难度的固定体验题组（不做个性化推算）。体验结束后弹出注册引导，告知注册后的进阶内容。
+
+### 关键设计：一键开始每日学习
+
+用户不需要自己选内容，系统根据以下因素自动组合成约40分钟的学习计划：
+
+1. 当前能力水平
+2. 历史得分弱项
+3. 错题知识点
+4. 学习进度
+5. 当天是星期几（按周轮换表）
+
+**冷启动逻辑（修复#6）**：
+新用户完成入学测试后，第一天的学习计划按如下规则生成：
+- 词汇：从对应年级的 Part A 第一关开始
+- 语法：从入学测试识别出的弱项语法点开始
+- 轮换模块（阅读/听力等）：按当天星期几的轮换表选择，难度设为「入学测试得出的等级 - 0.5」（适当偏易，让用户第一天有成就感）
+- 错题复习：第一天无历史错题，替换为「大陆学生高频错点」强化练习
+
+**每日模块轮换安排（每周循环）**：
+
+| 模块 | 用时 | 频率 | 具体内容 |
+| --- | --- | --- | --- |
+| 词汇 | 10分钟 | ✅ 每天都有 | 闯关背单词/生词本复习 |
+| 语法 | 10分钟 | ✅ 每天都有 | 语法专项练习 |
+| 阅读/听力/写作(Part A)/口语(Part A) | 10分钟 | **交替轮换** | 见下方轮换表 |
+| 错题复习 | 10分钟 | ✅ 每天都有 | 错题间隔重复复习 |
+
+**每周具体轮换（修复#5：Part B 额外说明）**：
+
+| 星期 | 主流程（40分钟内） | Part B 补充（40分钟外，可选） |
+| --- | --- | --- |
+| **周一** | 词汇 Part A → 语法 Part A → 阅读 Part A → 错题复习 | — |
+| **周二** | 词汇 Part A → 语法 Part A → 听力 Part A → 错题复习 | — |
+| **周三** | 词汇 Part A → 语法 Part A → 写作 Part A → 错题复习 | 听力 Part B（完成主流程后可选做，额外用时约15-20分钟） |
+| **周四** | 词汇 Part A → 语法 Part A → 口语 Part A → 错题复习 | — |
+| **周五** | 词汇 Part A → 语法 Part A → 阅读 Part A → 错题复习 | 写作 Part B（完成主流程后可选做，额外用时约20-30分钟） |
+| **周六** | 词汇 Part A → 语法 Part A → 听力 Part A → 错题复习 | — |
+| **周日** | 无强制，系统提供「自由练习」和「模考入口」 | — |
+
+> Part B 内容始终在40分钟主流程之外，属于「可选加练」，不占用主流程时间，系统完成主流程后弹出提示引导用户选择是否继续。
+
+---
+
+## 3. 功能模块详情
+
+### 3.1 用户体系
+
+#### 基础账号
+
+| 功能 | 说明 |
+| --- | --- |
+| 注册登录 | 手机号 + 验证码登录（支持微信/Google快捷登录） |
+| 个人档案 | 年级、目标分数、当前等级、学习天数、累计积分 |
+| 能力图谱 | 可视化展示听/说/读/写四个维度的当前等级 |
+| 会员系统 | 免费试用7天，付费会员解锁全部功能（详见第5章权限分级） |
+
+#### 亲子账号体系（修复#2）
+
+**场景**：很多是家长付费，孩子使用，家长需要看进度
+
+**VIP继承规则**：
+- 子账号本身不独立购买会员，VIP权限由主账号套餐决定
+- 基础会员（月卡/季卡/年卡）：主账号 + 1个子账号享有VIP权限
+- 家庭年卡：主账号 + 最多3个子账号享有VIP权限
+- 超出家庭年卡额度的子账号（如第4个孩子）：以免费用户权限运行，提示升级
+
+**系统判断逻辑**：
+```
+子账号 VIP 生效条件：
+  主账号 is_vip = true
+  AND 主账号 vip_plan IN ('family', 'basic')
+  AND (
+    vip_plan = 'family' → 该子账号是主账号下的第1-3个子账号
+    OR vip_plan = 'basic' → 该子账号是主账号下的第1个子账号
+  )
+  AND 当前时间 < 主账号 vip_expire_at
+```
+
+**方案设计**：
+- 主账号可以是家长注册，也可以是孩子自己注册
+- 主账号可以**添加多个子账号**（对应多个孩子）
+- 每个孩子一个独立子账号，有独立的学习进度、错题本、能力图谱
+- 孩子登录使用子账号，做题练习
+- 家长登录主账号，可以：
+  1. 查看每个孩子的学习报告
+  2. 管理会员订阅
+  3. 接收每周学习汇总邮件（后续迭代）
+
+**账号关系**：
+```
+主账号（家长/学生本人）[持有 VIP 套餐]
+  ├─ 子账号 老大 → 独立学习数据，继承主账号VIP
+  ├─ 子账号 老二 → 独立学习数据，继承主账号VIP（家庭套餐才有）
+  └─ 子账号 老三 → 独立学习数据，继承主账号VIP（家庭套餐才有）
+```
+
+### 3.2 入学自适应测试（修复#8：年级范围扩展）
+
+```
+流程：
+1. 用户选择年级（小三/小四/小五/小六/中一/中二/中三/中四/中五/中六）
+2. 15分钟，15题，从难度适中开始（根据所选年级匹配起始难度）
+3. 答对 → 下一题难度提升；答错 → 难度降低
+4. 完成后算法计算出用户水平（预备级/1-5级，对应年级和DSE等级）
+5. 输出能力报告：强项/弱项分析（各题型维度）
+6. 引导输入：目标等级 + 目标考试日期
+7. 生成个性化学习路径和每日练习量建议
+```
+
+> 无注册访客仅做5题快测版本，不选年级，测试完后显示粗略等级和体验题组，不生成完整学习路径。
+
+### 3.3 首页数据看板
+
+```
+┌──────────────────────────────────────┐
+│ 👋 你好，张三！ 连续学习 7 天         │
+├──────────────────────────────────────┤
+│  🚀 [ 点击一键开始今日40分钟学习 ]    │  ← 超大显眼按钮
+├──────────────────────────────────────┤
+│ 📈 昨日总分：82 / 100                 │
+│   词汇：18/25  语法：22/25            │
+│   阅读：21/25  听力：21/25            │
+├──────────────────────────────────────┤
+│ 🎯 能力图谱                           │
+│   阅读：■■■■□ 4级                     │
+│   听力：■■■□□ 3级                     │
+│   写作：■■□□□ 2级                     │
+│   口语：■■□□□ 2级                     │
+├──────────────────────────────────────┤
+│ ⏳ DSE考试倒计时：还有 XX 天          │
+│   📋 今日建议：完成1篇写作练习        │
+├──────────────────────────────────────┤
+│ 🏆 排行榜 - 本周学习时长              │
+│   1. 李四  320分钟                     │
+│   2. 王五  280分钟                     │
+│   3. 你   240分钟                     │
+├──────────────────────────────────────┤
+│ 🔍 自由练习                           │
+│ [词汇] [阅读] [听力] [写作] [口语]    │
+└──────────────────────────────────────┘
+```
+
+### 3.4 词汇闯关模块
+
+DSE 词汇分 Part A/Part B：
+- **Part A**：高频核心词（适合日常练习，1-3级难度）
+- **Part B**：低频高阶词（适合专项练习，4-5级难度）
+
+#### Part A：高频核心词（日常一键学习）
+
+**业务流程**：
+
+```
+进入词汇板块
+  ├─ 选择：【闯关背单词】/【生词本复习】/【PK对战】
+  └─ 闯关背单词
+       ↓
+       本日解锁关卡 → 开始
+       ↓
+       单词卡片：
+       ┌─────────────────────────┐
+       │  单词：analyse          │
+       │  音标： /ˈænəlaɪz/      │
+       │  中文： v. 分析         │
+       │                         │
+       │  [🔊 播放] [🎤 跟读]    │
+       └─────────────────────────┘
+             ↓
+         点击【🎤 跟读】→ 用户录音 → ASR识别 → 发音评分
+             ✓ 准确 → 下一个
+             ✗ 不准 → 标红错音节 → 示范 → 再读一次
+             ↓
+         真题例句：
+         "The data can be analysed to find patterns."
+             ↓
+         选择认识/不认识 → 不认识自动加入生词本
+             ↓
+         完成一组 → 小结 → 下一组
+             ↓
+         完成本日目标 → 解锁下一关 → 获得积分/勋章
+```
+
+**发音对比功能**：发音评分后，提供标准读音示范录音，支持学生播放自己的录音和标准录音对比，波形图对比直观看到语速和重音差异。
+
+**核心特性**：
+- 按DSE考频排序，先背高频词
+- 按主题分组（环境/教育/科技/文化...）
+- 全部用DSE真题例句，在语境中记忆
+- 支持跟读发音评分，背单词同时练口语
+- 间隔重复算法，生词自动重复复习
+- 游戏化闯关，连胜 streak 激励
+
+#### Part B：低频高阶词（专项练习）
+
+**核心特性**：
+- 覆盖4-5级低频高阶词
+- 深入讲解词汇搭配、用法
+- 同根词、同义词、反义词扩展
+- 适合冲刺高分学生
+
+### 3.5 听力练习模块
+
+DSE 听力 Paper 3（Listening and Integrated Skills）分两部分：
+- **Part A**：选择题/填空题（简短对话/独白，适合10分钟日常练习）
+- **Part B**：综合任务（较长录音+阅读材料结合，用时较长，适合专项练习）
+
+#### 日常练习（Part A）
+
+```
+进入听力 → 选择难度/知识点 → 开始
+    ↓
+    ┌──────────────────────────────┐
+    │  🎧 题目：DSE 2023 Paper 3 Part A  │
+    │  [▶播放] [⏸暂停]              │
+    │  Question 1: _______         │
+    │  [输入框]                     │
+    │  [交卷]                      │
+    └──────────────────────────────┘
+    ↓
+交卷 → 立即批改 → 错题显示原文翻译 → 生词一键加入生词本
+    ↓
+错题自动收藏 → 加入错题本复习
+```
+
+**降级方案（修复#14）**：若TTS生成失败，自动显示「音频暂时不可用，显示文字版题目」提示，用户可以选择切换到阅读练习或稍后重试，不影响整体学习流程。
+
+#### 专项练习（Part B）
+
+```
+进入听力专项练习 → 选择 Part B 综合任务
+    ↓
+    附带阅读材料 → 播放录音
+    ↓
+    任务：填写表格 / 记笔记 / 短文写作
+    ↓
+提交 → AI批改 → 显示答案和解析
+```
+
+**音源方案**：
+- MVP：使用Google TTS/阿里云TTS生成英音，成本极低
+- 后期：真人录音替换，提升体验
+
+### 3.6 阅读练习模块
+
+```
+进入阅读 → 选择主题/难度 → 开始
+    ↓
+    文章（支持滚动）
+    点击生词 → 弹窗出翻译 → [加入生词本]
+    ↓
+    读完文章 → 开始答题（选择+简答）
+    ↓
+    交卷 → 批改 → 错题分析 → 生词统计
+```
+
+### 3.7 语法专项练习
+
+DSE 语法分 Part A/Part B：
+- **Part A**：基础语法（适合日常练习，1-3级难度）
+- **Part B**：高级语法（适合专项练习，4-5级难度）
+
+#### Part A：基础语法（日常一键学习）
+- 按DSE常考基础语法点分类（时态/冠词/简单从句...）
+- **大陆学生高频错点重点标注**（时态、冠词是大陆学生普遍弱项）
+- 每次10题，做完马上改分，看详细解析
+- 错题自动收藏
+
+**年级难度对应**：
+- 小三～小六：预备级语法（基础句型、简单时态）
+- 中三：基础语法（时态、冠词、简单从句）
+- 中四：中级语法（状语从句、定语从句、非谓语动词）
+
+#### Part B：高级语法（专项练习）
+- 按DSE常考高级语法点分类（虚拟语气/倒装/强调句型...）
+- 大陆学生常见弱项重点标注（虚拟语气、倒装）
+- 适合中五/中六冲刺高分学生
+- 包含详细的语法规则讲解和例句对比
+
+### 3.8 写作练习模块
+
+DSE英语写作 **Paper 2 Writing** 分两部分：
+- **Part A**：情景写作（必答，约40分钟，字数约200-300字）
+  - 常见题型：书信、报告、便条、演讲辞、文章投稿、社论
+- **Part B**：议题写作（三选一，约60分钟，字数约400-600字）
+  - 常见题型：议论文、说明文、记叙文、散文
+
+#### 移动端特色：语音输入作文
+
+支持语音直接输入作文，方便移动端用户：
+1. 用户选择「键盘输入」或「语音输入」
+2. 选择「语音输入」→ 按住录音按钮开始说话
+3. Whisper ASR 实时转文字，显示在输入框中
+4. 用户可以编辑修改转写的文字
+5. 提交后和普通输入一样进行AI评分
+
+#### 业务流程
+
+```
+进入写作 → 选择考试部分（Part A/Part B）→ 选择题目（真题/模拟）
+    ↓
+    展示题目要求（情景/议题）、字数要求、建议时间
+    ↓
+    用户输入作文（支持键盘/语音输入）→ 提交AI评分
+    ↓
+    AI按照DSE官方评分标准从四个维度评分：
+    1. 内容 (Content)：扣题性、完整性、观点清晰度
+    2. 组织 (Organization)：结构连贯、段落划分、逻辑衔接
+    3. 语言 (Language)：词汇丰富度、语法准确性、拼写标点
+    4. 表达 (Expression)：句型多样性、高级词汇运用
+    ↓
+    AI返回详细评分报告（含四维度得分，存入 writing_scores 表）
+    ┌──────────────────────────────────┐
+    │  总分：XX/5       DSE等级：Level X │
+    │  内容：X/5     ⭐⭐⭐⭐           │
+    │  组织：X/5     ⭐⭐⭐            │
+    │  语言：X/5     ⭐⭐⭐⭐           │
+    │  表达：X/5     ⭐⭐⭐            │
+    │  ✍️ 优点：观点清晰，紧扣主题     │
+    │  🔍 需要改进：第2段缺乏逻辑连接词 │
+    │  [查看参考范文]  [全文纠错]      │
+    └──────────────────────────────────┘
+```
+
+**降级方案（修复#14）**：AI评分接口超时（>10秒）或失败时，提示「AI评分服务暂时繁忙，已保存您的作文，评分结果将在5分钟内发送通知」，后台异步重试，不强制用户等待。
+
+**功能特性**：
+- 支持字数统计，提醒是否符合考试要求
+- 逐句语法拼写检查，标记错误并给出修正
+- 词汇升级建议，帮助从基础词汇升级到DSE高分词汇
+- 保存写作历史，可以对比多次练习进步
+
+### 3.9 口语练习模块
+
+DSE英语口语 **Paper 4 Speaking** 分两部分：
+- **Part A**：个人独白（约3分钟，1分钟准备，2分钟发言）
+  - 考官给出一张图片和一个话题，考生做个人阐述
+- **Part B**：小组讨论（约7分钟，1分钟准备，5-6分钟讨论）
+  - 给定议题，小组成员（通常4人）进行讨论互动
+
+#### 业务流程（Part A 个人独白）
+
+```
+进入口语 → 选择Part A → 选择题目（真题/模拟）
+    ↓
+    展示题目图片 + 话题 → 开始1分钟倒计时准备
+    ↓
+    倒计时结束 → 点击开始录音（约2分钟）→ 提交
+    ↓
+    AI处理：
+    1. Whisper ASR转文字（英音准确识别）
+    2. 发音评分（单词发音准确性、重音和语调、流利度）
+    3. 内容评分（扣题性、观点完整性、词汇语法准确性）
+    ↓
+    输出评分报告 + 支持播放自己录音与标准录音对比
+    ↓
+    四维度评分结果存入 speaking_scores 表
+```
+
+**降级方案（修复#14）**：ASR转写失败时，提示「语音识别暂时不可用，请检查麦克风权限或稍后重试」，同时提供「改为文字作答」备选入口。
+
+#### 业务流程（Part B 小组讨论）
+
+```
+进入口语 → 选择Part B → 选择题目（真题/模拟）
+    ↓
+    展示议题题目 → 1分钟准备
+    ↓
+    开始录音 → 用户进行讨论发言（模拟对话题）
+    ↓
+    提交后AI评分：互动性、观点清晰度、语言准确性、发音流利度
+    ↓
+    输出详细报告，给出互动建议
+```
+
+**功能特性**：
+- 分Part A/Part B独立训练，完全贴合考试
+- Part A包含图片题库，还原真实考试场景
+- 逐词发音分析，标记不准单词并给出示范读音
+- 流利度分析，提醒卡壳停顿位置
+- 波形图对比，学生可以直观看到语速和重音差异
+- 支持反复练习，对比进步
+
+### 3.10 错题本模块
+
+```
+进入错题本
+  ├─ 支持按题型/知识点筛选
+  └─ 开始复习
+       ↓
+       错题重现 → 再做一次
+       ↓
+       做对 → 从错题本移除
+       做错 → 保留，下次继续复习
+```
+
+**算法**：间隔重复，做错的题增加复习频率
+
+### 3.11 词汇PK对战模块
+
+```
+进入PK → 匹配对手（或邀请好友）
+    ↓
+    准备：10个单词
+    ↓
+    回合制：显示中文 → 用户拼英文 → 答对得分
+    ↓
+    10题结束 → 算分 → 排名更新 → 赢者得积分
+```
+
+**目的**：增加互动性和用户粘性，激励坚持学习
+
+### 3.12 每日总结报告
+
+```
+┌──────────────────────────────────────┐
+│  🎉 恭喜完成今日40分钟学习！           │
+│                                      │
+│  总分：XXX / 100                     │
+│  词汇：XX / 25    语法：XX / 25       │
+│  阅读：XX / 25    听力：XX / 25       │
+│                                      │
+│  💪 你今日弱项：语法第三条件句        │
+│  👉 明日会增加相关练习                │
+│                                      │
+│  连续学习：7天  积分：+50             │
+│                                      │
+│  【可选加练】今天有写作 Part B        │
+│  预计额外20分钟  [去练一下]  [跳过]   │
+└──────────────────────────────────────┘
+```
+
+### 3.13 自适应调整算法
+
+```
+每日总分 = Σ(模块得分 × 难度权重)
+
+调整规则：
+1. 某模块得分 < 60 → 明日增加该模块练习权重
+2. 某模块得分 > 85 → 明日升高难度，减少基础练习
+3. 错题知识点 → 自动加入第二天错题复习
+4. 保持每日总时长约40分钟
+
+冷启动（第1天）：
+- 词汇：从年级对应的 Part A 第一关开始
+- 语法：从入学测试弱项知识点开始
+- 轮换模块：按当天星期几选择，难度 = 入学测试等级 - 0.5
+- 错题复习槽：用大陆学生高频弱项题代替
+```
+
+### 3.14 学习计划自动生成
+
+注册时输入「当前等级」→「目标等级」→「考试日期」，系统自动计算每天需要完成的练习量，进度条跟踪，提醒每天是否达标。首页显示考试倒计时，根据剩余天数动态调整每日练习量建议。
+
+### 3.15 断点续学机制（新增，修复#11）
+
+用户在学习中途关闭页面，下次进入时：
+
+```
+用户进入首页
+    ↓
+    检查：是否有未完成的今日学习会话（study_sessions.finished_at IS NULL）
+    ↓
+    有未完成会话 →
+    ┌──────────────────────────┐
+    │  📌 你有一个未完成的学习  │
+    │  已完成：词汇+语法        │
+    │  剩余：阅读+错题复习      │
+    │  [继续学习] [重新开始]    │
+    └──────────────────────────┘
+    ↓
+    选择「继续学习」→ 从 current_module 处继续
+    选择「重新开始」→ 清除旧会话，生成新会话
+    ↓
+    无未完成会话 → 正常进入首页
+```
+
+**规则**：
+- 同一天只允许一个有效学习会话
+- 次日零点后旧会话自动标记为 expired（不计入完成）
+- 当天已完成（finished_at 有值）的会话不显示续学提示
+
+---
+
+## 4. 题库建设策略
+
+### MVP阶段
+
+1. **真题整理**：整理公开的DSE历年真题（2012-2024），用于产品验证
+2. **AI辅助出题**：用大模型按照DSE题型和难度生成新题，人工抽检
+3. **听力音源**：TTS生成，成本极低
+4. **作文口语**：AI评分，不需要人工
+
+### 后续扩容
+
+1. 每年更新最新真题
+2. 用户报错反馈，人工审核更新题库
+3. 逐步换成真人录音听力
+
+### 标签体系
+
+每道题必须打标签：
+
+| 标签 | 说明 |
+| --- | --- |
+| 题型 | 词汇/语法/阅读/听力/写作/口语 |
+| 知识点 | 具体语法点/主题 |
+| 难度 | 预备级/1-5级 |
+| 目标年级 | primary3-6 / form1-6 |
+| DSE年份 | 如果是真题 |
+| 大陆弱项标注 | is_mainland_weak：是否属于大陆学生高频错点 |
+
+### 难度分级与年级对应
+
+| 难度等级 | 对应DSE水平 | 对应年级 | 说明 |
+| --- | --- | --- | --- |
+| 预备级 | 基础启蒙 | 小三-小六 | 剑桥五级KET/PET水平，DSE前置基础 |
+| 1级 | Level 1-2 | 中三基础 | 核心基础词汇，最简单语法点 |
+| 2级 | Level 2-3 | 中三/中四 | 高频词汇，基础语法，短篇阅读 |
+| 3级 | Level 3-4 | 中四/中五 | 中频词汇，复杂语法，中篇阅读 |
+| 4级 | Level 4-5 | 中五/中六 | 低频高阶词汇，复杂句型，长篇阅读 |
+| 5级 | Level 5 以上 | 中六冲刺 | 核心考纲全覆盖，真题难度 |
+
+### 词汇分级策略
+
+| 级别 | 词汇量 | 对应难度 | 对应年级 |
+| --- | --- | --- | --- |
+| 预备级 | ~1200 | 预备级 | 小三-小六 |
+| 一级 | ~1300 | 1-2级 | 中三基础 |
+| 二级 | ~1500 | 2-3级 | 中三/中四 |
+| 三级 | ~1500 | 3-4级 | 中四/中五 |
+| 四级 | ~1000 | 4-5级 | 中五/中六 |
+| 五级 | ~500 | 5级 | 中六冲刺 |
+
+**总词汇量**：约 7000词，完全覆盖DSE要求 + 小学预备阶段
+
+**词汇排序原则**：
+- 严格按照DSE过去10年真题考频排序，先背考频高的词
+- 同一词汇只出现在一个难度级别，不重复
+- 按主题分组（教育、科技、环境、文化、社会...）
+
+### 大陆学生针对性弱项强化
+
+建立「大陆学生高频错题库」，专门收集统计大陆学生常错的语法点（如冠词使用、时态一致性、英式拼写、议论文结构），算法自动强化练习这些弱项，每个语法点都配有「大陆学生常见错误提示」。
+
+---
+
+## 5. 商业模型与权限分级
+
+### 定价策略
+
+| 会员类型 | 价格（港币） | 说明 |
+| --- | --- | --- |
+| 免费试用 | $0 | 7天，所有功能开放，每日练习题量有限制 |
+| 月卡 | $98 / 月 | 1个孩子，全部功能开放 |
+| 季卡 | $248 / 季 | 平均$83/月，优惠 |
+| 年卡 | $798 / 年 | 平均$66/月，最划算 |
+| 家庭年卡 | $1198 / 年 | 支持最多3个孩子，适合多孩家庭 |
+
+### 功能权限分级（修复#1）
+
+| 功能 | 未注册访客 | 免费注册（试用期） | 免费注册（到期后） | 付费会员 |
+| --- | --- | --- | --- | --- |
+| 5题入学快测 | ✅ | ✅ | ✅ | ✅ |
+| 完整入学测试 | ❌ | ✅ | ✅ | ✅ |
+| 每日词汇（10题/天） | ❌ | ✅ 无限 | ✅ 10题/天 | ✅ 无限 |
+| 每日语法（10题/天） | ❌ | ✅ 无限 | ✅ 10题/天 | ✅ 无限 |
+| 阅读/听力练习 | ❌ | ✅ 无限 | ❌ | ✅ 无限 |
+| AI写作评分 | ❌ | ✅ 无限 | ❌ | ✅ 无限 |
+| AI口语评分 | ❌ | ✅ 无限 | ❌ | ✅ 无限 |
+| 一键40分钟流程 | ❌ | ✅ | ❌ | ✅ |
+| 错题本 | ❌ | ✅ | ✅（只读，不能做题） | ✅ |
+| 词汇PK对战 | ❌ | ✅ | ❌ | ✅ |
+| 排行榜 | ❌ | ✅ | ✅（只看，不参与） | ✅ |
+| 能力图谱 | ❌ | ✅ | ✅ | ✅ |
+| 自适应学习计划 | ❌ | ✅ | ❌ | ✅ |
+
+### 增值服务
+
+- **人工作文批改**：$50 / 篇，$380 / 10篇（DSE英语老师人工批改，24小时内出报告）
+- **口语模考点评**：$80 / 次，老师一对一点评
+
+### 优惠策略
+
+- 早鸟优惠：MVP上线前3个月，年卡打8折
+- 学生团购：3人以上团购每人打9折
+- 推荐奖励：推荐朋友买年卡，双方各得1个月免费会员
+
+### 盈利预测（按1000付费用户）
+
+假设70%买年卡，20%买月卡，10%买家庭年卡：
+
+年收入约：(700 × 798) + (200 × 98 × 12) + (100 × 1198) ≈ **85万港币**
+
+边际成本很低（主要是AI API调用），毛利率能到80%+
+
+---
+
+## 6. MVP范围确认
+
+✅ **必须做（MVP上线）**：
+
+- 无注册体验（5题快测 + 体验题组）
+- 繁简体切换
+- 用户注册登录 + 亲子账号体系 + 个人档案
+- 入学自适应测试（覆盖小三到中六）+ 能力分级
+- 个性化学习计划生成 + 考试倒计时
+- 一键开始每日40分钟学习流程（含冷启动逻辑 + 断点续学）
+- 词汇闯关（含跟读评分、发音对比）
+- 语法专项练习（按难度分级，大陆弱项标注）
+- 阅读练习
+- 听力练习（TTS音源，Part A）
+- AI写作评分（Part A + Part B，支持语音输入，含降级方案）
+- 口语练习 + AI评分（Part A + Part B，含降级方案）
+- 错题本 + 间隔复习
+- 每日计分 + 自适应调整（含冷启动）
+- 数据看板 + 能力图谱
+- 词汇PK + 排行榜
+- 大陆学生高频错题库强化
+- 会员权限控制（按分级表执行）
+- 第三方API降级方案
+
+❌ **后续做（MVP上线后迭代）**：
+
+- 完整真题模考（Paper 1-4）
+- 人工作文批改付费服务
+- 生词本/错题本导出PDF打印
+- 家长端每周学习报告邮件
+- 讨论社区/学习打卡
+- 移动端小程序/APP + 离线下载
+- 听力 Part B 专项
+
+---
+
+## 7. 获客推广策略
+
+### 初期冷启动（MVP上线后）
+
+**小红书/Instagram 内容营销**：
+- 定位：「DSE英语提分」「在港大陆学生」
+- 内容方向：大陆学生DSE常见误区、每天40分钟提分案例、高频词汇总结
+- 邀请少量KOL（小红书香港留学博主）测评
+
+**学校/辅导机构合作**：
+- 给大陆学生为主的国际学校提供免费试用
+- 和小型辅导机构合作，给机构学生提供会员折扣，机构拿返佣
+
+**社交裂变**：
+- 邀请一个好友购买年卡，双方各得1个月免费会员
+- 朋友圈打卡学习7天，奖励7天会员
+
+**免费内容引流**：
+- 公众号放出《DSE高频词汇1000个》PDF免费下载，需要转发朋友圈领取
+
+### 目标用户群体优先级
+
+1. **核心用户**：已经在香港读中学的大陆学生（插班生、DSE考生）
+2. **次级用户**：内地准备赴港读DSE的学生
+3. **边缘用户**：小学三年级到六年级准备将来走DSE路线的学生
+
+---
+
+## 8. 关键运营数据监控
+
+| 指标 | 目标值 | 说明 |
+| --- | --- | --- |
+| 访客 → 注册转化率 | > 30% | 无注册体验后的引导效果 |
+| 注册 → 完成入学测试 | > 80% | 注册后尽快让用户体验产品价值 |
+| 7天免费试用 → 付费转化率 | > 15% | 学习产品行业优秀水平 |
+| 月留存率 | > 40% | 学习产品需要高留存 |
+| 平均每日使用时长 | > 35分钟 | 接近目标40分钟 |
+| 完成每日练习比例 | > 60% | 说明产品粘性好 |
+| 断点续学使用率 | 监控即可 | 判断用户是否频繁中断 |
+| NPS（净推荐值） | > 30 | 用户愿意推荐给朋友 |
+| AI评分失败率 | < 2% | 监控第三方API稳定性 |
+
+---
+
+## 9. 技术架构
+
+### 技术选型
+
+| 层级 | 技术方案 | 说明 |
+| --- | --- | --- |
+| 前端 | React 18 + TypeScript + Tailwind CSS + Shadcn UI | 组件丰富，开发快，样式美观，适合MVP |
+| 路由 | Next.js App Router（app/ 目录） | 统一使用 App Router，不混用 Pages Router |
+| 后端 | Next.js Route Handlers（app/api/） | 全JS栈，前后端一体化，部署简单 |
+| 数据库（MVP） | SQLite + Prisma ORM | 轻量、免费、快速迭代，后期平滑迁移 |
+| 数据库（正式） | PostgreSQL | 用户量增长后迁移，支持复杂查询 |
+| 缓存 | Redis（可选，MVP可不用，后期加） | 缓存会话和高频数据 |
+| AI评分 | ArkCode / GPT-4o API | 作文/口语内容评分 |
+| ASR | OpenAI Whisper | 语音识别（本地部署或API） |
+| TTS | Google TTS / 阿里云TTS | 听力音源合成，成本极低 |
+| 发音评分 | Whisper + 比对，或第三方API | 词汇跟读评分 |
+| 部署 | 腾讯云Ubuntu + Docker + Nginx + Let's Encrypt | 容器化部署，SSL证书免费 |
+| CI/CD | GitHub Actions | 代码push自动构建部署 |
+
+> **数据库迁移说明（修复#9）**：MVP阶段使用SQLite，通过Prisma ORM管理，可平滑迁移到PostgreSQL。**重要注意**：SQLite 不支持原生 JSONB，Prisma 会将 `Json` 类型字段存为 TEXT。因此 MVP 阶段禁止在代码中使用 PostgreSQL 专属的 JSONB 操作符（如 `@>`, `->>` 等），所有 JSON 查询通过 Prisma 的 `JsonValue` 类型在应用层处理。迁移到 PostgreSQL 后方可启用 JSONB 索引和操作符。
+
+### 系统架构图
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                        用户浏览器                           │
+└────────────────────────────┬────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                      Nginx (反向代理SSL)                   │
+└────────────────────────────┬────────────────────────────────┘
+                             │
+         ┌───────────────────┼───────────────────┐
+         ▼                   ▼                   ▼
+┌───────────────────┐ ┌───────────────────┐ ┌───────────────────┐
+│   Next.js App     │ │   SQLite(MVP)     │ │   Redis (可选)   │
+│  (前端+后端API)   │ │   → 后期迁PG      │ │   缓存会话       │
+└───────────────────┘ └───────────────────┘ └───────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                   第三方API调用（含降级逻辑）              │
+│  - AI评分 (ArkCode/GPT) → 失败时异步重试                  │
+│  - ASR (Whisper) → 失败时提示改为文字输入                  │
+│  - TTS (Google/阿里云) → 失败时显示文字版题目              │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 10. 数据库表结构设计
+
+### 10.1 用户表 `users`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| email | VARCHAR(255) | 邮箱，唯一（可空，手机号注册时） |
+| phone | VARCHAR(20) | 手机号（可空，邮箱注册时） |
+| password_hash | VARCHAR(255) | 密码哈希 |
+| name | VARCHAR(100) | 用户昵称 |
+| grade | VARCHAR(20) | 年级：primary3-6 / form1-6 |
+| target_level | INT | 目标DSE等级 预备级/1-5 |
+| current_level | INT | 当前预估等级 |
+| exam_date | DATE | 目标考试日期（倒计时和学习计划依据） |
+| parent_id | UUID | 父账号ID（亲子体系，可空；有值则为子账号） |
+| vip_plan | ENUM | none / basic / family（套餐类型） |
+| is_vip | BOOLEAN | 是否VIP生效（含继承判断结果，由后端计算） |
+| vip_expire_at | TIMESTAMP | 会员过期时间（主账号有值，子账号为空） |
+| lang_pref | ENUM | simplified / traditional |
+| created_at | TIMESTAMP | 创建时间 |
+| updated_at | TIMESTAMP | 更新时间 |
+
+### 10.2 能力等级表 `user_abilities`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| user_id | UUID | 关联用户 |
+| reading_level | FLOAT | 阅读等级 0-5（支持小数，便于精细调整） |
+| listening_level | FLOAT | 听力等级 |
+| writing_level | FLOAT | 写作等级 |
+| speaking_level | FLOAT | 口语等级 |
+| vocabulary_level | FLOAT | 词汇等级 |
+| grammar_level | FLOAT | 语法等级 |
+| updated_at | TIMESTAMP | 更新时间 |
+
+### 10.3 词汇表 `vocabulary`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| word | VARCHAR(100) | 单词 |
+| phonetic | VARCHAR(100) | 音标 |
+| definition | VARCHAR(255) | 中文释义 |
+| frequency | INT | DSE考频排名 |
+| topic | VARCHAR(100) | 主题分类 |
+| example | TEXT | 真题例句 |
+| difficulty | INT | 难度 0-5（0=预备级） |
+| part | ENUM | part_a / part_b |
+| tts_audio_url | VARCHAR(255) | 标准发音音频URL（用于发音对比） |
+| created_at | TIMESTAMP | 创建时间 |
+
+### 10.4 用户单词记忆表 `user_vocabulary`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| user_id | UUID | 用户 |
+| vocabulary_id | UUID | 单词 |
+| status | ENUM | learned / unknown / learning |
+| last_reviewed | TIMESTAMP | 上次复习时间 |
+| next_review | TIMESTAMP | 下次复习时间（间隔重复算法） |
+| difficulty_factor | FLOAT | SR算法难度因子 |
+| created_at | TIMESTAMP | 创建时间 |
+
+### 10.5 题库表 `questions`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| type | ENUM | vocabulary / grammar / reading / listening / writing / speaking |
+| sub_type | VARCHAR(50) | 子题型（part_a / part_b） |
+| topic | VARCHAR(100) | 知识点/主题 |
+| difficulty | INT | 难度 0-5 |
+| content | TEXT | 题目内容（JSON字符串，应用层解析；**不使用JSONB操作符**） |
+| answer | TEXT | 参考答案（JSON字符串） |
+| explanation | TEXT | 解析 |
+| source | VARCHAR(50) | 来源：dse-20xx / ai-generated |
+| year | INT | DSE年份（如果是真题，可空） |
+| is_mainland_weak | BOOLEAN | 是否属于大陆学生高频弱项 |
+| is_approved | BOOLEAN | 是否通过人工审核 |
+| created_at | TIMESTAMP | 创建时间 |
+
+### 10.6 用户答题记录表 `user_answers`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| user_id | UUID | 用户 |
+| question_id | UUID | 题目 |
+| user_answer | TEXT | 用户答案（JSON字符串） |
+| is_correct | BOOLEAN | 是否正确 |
+| score | INT | 得分 |
+| created_at | TIMESTAMP | 答题时间 |
+
+### 10.7 错题本表 `user_error_questions`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| user_id | UUID | 用户 |
+| question_id | UUID | 错题 |
+| error_count | INT | 错了几次 |
+| last_wrong_at | TIMESTAMP | 上次做错时间 |
+| next_review_at | TIMESTAMP | 间隔重复下次复习时间 |
+| created_at | TIMESTAMP | 创建时间 |
+
+### 10.8 每日学习记录表 `daily_study_records`（修复#3）
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| user_id | UUID | 用户 |
+| study_date | DATE | 学习日期 |
+| total_minutes | INT | 学习时长（分钟） |
+| total_score | INT | 今日总分 |
+| vocabulary_score | INT | 词汇得分 |
+| grammar_score | INT | 语法得分 |
+| reading_score | INT | 阅读得分 |
+| listening_score | INT | 听力得分 |
+| writing_score | INT | 写作得分（新增） |
+| speaking_score | INT | 口语得分（新增） |
+| completed | BOOLEAN | 是否完成40分钟主流程 |
+| created_at | TIMESTAMP | 创建时间 |
+
+### 10.9 写作评分记录表 `writing_scores`（新增，修复#7）
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| user_id | UUID | 用户 |
+| question_id | UUID | 关联题目 |
+| user_text | TEXT | 用户提交的作文原文 |
+| input_method | ENUM | keyboard / voice |
+| content_score | FLOAT | 内容得分 /5 |
+| organization_score | FLOAT | 组织得分 /5 |
+| language_score | FLOAT | 语言得分 /5 |
+| expression_score | FLOAT | 表达得分 /5 |
+| total_score | FLOAT | 综合得分 /5 |
+| dse_level | INT | 对应DSE等级 1-5 |
+| feedback | TEXT | AI评语和改进建议（JSON字符串） |
+| status | ENUM | pending / completed / failed |
+| created_at | TIMESTAMP | 创建时间 |
+
+### 10.10 口语评分记录表 `speaking_scores`（新增，修复#7）
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| user_id | UUID | 用户 |
+| question_id | UUID | 关联题目 |
+| part | ENUM | part_a / part_b |
+| audio_url | VARCHAR(255) | 音频文件地址（云存储） |
+| duration | INT | 时长（秒） |
+| asr_text | TEXT | ASR识别结果 |
+| pronunciation_score | FLOAT | 发音得分 /5 |
+| fluency_score | FLOAT | 流利度得分 /5 |
+| content_score | FLOAT | 内容得分 /5 |
+| interaction_score | FLOAT | 互动性得分 /5（Part B专用，Part A为空） |
+| total_score | FLOAT | 综合得分 /5 |
+| dse_level | INT | 对应DSE等级 1-5 |
+| feedback | TEXT | AI评语（JSON字符串） |
+| status | ENUM | pending / completed / failed |
+| created_at | TIMESTAMP | 创建时间 |
+
+### 10.11 学习会话表 `study_sessions`（修复#11）
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| user_id | UUID | 用户 |
+| study_date | DATE | 对应学习日期 |
+| current_module | INT | 当前到第几个模块（0=未开始，1-4=各模块） |
+| modules | TEXT | 预生成的模块列表题目（JSON字符串） |
+| status | ENUM | active / completed / expired |
+| started_at | TIMESTAMP | 开始时间 |
+| finished_at | TIMESTAMP | 结束时间（完成后才有值） |
+| created_at | TIMESTAMP | 创建时间 |
+
+> **约束**：每个用户每天只能有一个 `active` 或 `completed` 状态的会话（通过 unique index on user_id + study_date 保证）。
+
+### 10.12 词汇PK对战表 `vocabulary_pk_games`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| id | UUID | 主键 |
+| user1_id | UUID | 玩家1 |
+| user2_id | UUID | 玩家2 |
+| score1 | INT | 玩家1得分 |
+| score2 | INT | 玩家2得分 |
+| status | ENUM | waiting / playing / finished |
+| started_at | TIMESTAMP | 开始时间 |
+| finished_at | TIMESTAMP | 结束时间 |
+
+---
+
+## 11. API接口设计与权限分级（修复#13）
+
+> 权限标注说明：🌐=无需登录可访问 | 🔓=登录即可 | 💎=需VIP
+
+### 认证相关
+- 🌐 `POST /api/auth/register` - 注册
+- 🌐 `POST /api/auth/login` - 登录
+- 🔓 `POST /api/auth/logout` - 登出
+
+### 用户相关
+- 🔓 `GET /api/user/me` - 获取当前用户信息
+- 🔓 `GET /api/user/abilities` - 获取用户能力图谱
+- 🔓 `PUT /api/user/profile` - 更新个人信息
+- 🔓 `GET /api/user/children` - 获取子账号列表
+- 🔓 `POST /api/user/children` - 添加子账号
+
+### 入学测试
+- 🌐 `POST /api/placement/quick-start` - 开始5题快测（访客可用）
+- 🔓 `POST /api/placement/start` - 开始完整15题入学测试
+- 🔓 `POST /api/placement/submit` - 提交答案，计算结果
+
+### 每日学习
+- 💎 `POST /api/study/start-daily` - 一键开始今日学习，生成会话
+- 🔓 `GET /api/study/current-session` - 获取当前会话（含续学状态）
+- 💎 `POST /api/study/next-module` - 进入下一个模块
+- 💎 `POST /api/study/finish-daily` - 完成今日学习，结算
+
+### 词汇模块
+- 🔓 `GET /api/vocabulary/daily-words` - 获取今日单词（免费用户有数量限制）
+- 🔓 `POST /api/vocabulary/pronunciation-check` - 检查发音
+- 🔓 `POST /api/vocabulary/update-status` - 更新单词会/不会状态
+- 💎 `GET /api/vocabulary/pk/start` - 开始PK
+- 💎 `POST /api/vocabulary/pk/submit-answer` - 提交PK答案
+
+### 答题
+- 🔓 `POST /api/questions/submit` - 提交答案（免费用户有题量限制）
+
+### 写作口语
+- 💎 `POST /api/writing/score` - 提交作文，AI评分（返回 writing_score_id，异步处理时先返回pending）
+- 💎 `GET /api/writing/score/:id` - 查询评分结果（支持轮询）
+- 💎 `POST /api/speaking/score` - 提交录音，AI评分（异步同上）
+- 💎 `GET /api/speaking/score/:id` - 查询评分结果
+
+### 错题本
+- 🔓 `GET /api/errors/list` - 获取错题列表（到期免费用户只读）
+- 💎 `POST /api/errors/review` - 错题复习提交
+
+### 排行榜
+- 🔓 `GET /api/rankings/weekly` - 每周排行榜（所有登录用户可看）
+
+---
+
+## 12. 前后端目录结构（修复#10：统一App Router）
+
+### Next.js App Router 目录结构（前后端统一）
+
+```
+app/
+├── (auth)/                    # 登录/注册页面
+│   ├── login/
+│   │   └── page.tsx
+│   └── register/
+│       └── page.tsx
+├── (main)/                    # 登录后主应用
+│   ├── layout.tsx             # 主布局（含导航栏）
+│   ├── page.tsx               # 首页看板
+│   ├── vocabulary/
+│   │   └── page.tsx
+│   ├── reading/
+│   │   └── page.tsx
+│   ├── listening/
+│   │   └── page.tsx
+│   ├── writing/
+│   │   └── page.tsx
+│   ├── speaking/
+│   │   └── page.tsx
+│   ├── error-book/
+│   │   └── page.tsx
+│   └── profile/
+│       └── page.tsx
+├── api/                       # 后端 Route Handlers
+│   ├── auth/
+│   ├── user/
+│   ├── placement/
+│   ├── study/
+│   ├── vocabulary/
+│   ├── questions/
+│   ├── writing/
+│   ├── speaking/
+│   ├── errors/
+│   └── rankings/
+└── layout.tsx                 # 根布局
+
+components/                    # 共用组件
+├── ui/                        # Shadcn UI 基础组件
+├── VocabularyCard/
+├── AudioPlayer/
+├── AbilityChart/
+└── ...
+
+lib/
+├── db/                        # Prisma client
+├── ai/                        # AI服务封装（评分/ASR/TTS，含降级逻辑）
+├── auth/                      # JWT/session 工具
+├── utils/
+└── algorithms/                # 自适应算法 / 间隔重复
+
+types/                         # TypeScript 类型定义
+store/                         # Zustand 状态管理（客户端状态）
+```
+
+---
+
+## 13. 编码规范
+
+1. **TypeScript**：所有代码必须加类型，禁止 `any`
+2. **命名**：驼峰命名，函数名动词开头，如 `getUser()`
+3. **组件**：一个文件一个组件，组件名大驼峰
+4. **API**：统一返回格式 `{code: number, data: T, message: string}`
+5. **错误处理**：所有异步操作必须捕获错误，第三方API调用必须有超时和降级处理
+6. **JSON字段**：MVP阶段所有JSON字段在应用层（Prisma）解析，禁止使用数据库层JSON操作符
+7. **Git**：每次提交一个清晰的功能，commit message 语义化
+
+---
+
+## 14. 部署方案
+
+### 基础设施
+
+- 服务器：腾讯云 Ubuntu 22.04
+- 域名：需要注册一个域名，解析到服务器IP
+- SSL：Let's Encrypt 免费证书
+- 数据库：MVP阶段SQLite（本地文件，挂载持久卷）；正式阶段迁移到腾讯云PostgreSQL
+- 音频存储：腾讯云COS（对象存储），录音文件不存本地
+
+### Docker Compose 配置
+
+```yaml
+version: '3.8'
+services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - sqlite-data:/app/prisma/data   # SQLite文件持久化
+    environment:
+      - DATABASE_URL=file:/app/prisma/data/dev.db
+      # - DATABASE_URL=postgresql://...  # 迁PG后切换
+      - AI_API_KEY=...
+      - COS_SECRET_ID=...
+      - COS_SECRET_KEY=...
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/conf:/etc/letsencrypt
+  redis:
+    image: redis:7-alpine
+    restart: always
+    volumes:
+      - redis-data:/data
+volumes:
+  sqlite-data:
+  redis-data:
+```
+
+### 环境变量配置
+
+```env
+# 数据库（MVP SQLite）
+DATABASE_URL=file:/app/prisma/data/dev.db
+
+# 数据库（迁PG后）
+# DATABASE_URL=postgresql://user:password@host:port/dbname
+
+# AI API
+ARK_API_KEY=your-ark-api-key
+
+# TTS
+GOOGLE_TTS_API_KEY=...
+
+# JWT
+JWT_SECRET=your-jwt-secret
+
+# 腾讯云COS（音频存储）
+COS_SECRET_ID=...
+COS_SECRET_KEY=...
+COS_BUCKET=...
+COS_REGION=ap-hongkong
+
+# 域名
+NEXT_PUBLIC_APP_URL=https://your-domain.com
+```
+
+---
+
+## 15. 隐私与数据安全（新增，修复#12）
+
+### 香港法规合规（PDPO）
+
+本产品在香港运营，须遵守《个人资料（私隐）条例》（PDPO）：
+
+- **收集限制**：只收集提供服务所必需的个人资料（姓名、联系方式、学习数据）
+- **目的说明**：注册时向用户明确说明数据用途（提供学习服务、生成学习报告）
+- **查阅权**：用户有权随时查阅和更正自己的个人资料
+- **删除权**：用户可申请删除账号，系统需在30天内完成数据清除
+- **隐私政策**：上线前必须发布隐私政策页面，链接放在注册页和页脚
+
+### 亲子数据边界
+
+- 家长通过主账号只能查看孩子的学习汇总报告（学习天数、完成题量、能力等级变化）
+- 家长不能查看孩子的具体答题内容、错题详情、作文原文
+- 不能将子账号的练习内容以任何形式对第三方披露
+
+### 音频数据处理
+
+- 用户录音上传到腾讯云COS（香港节点：ap-hongkong），不落本地服务器
+- ASR处理完成后，录音文件默认保留90天，到期自动删除
+- 用户可在个人中心主动删除自己的全部录音记录
+- 录音不用于模型训练，除非用户明确同意并单独授权
+
+### 数据安全
+
+- 所有 API 通信强制 HTTPS
+- 密码使用 bcrypt 哈希存储，禁止明文
+- JWT 有效期设为 7 天，支持主动失效（登出时服务端标记）
+- 生产环境数据库不对外暴露端口，只允许应用层内网访问
+
+---
+
+## 16. 开发顺序建议
+
+| 阶段 | 内容 |
+| --- | --- |
+| 阶段1 | 项目初始化 → SQLite建表（含新增字段）→ 认证系统 + JWT → 首页看板 |
+| 阶段2 | 无注册5题快测 → 完整入学测试（小三到中六）→ 能力定级 → 学习计划生成 + 倒计时 |
+| 阶段3 | 词汇闯关 → 跟读评分 → 发音对比 → 生词本 |
+| 阶段4 | 语法练习（弱项标注）→ 阅读练习 → 听力练习（TTS + 降级方案） |
+| 阶段5 | 一键开始每日流程（含冷启动逻辑 + 断点续学 + 周轮换）→ 计分 → 自适应调整 |
+| 阶段6 | 写作AI评分（异步 + 降级）→ 口语AI评分（异步 + 降级）|
+| 阶段7 | 错题本 → 间隔复习 |
+| 阶段8 | 词汇PK → 排行榜 → 亲子账号体系 → VIP权限控制 |
+| 阶段9 | 繁简体切换 → 隐私政策页面 → 部署上线 → 测试 |
+| 阶段10（后期） | 数据量增长后迁移到PostgreSQL → 启用JSONB索引优化 |
+
+---
+
+## 17. 风险与注意事项
+
+1. **版权**：MVP用公开真题验证，商业化后需要转自研AI出题，避免版权纠纷
+2. **AI评分准确性**：需要持续与真实DSE评分标准对比校准，建议收集用户反馈作为校准数据
+3. **音频存储成本**：录音文件存在腾讯云COS香港节点，90天自动清理控制成本；用户量大后评估是否缩短保留期
+4. **成本控制**：AI API按量付费，MVP阶段用户少成本低；上线后建议对AI调用做限流（如每用户每天写作评分不超过10次）
+5. **数据库迁移时机**：建议在日活用户超过500、或并发写入出现性能瓶颈时启动迁移，迁移窗口选择凌晨低峰期
+6. **香港法规**：须在上线前完成隐私政策发布，并确认音频数据存储在香港节点符合PDPO要求
+7. **第三方API依赖风险**：Whisper/GPT/TTS均为境外服务，在中国大陆网络环境下可能不稳定，需评估是否提供境内备用方案（如阿里云语音、通义千问）
+
+---
+
+**版本**: v2.1
+**整合与修复说明**: 基于v2.0，修复14处逻辑漏洞和不一致问题，新增权限分级表、断点续学机制、隐私合规章节、写作/口语独立评分表、API异步方案等。
