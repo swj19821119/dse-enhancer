@@ -228,6 +228,20 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               </Link>
+
+              <Link href="/ability-chart">
+                <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
+                  <CardHeader>
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-teal-500/20 flex items-center justify-center mb-3">
+                      <BarChart3 className="w-7 h-7 text-cyan-400" />
+                    </div>
+                    <CardTitle className="text-white text-xl">能力图谱</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-white/70">可视化展示听说读写能力</p>
+                  </CardContent>
+                </Card>
+              </Link>
             </>
           )}
         </div>
