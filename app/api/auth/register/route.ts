@@ -45,53 +45,49 @@ export async function POST(request: NextRequest) {
     const body: RegisterInput = await request.json();
     const { email, password, nickname } = body;
 
-    if (!email || !password || !nickname) {
-      return NextResponse.json(
-        {
-          code: 422,
-          data: null,
-          message: '请填写完整的注册信息'
-        },
-        { status: 422 }
-      );
-    }
+     if (!email || !password || !nickname) {
+       return NextResponse.json(
+         {
+           success: false,
+           error: '请填写完整的注册信息'
+         },
+         { status: 422 }
+       );
+     }
 
-    if (!isValidEmail(email)) {
-      return NextResponse.json(
-        {
-          code: 422,
-          data: null,
-          message: '邮箱格式不正确'
-        },
-        { status: 422 }
-      );
-    }
+     if (!isValidEmail(email)) {
+       return NextResponse.json(
+         {
+           success: false,
+           error: '邮箱格式不正确'
+         },
+         { status: 422 }
+       );
+     }
 
-    if (!isValidPassword(password)) {
-      return NextResponse.json(
-        {
-          code: 422,
-          data: null,
-          message: '密码长度至少6位'
-        },
-        { status: 422 }
-      );
-    }
+     if (!isValidPassword(password)) {
+       return NextResponse.json(
+         {
+           success: false,
+           error: '密码长度至少6位'
+         },
+         { status: 422 }
+       );
+     }
 
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
+     const existingUser = await prisma.user.findUnique({
+       where: { email },
+     });
 
-    if (existingUser) {
-      return NextResponse.json(
-        {
-          code: 422,
-          data: null,
-          message: '邮箱已被注册'
-        },
-        { status: 422 }
-      );
-    }
+     if (existingUser) {
+       return NextResponse.json(
+         {
+           success: false,
+           error: '邮箱已被注册'
+         },
+         { status: 422 }
+       );
+     }
 
     const hashedPassword = await hashPassword(password);
 
@@ -127,9 +123,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 0,
-        data: responseData,
-        message: '注册成功'
+        success: true,
+        user: responseData.user,
+        token: responseData.token,
       },
       { status: 201 }
     );

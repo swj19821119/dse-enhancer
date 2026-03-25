@@ -52,9 +52,8 @@ export async function POST(request: NextRequest) {
     if (!email || !password) {
       return NextResponse.json(
         {
-          code: 422,
-          data: null,
-          message: '请填写邮箱和密码'
+          success: false,
+          error: '请填写邮箱和密码'
         },
         { status: 422 }
       );
@@ -63,9 +62,8 @@ export async function POST(request: NextRequest) {
     if (!isValidEmail(email)) {
       return NextResponse.json(
         {
-          code: 422,
-          data: null,
-          message: '邮箱格式不正确'
+          success: false,
+          error: '邮箱格式不正确'
         },
         { status: 422 }
       );
@@ -78,9 +76,8 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          code: 401,
-          data: null,
-          message: '邮箱或密码错误'
+          success: false,
+          error: '邮箱或密码错误'
         },
         { status: 401 }
       );
@@ -91,9 +88,8 @@ export async function POST(request: NextRequest) {
     if (!isPasswordValid) {
       return NextResponse.json(
         {
-          code: 401,
-          data: null,
-          message: '邮箱或密码错误'
+          success: false,
+          error: '邮箱或密码错误'
         },
         { status: 401 }
       );
@@ -117,9 +113,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 0,
-        data: responseData,
-        message: '登录成功'
+        success: true,
+        user: responseData.user,
+        token: responseData.token,
       },
       { status: 200 }
     );
@@ -128,9 +124,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: '登录失败，请稍后重试'
+        success: false,
+        error: '登录失败，请稍后重试'
       },
       { status: 500 }
     );
