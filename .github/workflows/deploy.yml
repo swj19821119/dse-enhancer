@@ -102,8 +102,8 @@ jobs:
           SERVER_IP="${{ secrets.SERVER_IP }}"
           echo "🚀 开始部署到服务器 $SERVER_IP"
           
-# Step 1: 在服务器上创建目录结构
-echo "📁 创建部署目录..."
+          # Step 1: 在服务器上创建目录结构
+          echo "📁 创建部署目录..."
 ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP << EOF
   set -e
   echo "创建目录结构..."
