@@ -3,14 +3,24 @@ import prisma from '@/lib/prisma';
 import { verifyToken } from '@/lib/auth';
 import { createSession, type QuestionData } from '@/lib/placement/session-db';
 
-type Grade = 'form3' | 'form4' | 'form5' | 'form6';
+export const dynamic = 'force-dynamic';
+
+type Grade = 'p1' | 'p2' | 'p3' | 'p4' | 'p5' | 'p6' | 'f1' | 'f2' | 'f3' | 'f4' | 'f5' | 'f6';
 type QuestionType = 'vocabulary' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking';
 
 const difficultyMap: Record<Grade, number> = {
-  form3: 2,
-  form4: 3,
-  form5: 3,
-  form6: 4,
+  p1: 1.0,
+  p2: 1.2,
+  p3: 1.4,
+  p4: 1.6,
+  p5: 1.8,
+  p6: 2.0,
+  f1: 2.0,
+  f2: 2.2,
+  f3: 2.5,
+  f4: 3.0,
+  f5: 3.5,
+  f6: 4.0,
 };
 
 async function fetchQuestionsByDifficulty(difficulty: number, types: QuestionType[], count: number): Promise<QuestionData[]> {
@@ -39,13 +49,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { grade } = body;
 
-    const validGrades: Grade[] = ['form3', 'form4', 'form5', 'form6'];
+    const validGrades: Grade[] = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6'];
     if (!grade || !validGrades.includes(grade)) {
       return NextResponse.json(
         {
           code: 422,
           data: null,
-          message: '年级参数无效，必须是 form3/form4/form5/form6 之一'
+          message: '年级参数无效，必须是 p1/p2/p3/p4/p5/p6/f1/f2/f3/f4/f5/f6 之一'
         },
         { status: 422 }
       );

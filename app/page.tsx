@@ -28,19 +28,9 @@ export default function Home() {
                 开始测试
               </Button>
             </Link>
-            <Link href="/register">
+            <Link href="/login">
               <Button variant="secondary" className="text-lg px-10 py-7 bg-white/10 text-white hover:bg-white/20 border border-white/30">
-                免费注册
-              </Button>
-            </Link>
-            <Link href="/dashboard" onClick={(e) => {
-              e.preventDefault();
-              localStorage.setItem('guestMode', 'true');
-              localStorage.setItem('guestId', 'guest_' + Date.now());
-              window.location.href = '/dashboard';
-            }}>
-              <Button variant="ghost" className="text-lg px-10 py-7 bg-transparent text-white hover:bg-white/10 border-2 border-white/40">
-                跳过注册，直接体验
+                登录注册
               </Button>
             </Link>
           </div>
@@ -141,18 +131,13 @@ export default function Home() {
               <p className="text-lg mb-8 opacity-90">
                 完全免费使用，立即开始你的DSE英语提升之旅！
               </p>
-              <div className="flex justify-center gap-4 flex-wrap">
-                <Link href="/register">
-                  <Button className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-6">
-                    免费注册
-                  </Button>
-                </Link>
-                <Link href="/login">
-                  <Button variant="secondary" className="bg-white/20 text-white hover:bg-white/30 border-white/30 text-lg px-8 py-6">
-                    已有账号？登录
-                  </Button>
-                </Link>
-              </div>
+               <div className="flex justify-center gap-4 flex-wrap">
+                 <Link href="/login">
+                   <Button className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-6">
+                     登录注册
+                   </Button>
+                 </Link>
+               </div>
             </CardContent>
           </Card>
         </div>
