@@ -134,9 +134,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: '注册失败，请稍后重试'
+        success: false,
+        error: '注册失败，请稍后重试'
       },
       { status: 500 }
     );

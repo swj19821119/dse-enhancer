@@ -441,6 +441,16 @@ prisma/              # 数据库schema
 }
 ```
 
+**注意**：认证相关API（登录/注册）返回 `user` 和 `token` 在顶层：
+```json
+{
+  "success": true,
+  "user": { "id": "uuid", "email": "...", "nickname": "张三" },
+  "token": "jwt-token",
+  "message": "登录成功"
+}
+```
+
 **错误响应**：
 ```json
 {
