@@ -8,7 +8,7 @@ import { BrainCircuit, AlertCircle, Loader2 } from 'lucide-react';
 import { usePlacementStore } from '@/store/placement';
 import { useAuthStore } from '@/store/auth';
 
-type Grade = 'form3' | 'form4' | 'form5' | 'form6';
+type Grade = 'p1' | 'p2' | 'p3' | 'p4' | 'p5' | 'p6' | 'f1' | 'f2' | 'f3' | 'f4' | 'f5' | 'f6';
 
 interface GradeOption {
   value: Grade;
@@ -17,25 +17,67 @@ interface GradeOption {
 }
 
 const grades: GradeOption[] = [
+  // Primary (P1-P6)
   {
-    value: 'form3',
-    label: '中三 (Form 3)',
-    description: '约13-14岁，初中三年级'
+    value: 'p1',
+    label: 'P1',
+    description: '小学一年级'
   },
   {
-    value: 'form4',
-    label: '中四 (Form 4)',
-    description: '约14-15岁，高中一年级'
+    value: 'p2',
+    label: 'P2',
+    description: '小学二年级'
   },
   {
-    value: 'form5',
-    label: '中五 (Form 5)',
-    description: '约15-16岁，高中二年级'
+    value: 'p3',
+    label: 'P3',
+    description: '小学三年级'
   },
   {
-    value: 'form6',
-    label: '中六 (Form 6)',
-    description: '约16-17岁，高中三年级'
+    value: 'p4',
+    label: 'P4',
+    description: '小学四年级'
+  },
+  {
+    value: 'p5',
+    label: 'P5',
+    description: '小学五年级'
+  },
+  {
+    value: 'p6',
+    label: 'P6',
+    description: '小学六年级'
+  },
+  // Secondary (F1-F6)
+  {
+    value: 'f1',
+    label: 'F1',
+    description: '中学一年级'
+  },
+  {
+    value: 'f2',
+    label: 'F2',
+    description: '中学二年级'
+  },
+  {
+    value: 'f3',
+    label: 'F3',
+    description: '中学三年级'
+  },
+  {
+    value: 'f4',
+    label: 'F4',
+    description: '中学四年级'
+  },
+  {
+    value: 'f5',
+    label: 'F5',
+    description: '中学五年级'
+  },
+  {
+    value: 'f6',
+    label: 'F6',
+    description: '中学六年级'
   },
 ];
 
@@ -79,8 +121,8 @@ export default function AssessmentPage() {
       setGrade(grade);
       setQuestions(result.data.questions);
 
-      const initialDifficulty = grade === 'form3' ? 2 : grade === 'form6' ? 4 : 3;
-      setCurrentDifficulty(initialDifficulty);
+       const initialDifficulty = getDifficultyForGrade(grade);
+       setCurrentDifficulty(initialDifficulty);
 
       router.push('/assessment/test');
     } catch (err) {
@@ -93,10 +135,18 @@ export default function AssessmentPage() {
 
   const getDifficultyForGrade = (grade: Grade): number => {
     const difficultyMap: Record<Grade, number> = {
-      form3: 2,
-      form4: 3,
-      form5: 3,
-      form6: 4,
+      p1: 1.0,
+      p2: 1.2,
+      p3: 1.4,
+      p4: 1.6,
+      p5: 1.8,
+      p6: 2.0,
+      f1: 2.0,
+      f2: 2.2,
+      f3: 2.5,
+      f4: 3.0,
+      f5: 3.5,
+      f6: 4.0,
     };
     return difficultyMap[grade];
   };

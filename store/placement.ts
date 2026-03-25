@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type Grade = 'form3' | 'form4' | 'form5' | 'form6';
+type Grade = 'p1' | 'p2' | 'p3' | 'p4' | 'p5' | 'p6' | 'f1' | 'f2' | 'f3' | 'f4' | 'f5' | 'f6';
 type QuestionType = 'vocabulary' | 'grammar' | 'reading' | 'listening' | 'writing' | 'speaking';
 
 export interface QuestionData {
