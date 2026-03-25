@@ -7,6 +7,8 @@
 | 文档 | 说明 | 必读 |
 |------|------|------|
 | [ROADMAP.md](ROADMAP.md) | **后续开发任务计划** - 新开发者必读 | ⭐⭐⭐ |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | **开发规范指南** - 代码标准、Git规范 | ⭐⭐⭐ |
+| [CHEATSHEET.md](CHEATSHEET.md) | **开发速查表** - 快速参考 | ⭐⭐ |
 | [dse-enhancer-prd-merged.md](dse-enhancer-prd-merged.md) | PRD产品需求文档 | ⭐⭐⭐ |
 | [DEPLOY.md](DEPLOY.md) | 部署配置指南 | ⭐⭐ |
 | [DEPLOY-CHECKLIST.md](DEPLOY-CHECKLIST.md) | 部署检查清单 | ⭐ |
