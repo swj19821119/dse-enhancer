@@ -2,9 +2,25 @@
 
 > 每天40分钟，精准提高DSE英语成绩
 
+## 📖 项目文档导航
+
+| 文档 | 说明 | 必读 |
+|------|------|------|
+| [ROADMAP.md](ROADMAP.md) | **后续开发任务计划** - 新开发者必读 | ⭐⭐⭐ |
+| [dse-enhancer-prd-merged.md](dse-enhancer-prd-merged.md) | PRD产品需求文档 | ⭐⭐⭐ |
+| [DEPLOY.md](DEPLOY.md) | 部署配置指南 | ⭐⭐ |
+| [DEPLOY-CHECKLIST.md](DEPLOY-CHECKLIST.md) | 部署检查清单 | ⭐ |
+
 ## 项目简介
 
 DSE Enhancer 是一个专为在港大陆学生设计的 AI 自适应学习平台，帮助学生高效备考香港 DSE 英语考试。
+
+### 🎯 当前状态
+- ✅ 基础架构完成（Next.js + Prisma + SQLite）
+- ✅ 自动化部署完成（GitHub Actions + PM2）
+- ✅ 用户认证系统完成
+- ✅ PRD文档完整（含DSE官方难度标准）
+- ⏳ **核心学习功能待开发（详见 ROADMAP.md）**
 
 ## 核心特性
 
