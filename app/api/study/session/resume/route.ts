@@ -53,7 +53,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        resumed: true,
+        data: {
+          resumed: true,
+        },
+        message: "操作成功"
       },
       { status: 200 }
     );

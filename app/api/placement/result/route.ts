@@ -35,9 +35,8 @@ export async function GET(request: NextRequest) {
     if (!resultId) {
       return NextResponse.json(
         {
-          code: 422,
-          data: null,
-          message: '缺少 resultId 参数'
+          success: false,
+          error: '缺少 resultId 参数'
         },
         { status: 422 }
       );
@@ -47,9 +46,8 @@ export async function GET(request: NextRequest) {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json(
         {
-          code: 401,
-          data: null,
-          message: '需要登录才能获取结果'
+          success: false,
+          error: '需要登录才能获取结果'
         },
         { status: 401 }
       );
@@ -60,9 +58,8 @@ export async function GET(request: NextRequest) {
     if (!decoded) {
       return NextResponse.json(
         {
-          code: 401,
-          data: null,
-          message: 'Token 无效'
+          success: false,
+          error: 'Token 无效'
         },
         { status: 401 }
       );
@@ -88,9 +85,8 @@ export async function GET(request: NextRequest) {
     if (recentAnswers.length === 0) {
       return NextResponse.json(
         {
-          code: 404,
-          data: null,
-          message: '未找到测试记录'
+          success: false,
+          error: '未找到测试记录'
         },
         { status: 404 }
       );
@@ -188,7 +184,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 0,
+        success: true,
         data: {
           overallLevel,
           abilities,
@@ -205,9 +201,8 @@ export async function GET(request: NextRequest) {
     console.error('Failed to get placement result:', error);
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: '获取结果失败，请稍后重试'
+        success: false,
+        error: '获取结果失败，请稍后重试'
       },
       { status: 500 }
     );

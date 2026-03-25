@@ -135,7 +135,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: true,
-          session_complete: true,
+          data: {
+            session_complete: true,
+          },
+          message: "操作成功"
         },
         { status: 200 }
       );
@@ -187,7 +190,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: true,
-          session_complete: true,
+          data: {
+            session_complete: true,
+          },
+          message: "操作成功"
         },
         { status: 200 }
       );
@@ -216,10 +222,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        next_module: nextModule.type,
-        questions: nextQuestions,
-        module_time: nextModule.timeMinutes * 60,
-        session_complete: false,
+        data: {
+          next_module: nextModule.type,
+          questions: nextQuestions,
+          module_time: nextModule.timeMinutes * 60,
+          session_complete: false,
+        },
+        message: "操作成功"
       },
       { status: 200 }
     );

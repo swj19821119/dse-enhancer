@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
     ]);
 
     return NextResponse.json({
-      code: 0,
+      success: true,
       data: {
         questions,
         pagination: {
@@ -85,14 +85,14 @@ export async function GET(request: NextRequest) {
           totalPages: Math.ceil(total / filters.limit),
         },
       },
+      message: "获取题目列表成功",
     });
   } catch (error) {
     console.error('Failed to fetch questions:', error);
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: 'Failed to fetch questions',
+        success: false,
+        error: '获取题目列表失败',
       },
       { status: 500 }
     );
@@ -105,9 +105,8 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          code: 401,
-          data: null,
-          message: 'Unauthorized',
+          success: false,
+          error: '未授权',
         },
         { status: 401 }
       );
@@ -134,9 +133,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 0,
+        success: true,
         data: question,
-        message: 'Question created successfully',
+        message: '创建题目成功',
       },
       { status: 201 }
     );
@@ -146,9 +145,8 @@ export async function POST(request: NextRequest) {
     if (error instanceof Error && error.name === 'ZodError') {
       return NextResponse.json(
         {
-          code: 422,
-          data: null,
-          message: 'Validation error',
+          success: false,
+          error: '验证失败',
         },
         { status: 422 }
       );
@@ -156,9 +154,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: 'Failed to create question',
+        success: false,
+        error: '创建题目失败',
       },
       { status: 500 }
     );

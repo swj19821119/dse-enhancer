@@ -69,6 +69,7 @@ export async function GET(request: NextRequest) {
             trend: 'stable',
           },
         },
+        message: "操作成功"
       });
     }
 
@@ -141,6 +142,7 @@ export async function GET(request: NextRequest) {
           change: (typedRecords[typedRecords.length - 1]?.nextDifficulty || 2.0) - (typedRecords[0]?.nextDifficulty || 2.0),
         },
       },
+      message: "操作成功"
     });
   } catch (error) {
     console.error('Failed to fetch progress:', error);

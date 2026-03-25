@@ -96,6 +96,7 @@ export async function POST(request: NextRequest) {
           notes: [],
         },
       },
+      message: "操作成功"
     });
   } catch (error) {
     console.error('Failed to calculate score:', error);

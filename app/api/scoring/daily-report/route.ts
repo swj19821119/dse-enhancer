@@ -124,6 +124,7 @@ export async function POST(request: NextRequest) {
             : '难度保持不变',
         },
       },
+      message: "操作成功"
     });
   } catch (error) {
     console.error('Failed to generate daily report:', error);
@@ -195,14 +196,15 @@ export async function GET(request: NextRequest) {
      
      const parsedRecommendations = typedRecord.recommendations ? typedRecord.recommendations.split('; ') : [];
      
-     return NextResponse.json({
-       success: true,
-       data: {
-         record: typedRecord,
-         modulesData: parsedModulesData,
-         recommendations: parsedRecommendations,
-       },
-     });
+      return NextResponse.json({
+        success: true,
+        data: {
+          record: typedRecord,
+          modulesData: parsedModulesData,
+          recommendations: parsedRecommendations,
+        },
+        message: "操作成功"
+      });
   } catch (error) {
     console.error('Failed to fetch daily report:', error);
     return NextResponse.json(

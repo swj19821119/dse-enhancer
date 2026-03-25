@@ -20,9 +20,8 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          code: 401,
-          data: null,
-          message: 'Unauthorized',
+          success: false,
+          error: '未授权',
         },
         { status: 401 }
       );
@@ -70,9 +69,9 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({
-      code: 0,
+      success: true,
       data: results,
-      message: `Import completed: ${results.success} succeeded, ${results.failed} failed`,
+      message: `批量导入完成：成功 ${results.success} 条，失败 ${results.failed} 条`,
     });
   } catch (error) {
     console.error('Failed to bulk import questions:', error);
@@ -80,9 +79,8 @@ export async function POST(request: NextRequest) {
     if (error instanceof Error && error.name === 'ZodError') {
       return NextResponse.json(
         {
-          code: 422,
-          data: null,
-          message: 'Validation error',
+          success: false,
+          error: '验证失败',
         },
         { status: 422 }
       );
@@ -90,9 +88,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: 'Failed to bulk import questions',
+        success: false,
+        error: '批量导入题目失败',
       },
       { status: 500 }
     );

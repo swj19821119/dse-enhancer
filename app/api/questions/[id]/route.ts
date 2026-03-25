@@ -26,25 +26,24 @@ export async function GET(
     if (!question) {
       return NextResponse.json(
         {
-          code: 404,
-          data: null,
-          message: 'Question not found',
+          success: false,
+          error: '题目不存在',
         },
         { status: 404 }
       );
     }
 
     return NextResponse.json({
-      code: 0,
+      success: true,
       data: question,
+      message: '获取题目成功',
     });
   } catch (error) {
     console.error('Failed to fetch question:', error);
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: 'Failed to fetch question',
+        success: false,
+        error: '获取题目失败',
       },
       { status: 500 }
     );
@@ -60,9 +59,8 @@ export async function PUT(
     if (!user) {
       return NextResponse.json(
         {
-          code: 401,
-          data: null,
-          message: 'Unauthorized',
+          success: false,
+          error: '未授权',
         },
         { status: 401 }
       );
@@ -78,9 +76,8 @@ export async function PUT(
     if (!existingQuestion) {
       return NextResponse.json(
         {
-          code: 404,
-          data: null,
-          message: 'Question not found',
+          success: false,
+          error: '题目不存在',
         },
         { status: 404 }
       );
@@ -128,9 +125,9 @@ export async function PUT(
     });
 
     return NextResponse.json({
-      code: 0,
+      success: true,
       data: question,
-      message: 'Question updated successfully',
+      message: '更新题目成功',
     });
   } catch (error) {
     console.error('Failed to update question:', error);
@@ -138,9 +135,8 @@ export async function PUT(
     if (error instanceof Error && error.name === 'ZodError') {
       return NextResponse.json(
         {
-          code: 422,
-          data: null,
-          message: 'Validation error',
+          success: false,
+          error: '验证失败',
         },
         { status: 422 }
       );
@@ -148,9 +144,8 @@ export async function PUT(
 
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: 'Failed to update question',
+        success: false,
+        error: '更新题目失败',
       },
       { status: 500 }
     );
@@ -166,9 +161,8 @@ export async function DELETE(
     if (!user) {
       return NextResponse.json(
         {
-          code: 401,
-          data: null,
-          message: 'Unauthorized',
+          success: false,
+          error: '未授权',
         },
         { status: 401 }
       );
@@ -181,9 +175,8 @@ export async function DELETE(
     if (!existingQuestion) {
       return NextResponse.json(
         {
-          code: 404,
-          data: null,
-          message: 'Question not found',
+          success: false,
+          error: '题目不存在',
         },
         { status: 404 }
       );
@@ -195,17 +188,16 @@ export async function DELETE(
     });
 
     return NextResponse.json({
-      code: 0,
+      success: true,
       data: null,
-      message: 'Question deleted successfully',
+      message: '删除题目成功',
     });
   } catch (error) {
     console.error('Failed to delete question:', error);
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: 'Failed to delete question',
+        success: false,
+        error: '删除题目失败',
       },
       { status: 500 }
     );

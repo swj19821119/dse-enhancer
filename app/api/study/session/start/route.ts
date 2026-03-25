@@ -164,13 +164,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        session_id: session.id,
-        mode,
-        modules: config,
-        first_module: firstModule.type,
-        questions: firstModuleQuestions,
-        module_time: firstModule.timeMinutes * 60,
-        total_time: totalTimeMinutes * 60,
+        data: {
+          session_id: session.id,
+          mode,
+          modules: config,
+          first_module: firstModule.type,
+          questions: firstModuleQuestions,
+          module_time: firstModule.timeMinutes * 60,
+          total_time: totalTimeMinutes * 60,
+        },
+        message: "操作成功"
       },
       { status: 200 }
     );

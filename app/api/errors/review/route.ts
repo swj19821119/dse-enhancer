@@ -16,7 +16,7 @@ interface ReviewRequestBody {
 }
 
 interface ReviewResponse {
-  code: 0 | 400 | 401 | 403 | 404 | 500;
+  success: boolean;
   data: {
     error_record: {
       id: string;
@@ -33,7 +33,8 @@ interface ReviewResponse {
       to: number;
     };
   } | null;
-  message: string;
+  message?: string;
+  error?: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -41,9 +42,9 @@ export async function POST(request: NextRequest) {
     const authHeader = request.headers.get('authorization');
     if (!authHeader) {
       const errorResponse: ReviewResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -51,9 +52,9 @@ export async function POST(request: NextRequest) {
     const tokenMatch = authHeader.match(/^Bearer\s+(.+)$/);
     if (!tokenMatch) {
       const errorResponse: ReviewResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -65,9 +66,9 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       console.error('Token验证失败:', error);
       const errorResponse: ReviewResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -78,9 +79,9 @@ export async function POST(request: NextRequest) {
 
     if (!error_id || typeof is_correct !== 'boolean') {
       const errorResponse: ReviewResponse = {
-        code: 400,
+        success: false,
         data: null,
-        message: '缺少必要参数: error_id 或 is_correct',
+        error: '缺少必要参数: error_id 或 is_correct',
       };
       return NextResponse.json(errorResponse, { status: 400 });
     }
@@ -91,18 +92,18 @@ export async function POST(request: NextRequest) {
 
     if (!errorRecord) {
       const errorResponse: ReviewResponse = {
-        code: 404,
+        success: false,
         data: null,
-        message: '错题记录不存在',
+        error: '错题记录不存在',
       };
       return NextResponse.json(errorResponse, { status: 404 });
     }
 
     if (errorRecord.userId !== userId) {
       const errorResponse: ReviewResponse = {
-        code: 403,
+        success: false,
         data: null,
-        message: '无权访问此错题记录',
+        error: '无权访问此错题记录',
       };
       return NextResponse.json(errorResponse, { status: 403 });
     }
@@ -135,7 +136,7 @@ export async function POST(request: NextRequest) {
     });
 
     const successResponse: ReviewResponse = {
-      code: 0,
+      success: true,
       data: {
         error_record: {
           id: errorRecord.id,
@@ -159,9 +160,9 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Failed to submit review:', error);
     const errorResponse: ReviewResponse = {
-      code: 500,
+      success: false,
       data: null,
-      message: '提交复习失败，请稍后重试',
+      error: '提交复习失败，请稍后重试',
     };
     return NextResponse.json(errorResponse, { status: 500 });
   }

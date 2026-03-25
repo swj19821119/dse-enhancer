@@ -47,9 +47,8 @@ export async function POST(request: NextRequest) {
     if (!session) {
       return NextResponse.json(
         {
-          code: 404,
-          data: null,
-          message: '测试会话不存在或已过期'
+          success: false,
+          error: '测试会话不存在或已过期'
         },
         { status: 404 }
       );
@@ -62,9 +61,8 @@ export async function POST(request: NextRequest) {
     if (!question) {
       return NextResponse.json(
         {
-          code: 404,
-          data: null,
-          message: '题目不存在'
+          success: false,
+          error: '题目不存在'
         },
         { status: 404 }
       );
@@ -146,7 +144,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         {
-          code: 0,
+          success: true,
           data: {
             isComplete: true,
             resultId,
@@ -168,9 +166,8 @@ export async function POST(request: NextRequest) {
       if (fallbackQuestions.length === 0) {
         return NextResponse.json(
           {
-            code: 500,
-            data: null,
-            message: '题库题目不足'
+            success: false,
+            error: '题库题目不足'
           },
           { status: 500 }
         );
@@ -179,7 +176,7 @@ export async function POST(request: NextRequest) {
       const q = fallbackQuestions[0];
       return NextResponse.json(
         {
-          code: 0,
+          success: true,
           data: {
             isCorrect,
             correctAnswer: question.answer || '',
@@ -204,7 +201,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 0,
+        success: true,
         data: {
           isCorrect,
           correctAnswer: question.answer || '',
@@ -223,9 +220,8 @@ export async function POST(request: NextRequest) {
     console.error('Failed to submit answer:', error);
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: '提交答案失败，请稍后重试'
+        success: false,
+        error: '提交答案失败，请稍后重试'
       },
       { status: 500 }
     );

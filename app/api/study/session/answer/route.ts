@@ -106,8 +106,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        is_correct: isCorrect,
-        explanation: question.explanation,
+        data: {
+          is_correct: isCorrect,
+          explanation: question.explanation,
+        },
+        message: "操作成功"
       },
       { status: 200 }
     );

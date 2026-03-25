@@ -53,9 +53,8 @@ export async function POST(request: NextRequest) {
     if (!grade || !validGrades.includes(grade)) {
       return NextResponse.json(
         {
-          code: 422,
-          data: null,
-          message: '年级参数无效，必须是 p1/p2/p3/p4/p5/p6/f1/f2/f3/f4/f5/f6 之一'
+          success: false,
+          error: '年级参数无效，必须是 p1/p2/p3/p4/p5/p6/f1/f2/f3/f4/f5/f6 之一'
         },
         { status: 422 }
       );
@@ -88,9 +87,8 @@ export async function POST(request: NextRequest) {
     if (allQuestions.length < 15) {
       return NextResponse.json(
         {
-          code: 500,
-          data: null,
-          message: '题库题目不足，请联系管理员'
+          success: false,
+          error: '题库题目不足，请联系管理员'
         },
         { status: 500 }
       );
@@ -106,7 +104,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 0,
+        success: true,
         data: {
           sessionId,
           questions: shuffledQuestions,
@@ -119,9 +117,8 @@ export async function POST(request: NextRequest) {
     console.error('Failed to start placement test:', error);
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: '开始测试失败，请稍后重试'
+        success: false,
+        error: '开始测试失败，请稍后重试'
       },
       { status: 500 }
     );

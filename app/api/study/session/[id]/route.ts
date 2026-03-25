@@ -67,25 +67,28 @@ export async function GET(
     return NextResponse.json(
       {
         success: true,
-        session: {
-          id: session.id,
-          current_module: session.currentModule,
-          current_module_type: currentModuleData?.type || null,
-          total_modules: modules.length,
-          is_complete: isComplete,
-          started_at: session.startedAt,
-          finished_at: session.finishedAt,
+        data: {
+          session: {
+            id: session.id,
+            current_module: session.currentModule,
+            current_module_type: currentModuleData?.type || null,
+            total_modules: modules.length,
+            is_complete: isComplete,
+            started_at: session.startedAt,
+            finished_at: session.finishedAt,
+          },
+          progress: {
+            current_module: session.currentModule + 1,
+            total_modules: modules.length,
+            questions_answered: totalAnswered,
+            score: score,
+          },
+          time: {
+            elapsed_seconds: totalTimeElapsed,
+            remaining_seconds: 0,
+          },
         },
-        progress: {
-          current_module: session.currentModule + 1,
-          total_modules: modules.length,
-          questions_answered: totalAnswered,
-          score: score,
-        },
-        time: {
-          elapsed_seconds: totalTimeElapsed,
-          remaining_seconds: 0,
-        },
+        message: "操作成功"
       },
       { status: 200 }
     );

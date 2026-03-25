@@ -18,14 +18,15 @@ interface RecordRequestBody {
 }
 
 interface RecordResponse {
-  code: 0 | 400 | 401 | 404 | 500;
+  success: boolean;
   data: {
     error_record_id?: string;
     stage?: number;
     next_review?: string;
     error_count?: number;
   } | null;
-  message: string;
+  message?: string;
+  error?: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -33,9 +34,9 @@ export async function POST(request: NextRequest) {
     const authHeader = request.headers.get('authorization');
     if (!authHeader) {
       const errorResponse: RecordResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -43,9 +44,9 @@ export async function POST(request: NextRequest) {
     const tokenMatch = authHeader.match(/^Bearer\s+(.+)$/);
     if (!tokenMatch) {
       const errorResponse: RecordResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -57,9 +58,9 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       console.error('Token验证失败:', error);
       const errorResponse: RecordResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -70,9 +71,9 @@ export async function POST(request: NextRequest) {
 
     if (!question_id) {
       const errorResponse: RecordResponse = {
-        code: 400,
+        success: false,
         data: null,
-        message: '缺少必要参数: question_id',
+        error: '缺少必要参数: question_id',
       };
       return NextResponse.json(errorResponse, { status: 400 });
     }
@@ -83,9 +84,9 @@ export async function POST(request: NextRequest) {
 
     if (!question) {
       const errorResponse: RecordResponse = {
-        code: 404,
+        success: false,
         data: null,
-        message: '题目不存在',
+        error: '题目不存在',
       };
       return NextResponse.json(errorResponse, { status: 404 });
     }
@@ -127,7 +128,7 @@ export async function POST(request: NextRequest) {
     }
 
     const successResponse: RecordResponse = {
-      code: 0,
+      success: true,
       data: {
         error_record_id: errorRecord.id,
         stage: errorRecord.stage,
@@ -141,9 +142,9 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Failed to record error:', error);
     const errorResponse: RecordResponse = {
-      code: 500,
+      success: false,
       data: null,
-      message: '记录错题失败，请稍后重试',
+      error: '记录错题失败，请稍后重试',
     };
     return NextResponse.json(errorResponse, { status: 500 });
   }

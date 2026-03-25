@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 interface JwtPayload {
@@ -36,20 +38,6 @@ interface UpdateProfileData {
   grade?: string;
   targetLevel?: number;
   studyMode?: string;
-}
-
-interface SuccessResponse {
-  code: 0;
-  data: {
-    user: UserData;
-  };
-  message: string;
-}
-
-interface ErrorResponse {
-  code: number;
-  data: null;
-  message: string;
 }
 
 /**
@@ -93,12 +81,10 @@ export async function GET(request: NextRequest) {
     });
 
     if (!user) {
-      const errorResponse: ErrorResponse = {
-        code: 401,
-        data: null,
-        message: '未登录或token已过期'
-      };
-      return NextResponse.json(errorResponse, { status: 401 });
+      return NextResponse.json({
+        success: false,
+        error: '未登录或token已过期'
+      }, { status: 401 });
     }
 
     const userData: UserData = {
@@ -121,33 +107,27 @@ export async function GET(request: NextRequest) {
       },
     };
 
-    const successResponse: SuccessResponse = {
-      code: 0,
+    return NextResponse.json({
+      success: true,
       data: {
         user: userData,
       },
       message: '获取成功'
-    };
-
-    return NextResponse.json(successResponse, { status: 200 });
+    }, { status: 200 });
   } catch (error) {
     console.error('获取用户信息失败:', error);
 
     if (error instanceof Error && (error.message === '未登录或token已过期')) {
-      const errorResponse: ErrorResponse = {
-        code: 401,
-        data: null,
-        message: error.message
-      };
-      return NextResponse.json(errorResponse, { status: 401 });
+      return NextResponse.json({
+        success: false,
+        error: error.message
+      }, { status: 401 });
     }
 
-    const errorResponse: ErrorResponse = {
-      code: 500,
-      data: null,
-      message: '获取用户信息失败，请稍后重试'
-    };
-    return NextResponse.json(errorResponse, { status: 500 });
+    return NextResponse.json({
+      success: false,
+      error: '获取用户信息失败，请稍后重试'
+    }, { status: 500 });
   }
 }
 
@@ -163,39 +143,31 @@ export async function PUT(request: NextRequest) {
     const { nickname, grade, targetLevel, studyMode } = body;
 
     if (nickname !== undefined && typeof nickname !== 'string') {
-      const errorResponse: ErrorResponse = {
-        code: 400,
-        data: null,
-        message: '昵称格式错误'
-      };
-      return NextResponse.json(errorResponse, { status: 400 });
+      return NextResponse.json({
+        success: false,
+        error: '昵称格式错误'
+      }, { status: 400 });
     }
 
     if (grade !== undefined && typeof grade !== 'string') {
-      const errorResponse: ErrorResponse = {
-        code: 400,
-        data: null,
-        message: '年级格式错误'
-      };
-      return NextResponse.json(errorResponse, { status: 400 });
+      return NextResponse.json({
+        success: false,
+        error: '年级格式错误'
+      }, { status: 400 });
     }
 
     if (targetLevel !== undefined && (typeof targetLevel !== 'number' || targetLevel < 1 || targetLevel > 5)) {
-      const errorResponse: ErrorResponse = {
-        code: 400,
-        data: null,
-        message: '目标等级必须是1-5之间的数字'
-      };
-      return NextResponse.json(errorResponse, { status: 400 });
+      return NextResponse.json({
+        success: false,
+        error: '目标等级必须是1-5之间的数字'
+      }, { status: 400 });
     }
 
     if (studyMode !== undefined && typeof studyMode !== 'string') {
-      const errorResponse: ErrorResponse = {
-        code: 400,
-        data: null,
-        message: '学习模式格式错误'
-      };
-      return NextResponse.json(errorResponse, { status: 400 });
+      return NextResponse.json({
+        success: false,
+        error: '学习模式格式错误'
+      }, { status: 400 });
     }
 
     const updateData: UpdateProfileData = {};
@@ -232,32 +204,26 @@ export async function PUT(request: NextRequest) {
       },
     };
 
-    const successResponse: SuccessResponse = {
-      code: 0,
+    return NextResponse.json({
+      success: true,
       data: {
         user: userData,
       },
       message: '更新成功'
-    };
-
-    return NextResponse.json(successResponse, { status: 200 });
+    }, { status: 200 });
   } catch (error) {
     console.error('更新用户信息失败:', error);
 
     if (error instanceof Error && (error.message === '未登录或token已过期')) {
-      const errorResponse: ErrorResponse = {
-        code: 401,
-        data: null,
-        message: error.message
-      };
-      return NextResponse.json(errorResponse, { status: 401 });
+      return NextResponse.json({
+        success: false,
+        error: error.message
+      }, { status: 401 });
     }
 
-    const errorResponse: ErrorResponse = {
-      code: 500,
-      data: null,
-      message: '更新用户信息失败，请稍后重试'
-    };
-    return NextResponse.json(errorResponse, { status: 500 });
+    return NextResponse.json({
+      success: false,
+      error: '更新用户信息失败，请稍后重试'
+    }, { status: 500 });
   }
 }

@@ -12,7 +12,7 @@ interface JwtPayload {
 }
 
 interface StatsResponse {
-  code: 0 | 401 | 500;
+  success: boolean;
   data: {
     total_errors: number;
     mastered_count: number;
@@ -23,7 +23,8 @@ interface StatsResponse {
     }[];
     review_history_total: number;
   } | null;
-  message: string;
+  message?: string;
+  error?: string;
 }
 
 export async function GET(request: NextRequest) {
@@ -31,9 +32,9 @@ export async function GET(request: NextRequest) {
     const authHeader = request.headers.get('authorization');
     if (!authHeader) {
       const errorResponse: StatsResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -41,9 +42,9 @@ export async function GET(request: NextRequest) {
     const tokenMatch = authHeader.match(/^Bearer\s+(.+)$/);
     if (!tokenMatch) {
       const errorResponse: StatsResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -55,9 +56,9 @@ export async function GET(request: NextRequest) {
     } catch (error) {
       console.error('Token验证失败:', error);
       const errorResponse: StatsResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -108,7 +109,7 @@ export async function GET(request: NextRequest) {
     }));
 
     const successResponse: StatsResponse = {
-      code: 0,
+      success: true,
       data: {
         total_errors: totalErrors,
         mastered_count: masteredCount,
@@ -123,9 +124,9 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Failed to fetch error stats:', error);
     const errorResponse: StatsResponse = {
-      code: 500,
+      success: false,
       data: null,
-      message: '获取错题统计失败，请稍后重试',
+      error: '获取错题统计失败，请稍后重试',
     };
     return NextResponse.json(errorResponse, { status: 500 });
   }

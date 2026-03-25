@@ -12,7 +12,7 @@ interface JwtPayload {
 }
 
 interface DueResponse {
-  code: 0 | 401 | 500;
+  success: boolean;
   data: {
     errors: Array<{
       id: string;
@@ -31,7 +31,8 @@ interface DueResponse {
     }>;
     total_due: number;
   } | null;
-  message: string;
+  message?: string;
+  error?: string;
 }
 
 export async function GET(request: NextRequest) {
@@ -39,9 +40,9 @@ export async function GET(request: NextRequest) {
     const authHeader = request.headers.get('authorization');
     if (!authHeader) {
       const errorResponse: DueResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -49,9 +50,9 @@ export async function GET(request: NextRequest) {
     const tokenMatch = authHeader.match(/^Bearer\s+(.+)$/);
     if (!tokenMatch) {
       const errorResponse: DueResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -63,9 +64,9 @@ export async function GET(request: NextRequest) {
     } catch (error) {
       console.error('Token验证失败:', error);
       const errorResponse: DueResponse = {
-        code: 401,
+        success: false,
         data: null,
-        message: '未登录或token已过期',
+        error: '未登录或token已过期',
       };
       return NextResponse.json(errorResponse, { status: 401 });
     }
@@ -121,7 +122,7 @@ export async function GET(request: NextRequest) {
     });
 
     const successResponse: DueResponse = {
-      code: 0,
+      success: true,
       data: {
         errors: formattedErrors,
         total_due: formattedErrors.length,
@@ -133,9 +134,9 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Failed to fetch due errors:', error);
     const errorResponse: DueResponse = {
-      code: 500,
+      success: false,
       data: null,
-      message: '获取待复习错题失败，请稍后重试',
+      error: '获取待复习错题失败，请稍后重试',
     };
     return NextResponse.json(errorResponse, { status: 500 });
   }

@@ -20,9 +20,8 @@ export async function GET(request: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          code: 401,
-          data: null,
-          message: 'Unauthorized',
+          success: false,
+          error: '未授权',
         },
         { status: 401 }
       );
@@ -59,13 +58,14 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.json({
-      code: 0,
+      success: true,
       data: {
         questions,
         targetDifficulty: query.target_difficulty,
         actualRange: { min: minDifficulty, max: maxDifficulty },
         count: questions.length,
       },
+      message: '按难度获取题目成功',
     });
   } catch (error) {
     console.error('Failed to fetch questions by difficulty:', error);
@@ -73,9 +73,8 @@ export async function GET(request: NextRequest) {
     if (error instanceof Error && error.name === 'ZodError') {
       return NextResponse.json(
         {
-          code: 422,
-          data: null,
-          message: 'Validation error',
+          success: false,
+          error: '验证失败',
         },
         { status: 422 }
       );
@@ -83,9 +82,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       {
-        code: 500,
-        data: null,
-        message: 'Failed to fetch questions by difficulty',
+        success: false,
+        error: '按难度获取题目失败',
       },
       { status: 500 }
     );
