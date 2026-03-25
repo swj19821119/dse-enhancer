@@ -65,6 +65,26 @@ npm run dev
 docker-compose up -d
 ```
 
+## 项目文档
+
+### 📋 PRD 唯一真相源
+
+**⚠️ 重要提示**: 本项目的产品需求文档（PRD）只有一份，作为唯一真相源：
+
+- **`dse-enhancer-prd-merged.md`** - 主PRD文档（v2.3）
+  - 包含完整的产品定位、功能设计、技术架构
+  - 所有协作者（agents/开发者）必须以此文档为准
+  - 任何PRD修改请直接更新此文件
+
+**辅助文档**：
+- `PRD_UPDATE_SUMMARY.md` - 版本更新记录
+- `MVP_ADJUSTMENT_PLAN.md` - MVP实施计划
+
+**已废弃的旧PRD文件**（已从GitHub删除）：
+- ~~`dse-enhancer-prd.md`~~
+- ~~`dse-enhancer-prd-v2.1.md`~~
+- ~~`dse-enhancer-prd-notion.md`~~
+
 ## 项目结构
 
 ```
