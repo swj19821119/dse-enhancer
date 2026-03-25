@@ -1,186 +1,45 @@
-name: Scheduled Deploy to Tencent Cloud
+name: Deploy to Tencent Cloud
 
 on:
-  # 每天晚上11点自动部署（香港时间 UTC+8）
-  schedule:
-    - cron: '0 15 * * *'  # UTC 15:00 = 香港时间 23:00
-  
-  # 允许手动触发部署
+  push:
+    branches: [main]
   workflow_dispatch:
-    inputs:
-      deploy_reason:
-        description: '部署原因（可选）'
-        required: false
-        default: '手动触发部署'
 
 jobs:
-  check-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check if deployment is needed
-        id: check_changes
-        run: |
-          LAST_DEPLOY_FILE=".last-deploy-commit"
-          
-          if [ -f "$LAST_DEPLOY_FILE" ]; then
-            LAST_COMMIT=$(cat "$LAST_DEPLOY_FILE")
-            echo "上次部署commit: $LAST_COMMIT"
-            
-            if git log --oneline $LAST_COMMIT..HEAD | grep -q "."; then
-              echo "发现新提交，需要部署"
-              echo "needs_deploy=true" >> $GITHUB_OUTPUT
-            else
-              echo "没有新提交，跳过部署"
-              echo "needs_deploy=false" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "没有找到上次部署记录，执行部署"
-            echo "needs_deploy=true" >> $GITHUB_OUTPUT
-          fi
-          
-          git rev-parse HEAD > "$LAST_DEPLOY_FILE"
-
-      - name: Send notification - No changes
-        if: steps.check_changes.outputs.needs_deploy == 'false'
-        run: |
-          echo "✅ 代码没有变化，跳过部署"
-
-      - name: Setup Node.js
-        if: steps.check_changes.outputs.needs_deploy == 'true'
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-
-      - name: Install dependencies
-        if: steps.check_changes.outputs.needs_deploy == 'true'
-        run: npm ci
-
-      - name: Run tests
-        if: steps.check_changes.outputs.needs_deploy == 'true'
-        run: npm test
-        continue-on-error: true
-
-      - name: Build project
-        if: steps.check_changes.outputs.needs_deploy == 'true'
-        run: npm run build
+      
+      - run: npm ci
+      - run: npm run build
+      
+      - name: Deploy to Server
         env:
-          NODE_ENV: production
-
-      - name: Setup SSH and Test Connection
-        if: steps.check_changes.outputs.needs_deploy == 'true'
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
         run: |
-          echo "🔑 设置SSH密钥..."
+          # Setup SSH
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
           
-          # 添加服务器到known_hosts
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts 2>/dev/null
+          # Test SSH connection
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "echo 'SSH OK'"
           
-          # 测试SSH连接
-          echo "🧪 测试SSH连接..."
-          if ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@${{ secrets.SERVER_IP }} "echo '✅ SSH连接成功'"; then
-            echo "✅ SSH连接测试通过"
-          else
-            echo "❌ SSH连接失败，请检查："
-            echo "   1. SSH_PRIVATE_KEY 是否正确配置"
-            echo "   2. SERVER_IP 是否正确"
-            echo "   3. 服务器是否允许SSH连接"
-            exit 1
-          fi
-
-      - name: Deploy to Tencent Cloud
-        if: steps.check_changes.outputs.needs_deploy == 'true'
-        run: |
-          SERVER_IP="${{ secrets.SERVER_IP }}"
-          echo "🚀 开始部署到服务器 $SERVER_IP"
+          # Create directories
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "sudo mkdir -p /var/www/dse-english-deploy && sudo chown ubuntu:ubuntu /var/www/dse-english-deploy"
           
-          # Step 1: 在服务器上创建目录结构
-          echo "📁 创建部署目录..."
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP << 'REMOTESSH'
-            set -e
-            echo "创建目录结构..."
-            sudo mkdir -p /var/www/dse-english
-            sudo chown -R ubuntu:ubuntu /var/www/dse-english
-            sudo mkdir -p /var/www/dse-english-deploy
-            sudo chown -R ubuntu:ubuntu /var/www/dse-english-deploy
-            echo "✅ 目录创建完成"
-          REMOTESSH
+          # Deploy files
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r .next package.json package-lock.json ubuntu@$SERVER_IP:/var/www/dse-english-deploy/
           
-          # Step 2: 压缩.build文件
-          echo "📦 压缩构建文件..."
-          tar -czf deploy.tar.gz .next package.json package-lock.json
+          # Install and restart
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "cd /var/www/dse-english-deploy && npm install --production && sudo cp -r .next /var/www/dse-english/ && sudo cp package.json /var/www/dse-english/ && pm2 restart dse-enhancer || pm2 start npm --name dse-enhancer -- start"
           
-          # Step 3: 上传压缩包
-          echo "📤 上传文件到服务器..."
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no deploy.tar.gz ubuntu@$SERVER_IP:/var/www/dse-english-deploy/
-          
-          # Step 4: 在服务器上解压并部署
-          echo "🎯 执行部署..."
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP << EOF
-            set -e
-            cd /var/www/dse-english-deploy
-            
-            # 解压文件
-            echo "解压文件..."
-            tar -xzf deploy.tar.gz
-            rm deploy.tar.gz
-            
-            # 备份当前版本
-            if [ -d "/var/www/dse-english/.next" ]; then
-              BACKUP_DIR="/var/www/backup-$(date +%Y%m%d-%H%M%S)"
-              cp -r /var/www/dse-english "$BACKUP_DIR"
-              echo "✅ 已备份到 $BACKUP_DIR"
-            fi
-            
-            # 复制新文件
-            cp -r .next /var/www/dse-english/
-            cp package.json /var/www/dse-english/
-            cp package-lock.json /var/www/dse-english/
-            
-            # 安装依赖
-            cd /var/www/dse-english
-            echo "📥 安装依赖..."
-            npm install --production
-            
-            # 重启应用
-            echo "🔄 重启应用..."
-            if pm2 list | grep -q "dse-enhancer"; then
-              pm2 restart dse-enhancer
-            else
-              pm2 start npm --name "dse-enhancer" -- start
-            fi
-            
-            echo "✅ 部署完成！"
-          EOF
-          
-          # 清理本地临时文件
-          rm -f deploy.tar.gz
-
-      - name: Health Check
-        if: steps.check_changes.outputs.needs_deploy == 'true'
-        run: |
-          echo "🏥 执行健康检查..."
-          sleep 5
-          
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.SERVER_IP }}:3000 || echo "000")
-          
-          if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "301" ] || [ "$HTTP_STATUS" = "302" ]; then
-            echo "✅ 健康检查通过 (HTTP $HTTP_STATUS)"
-          else
-            echo "❌ 健康检查失败 (HTTP $HTTP_STATUS)"
-            exit 1
-          fi
-
-      - name: Cleanup
-        if: always()
-        run: |
-          rm -rf ~/.ssh/deploy_key
-          echo "🧹 清理完成"
+          echo "✅ Deployed successfully!"
