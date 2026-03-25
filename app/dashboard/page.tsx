@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,12 +11,23 @@ import Link from 'next/link';
 export default function DashboardPage() {
   const router = useRouter();
   const { user, logout, isGuest, setGuest } = useAuthStore();
+  const [studyMode, setStudyMode] = useState<'relaxed' | 'diligent'>('relaxed');
+  const [todayCompleted, setTodayCompleted] = useState(false);
 
   useEffect(() => {
-    // 检查是否是游客模式
+    const checkTodayStatus = () => {
+      const lastStudy = localStorage.getItem('lastStudyDate');
+      const today = new Date().toDateString();
+      setTodayCompleted(lastStudy === today);
+    };
+
+    checkTodayStatus();
+  }, []);
+
+  useEffect(() => {
     const guestMode = localStorage.getItem('guestMode');
     const guestId = localStorage.getItem('guestId');
-    
+
     if (guestMode && guestId) {
       setGuest(true, guestId);
     } else if (!user) {
@@ -108,12 +119,70 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <div className="mb-10">
-          <Link href={isGuest ? "/assessment" : "/study"}>
-            <Button className="text-xl px-10 py-8 w-full md:w-auto bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-xl shadow-blue-500/30">
-              <Clock className="w-6 h-6 mr-3" />
-              {isGuest ? "开始体验测试" : "一键开始今日40分钟学习"}
-            </Button>
-          </Link>
+          {isGuest ? (
+            <Link href="/assessment">
+              <Button className="text-xl px-10 py-8 w-full md:w-auto bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-xl shadow-blue-500/30">
+                <Clock className="w-6 h-6 mr-3" />
+                开始体验测试
+              </Button>
+            </Link>
+          ) : (
+            <div className="space-y-4">
+              {todayCompleted ? (
+                <Card className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30">
+                  <CardContent className="pt-8 pb-8 text-center">
+                    <h3 className="text-2xl font-bold text-white mb-4">
+                      🎉 今日学习已完成！
+                    </h3>
+                    <p className="text-white/80 mb-6">
+                      太棒了！你已完成今日{studyMode === 'relaxed' ? '40' : '60'}分钟学习目标
+                    </p>
+                    <Link href="/study">
+                      <Button className="w-full h-14 text-lg bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600">
+                        开始新的一轮学习
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ) : (
+                <>
+                  <div className="flex items-center justify-center gap-4 mb-4">
+                    <button
+                      onClick={() => setStudyMode('relaxed')}
+                      className={`flex-1 py-4 px-6 rounded-xl border-2 transition-all ${
+                        studyMode === 'relaxed'
+                          ? 'bg-blue-500/20 border-blue-500 text-white'
+                          : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="text-2xl mb-1">☕</div>
+                      <div className="font-semibold">轻松学</div>
+                      <div className="text-sm opacity-70">40分钟</div>
+                    </button>
+                    <button
+                      onClick={() => setStudyMode('diligent')}
+                      className={`flex-1 py-4 px-6 rounded-xl border-2 transition-all ${
+                        studyMode === 'diligent'
+                          ? 'bg-purple-500/20 border-purple-500 text-white'
+                          : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="text-2xl mb-1">🔥</div>
+                      <div className="font-semibold">勤奋学</div>
+                      <div className="text-sm opacity-70">60分钟</div>
+                    </button>
+                  </div>
+
+                  <Link href={`/study?mode=${studyMode}`}>
+                    <Button className="text-xl px-10 py-8 w-full md:w-auto bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-xl shadow-blue-500/30">
+                      <Clock className="w-6 h-6 mr-3" />
+                      一键开始今日{studyMode === 'relaxed' ? '40' : '60'}分钟学习
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Stats Grid */}

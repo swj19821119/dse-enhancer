@@ -19,6 +19,9 @@ model User {
   currentLevel Int?     // 当前预估DSE等级 1-5
   isVip        Boolean  @default(false)
   vipExpireAt  DateTime?
+  phone        String?  // 手机号
+  parentId     String?  // 父级用户ID
+  studyMode    String?  // 学习模式
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -29,9 +32,6 @@ model User {
   errorQuestions  UserErrorQuestion[]
   dailyRecords    DailyStudyRecord[]
   studySessions   StudySession[]
-  pkGamesAsUser1  VocabularyPkGame[] @relation("pk_games_user1")
-  pkGamesAsUser2  VocabularyPkGame[] @relation("pk_games_user2")
-  audioRecords    AudioRecord[]
 }
 
 // 2. 能力等级表
@@ -55,6 +55,7 @@ model Vocabulary {
   word       String
   phonetic   String?
   definition String
+  part       String?  // part_a/part_b
   frequency  Int?     // DSE考频
   topic      String?  // 主题分类
   example    String?  // 真题例句
@@ -86,6 +87,7 @@ model Question {
   id          String   @id @default(uuid())
   type        String   // vocabulary/grammar/reading/listening/writing/speaking
   subType     String?  // 子题型
+  part        String?  // part_a/part_b
   topic       String?  // 知识点/主题
   difficulty  Int      @default(1)  // 难度 1-5
   content     String   // 题目内容
@@ -99,7 +101,6 @@ model Question {
 
   answers        UserAnswer[]
   errorQuestions UserErrorQuestion[]
-  audioRecords   AudioRecord[]
 }
 
 // 6. 用户答题记录表
@@ -122,30 +123,54 @@ model UserErrorQuestion {
   userId       String
   questionId   String
   errorCount   Int      @default(1)
+  stage        Int      @default(1)  // Ebbinghaus stage 1-8
+  nextReview   DateTime                // 下次复习时间
+  lastReview   DateTime?               // 上次复习时间
+  isMastered   Boolean  @default(false) // 是否已掌握
   lastWrongAt  DateTime @default(now())
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  user     User     @relation(fields: [userId], references: [id])
-  question Question @relation(fields: [questionId], references: [id])
+  user     User         @relation(fields: [userId], references: [id])
+  question Question     @relation(fields: [questionId], references: [id])
+  reviews  ErrorReview[]
 
   @@unique([userId, questionId])
+  @@index([userId, nextReview])
+}
+
+// 11. 错题复习记录表
+model ErrorReview {
+  id             String   @id @default(uuid())
+  errorId        String
+  stageAtReview  Int      // 复习时的阶段
+  isCorrect      Boolean  // 是否回答正确
+  reviewedAt     DateTime @default(now())
+
+  error UserErrorQuestion @relation(fields: [errorId], references: [id])
+
+  @@index([errorId])
 }
 
 // 8. 每日学习记录表
 model DailyStudyRecord {
-  id             String   @id @default(uuid())
-  userId         String
-  studyDate      DateTime @unique
-  totalMinutes   Int      @default(0)
-  totalScore     Int      @default(0)
-  vocabularyScore Int?
-  grammarScore   Int?
-  readingScore   Int?
-  listeningScore Int?
-  completed      Boolean  @default(false)
-  createdAt      DateTime @default(now())
+  id               String   @id @default(uuid())
+  userId           String
+  studyDate        DateTime @unique
+  studyMode        String?  // 学习模式
+  totalMinutes     Int      @default(0)
+  totalScore       Float    @default(0)      // 每日总分 (0-100)
+  accuracy         Float?   // 总体正确率
+  nextDifficulty   Float?   // 明日的难度系数
+  modulesData      String?  // 模块得分和明细（JSON字符串）
+  recommendations  String?  // 个性化建议
+  completed        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, studyDate])
 }
 
 // 9. 学习会话表
@@ -161,34 +186,13 @@ model StudySession {
   user User @relation(fields: [userId], references: [id])
 }
 
-// 10. 词汇PK对战表
-model VocabularyPkGame {
-  id         String   @id @default(uuid())
-  user1Id    String
-  user2Id    String?
-  score1     Int      @default(0)
-  score2     Int      @default(0)
-  status     String   @default("waiting")  // waiting/playing/finished
-  startedAt  DateTime?
-  finishedAt DateTime?
-  createdAt  DateTime @default(now())
-
-  user1 User @relation("pk_games_user1", fields: [user1Id], references: [id])
-  user2 User? @relation("pk_games_user2", fields: [user2Id], references: [id])
-}
-
-// 11. 语音记录表
-model AudioRecord {
-  id               String   @id @default(uuid())
-  userId           String
-  questionId       String?
-  audioUrl         String?
-  duration         Int?  // 时长（秒）
-  asrText          String?
-  pronunciationScore Float?
-  contentScore     Float?
-  createdAt        DateTime @default(now())
-
-  user     User      @relation(fields: [userId], references: [id])
-  question Question? @relation(fields: [questionId], references: [id])
+// 10. 入学测试会话表
+model PlacementSession {
+  id                   String   @id @default(uuid())
+  userId               String?
+  grade                String   // form3/form4/form5/form6
+  questions            String   // 题目列表（JSON字符串）
+  answers              String   // 答题记录（JSON字符串）
+  currentQuestionIndex Int      @default(0)
+  createdAt            DateTime @default(now())
 }
