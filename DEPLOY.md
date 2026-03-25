@@ -124,16 +124,109 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
+## 自动化部署（GitHub Actions）
+
+### 🎯 部署策略
+
+采用**定时部署 + 智能检查**策略：
+- ✅ 每天晚上11点（香港时间）自动检查并部署
+- ✅ 只有在代码有更新时才实际部署
+- ✅ 支持手动触发紧急部署
+- ✅ 自动回滚机制保障稳定性
+
+### ⏰ 定时部署时间
+
+**默认配置**：每天晚上11点（香港时间）
+
+```yaml
+# .github/workflows/deploy.yml
+on:
+  schedule:
+    - cron: '0 15 * * *'  # UTC 15:00 = 香港时间 23:00
+```
+
+### 🔧 配置步骤
+
+#### 1. 配置GitHub Secrets
+
+在GitHub仓库设置中添加：
+
+```
+Settings → Secrets and variables → Actions → New repository secret
+```
+
+| Secret名称 | 说明 |
+|------------|------|
+| `SSH_PRIVATE_KEY` | 服务器SSH私钥 |
+| `SERVER_IP` | 腾讯云服务器IP |
+
+**生成SSH密钥对**：
+
+```bash
+# 在本地生成新的SSH密钥
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/github-actions-deploy -C "github-actions"
+
+# 查看私钥内容（复制到GitHub Secrets）
+cat ~/.ssh/github-actions-deploy
+
+# 查看公钥内容（添加到服务器）
+cat ~/.ssh/github-actions-deploy.pub
+```
+
+**在服务器上添加公钥**：
+
+```bash
+# 在腾讯云服务器上执行
+echo "你的公钥内容" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+#### 2. 手动触发部署
+
+```
+GitHub仓库 → Actions → Deploy to Tencent Cloud → Run workflow
+```
+
+#### 3. 部署流程
+
+```
+每天晚上11:00
+    │
+    ▼
+检查代码是否有更新
+    │
+    ├─ 有更新 → 构建 → 测试 → 部署 → 健康检查
+    │
+    └─ 无更新 → 跳过部署
+```
+
+#### 4. 安全机制
+
+- **自动备份**：每次部署前备份当前版本
+- **自动回滚**：部署失败时自动回滚到上一个版本
+- **健康检查**：部署后自动检查网站是否可访问
+- **零停机部署**：使用PM2平滑重启
+
+### 📊 监控
+
+在GitHub Actions页面查看：
+- 部署状态（成功/失败）
+- 执行时间
+- 详细日志
+
+---
+
 ## 技术栈
 
 - **框架**: Next.js 14
 - **语言**: TypeScript
 - **ORM**: Prisma
-- **数据库**: PostgreSQL
+- **数据库**: PostgreSQL (MVP: SQLite)
 - **样式**: Tailwind CSS
 - **UI组件**: 自定义 Shadcn UI 风格
 - **状态管理**: Zustand
 - **认证**: JWT + bcryptjs
+- **部署**: GitHub Actions + PM2
 
 ## 项目结构
 

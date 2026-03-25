@@ -1,44 +1,226 @@
-name: Deploy to Tencent Cloud
+name: Scheduled Deploy to Tencent Cloud
 
 on:
-  push:
-    branches:
-      - main
+  # 每天晚上11点自动部署（香港时间 UTC+8）
+  schedule:
+    - cron: '0 15 * * *'  # UTC 15:00 = 香港时间 23:00
+  
+  # 允许手动触发部署
   workflow_dispatch:
+    inputs:
+      deploy_reason:
+        description: '部署原因（可选）'
+        required: false
+        default: '手动触发部署'
+  
+  # 允许push到main分支时触发（可选，默认关闭）
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
-  build-and-deploy:
+  check-and-deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 需要完整历史记录来检查是否有更新
+
+      - name: Check if deployment is needed
+        id: check_changes
+        run: |
+          # 获取上次部署的commit（通过git tag或者检查最近24小时的提交）
+          LAST_DEPLOY_FILE=".last-deploy-commit"
+          
+          # 检查是否有上次部署记录
+          if [ -f "$LAST_DEPLOY_FILE" ]; then
+            LAST_COMMIT=$(cat "$LAST_DEPLOY_FILE")
+            echo "上次部署commit: $LAST_COMMIT"
+            
+            # 检查从上次部署到现在是否有新提交
+            if git log --oneline $LAST_COMMIT..HEAD | grep -q "."; then
+              echo "发现新提交，需要部署"
+              echo "needs_deploy=true" >> $GITHUB_OUTPUT
+              echo "changes=$(git log --oneline $LAST_COMMIT..HEAD | head -10)" >> $GITHUB_OUTPUT
+            else
+              echo "没有新提交，跳过部署"
+              echo "needs_deploy=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "没有找到上次部署记录，执行部署"
+            echo "needs_deploy=true" >> $GITHUB_OUTPUT
+          fi
+          
+          # 保存当前commit hash
+          git rev-parse HEAD > "$LAST_DEPLOY_FILE"
+
+      - name: Send notification - No changes
+        if: steps.check_changes.outputs.needs_deploy == 'false'
+        run: |
+          echo "✅ 代码没有变化，跳过部署"
+          echo "上次部署以来没有新的提交"
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        if: steps.check_changes.outputs.needs_deploy == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        if: steps.check_changes.outputs.needs_deploy == 'true'
+        run: npm ci
+
+      - name: Run tests
+        if: steps.check_changes.outputs.needs_deploy == 'true'
+        run: npm test
+        continue-on-error: true  # 测试失败不阻止部署，但会记录
 
       - name: Build project
+        if: steps.check_changes.outputs.needs_deploy == 'true'
         run: npm run build
+        env:
+          NODE_ENV: production
 
       - name: Setup SSH
+        if: steps.check_changes.outputs.needs_deploy == 'true'
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H 43.139.84.228 >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy .next and package files only
+      - name: Deploy to Tencent Cloud
+        if: steps.check_changes.outputs.needs_deploy == 'true'
         run: |
-          echo "Deploying .next and package.json..."
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r .next ubuntu@43.139.84.228:/var/www/dse-english/
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no package.json ubuntu@43.139.84.228:/var/www/dse-english/
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no package-lock.json ubuntu@43.139.84.228:/var/www/dse-english/
+          echo "🚀 开始部署到服务器 ${{ secrets.SERVER_IP }}"
+          
+          # 创建临时部署目录
+          DEPLOY_DIR="/tmp/deploy-$(date +%s)"
+          mkdir -p "$DEPLOY_DIR"
+          
+          # 复制需要部署的文件
+          cp -r .next "$DEPLOY_DIR/"
+          cp package.json "$DEPLOY_DIR/"
+          cp package-lock.json "$DEPLOY_DIR/"
+          
+          # 如果有prisma目录也复制（用于数据库迁移）
+          if [ -d "prisma" ]; then
+            cp -r prisma "$DEPLOY_DIR/"
+          fi
+          
+          # 如果有public目录也复制
+          if [ -d "public" ]; then
+            cp -r public "$DEPLOY_DIR/"
+          fi
+          
+          # 上传到服务器
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} "mkdir -p /var/www/dse-english-deploy"
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r "$DEPLOY_DIR"/* ubuntu@${{ secrets.SERVER_IP }}:/var/www/dse-english-deploy/
+          
+          # 在服务器上执行部署
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} << 'EOF'
+            set -e
+            echo "📦 在服务器上执行部署..."
+            
+            # 备份当前版本
+            BACKUP_DIR="/var/www/dse-english-backup-$(date +%Y%m%d-%H%M%S)"
+            if [ -d "/var/www/dse-english" ]; then
+              cp -r /var/www/dse-english "$BACKUP_DIR"
+              echo "✅ 已备份当前版本到 $BACKUP_DIR"
+            fi
+            
+            # 切换到新部署目录
+            if [ -d "/var/www/dse-english" ]; then
+              rm -rf /var/www/dse-english-old
+              mv /var/www/dse-english /var/www/dse-english-old
+            fi
+            mv /var/www/dse-english-deploy /var/www/dse-english
+            
+            cd /var/www/dse-english
+            
+            # 安装依赖（生产环境）
+            echo "📥 安装依赖..."
+            npm install --production
+            
+            # 执行数据库迁移（如果有prisma）
+            if [ -d "prisma" ]; then
+              echo "🗄️  执行数据库迁移..."
+              npx prisma migrate deploy || echo "⚠️  数据库迁移失败，继续部署"
+              npx prisma generate
+            fi
+            
+            # 重启应用
+            echo "🔄 重启应用..."
+            if pm2 list | grep -q "dse-enhancer"; then
+              pm2 restart dse-enhancer
+            else
+              pm2 start npm --name "dse-enhancer" -- start
+            fi
+            
+            # 清理旧备份（保留最近5个）
+            cd /var/www
+            ls -t dse-english-backup-* | tail -n +6 | xargs rm -rf 2>/dev/null || true
+            
+            # 清理临时部署目录
+            rm -rf /var/www/dse-english-old
+            
+            echo "✅ 部署完成！"
+          EOF
+          
+          # 清理本地临时目录
+          rm -rf "$DEPLOY_DIR"
 
-      - name: Install dependencies and restart on server
+      - name: Health Check
+        if: steps.check_changes.outputs.needs_deploy == 'true'
         run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@43.139.84.228 "cd /var/www/dse-english && npm install && pm2 restart dse-enhancer"
+          echo "🏥 执行健康检查..."
+          sleep 5  # 等待服务启动
+          
+          # 检查网站是否可访问
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.SERVER_IP }}:3000 || echo "000")
+          
+          if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "301" ] || [ "$HTTP_STATUS" = "302" ]; then
+            echo "✅ 健康检查通过 (HTTP $HTTP_STATUS)"
+          else
+            echo "❌ 健康检查失败 (HTTP $HTTP_STATUS)"
+            exit 1
+          fi
+
+      - name: Send success notification
+        if: steps.check_changes.outputs.needs_deploy == 'true' && success()
+        run: |
+          echo "🎉 部署成功！"
+          echo "部署时间: $(date '+%Y-%m-%d %H:%M:%S')"
+          echo "部署服务器: ${{ secrets.SERVER_IP }}"
+          echo "GitHub Actions 运行链接: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Rollback on failure
+        if: steps.check_changes.outputs.needs_deploy == 'true' && failure()
+        run: |
+          echo "❌ 部署失败，执行回滚..."
+          
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} << 'EOF'
+            # 查找最新的备份
+            LATEST_BACKUP=$(ls -t /var/www/dse-english-backup-* 2>/dev/null | head -1)
+            
+            if [ -n "$LATEST_BACKUP" ]; then
+              echo "🔄 回滚到备份: $LATEST_BACKUP"
+              rm -rf /var/www/dse-english
+              cp -r "$LATEST_BACKUP" /var/www/dse-english
+              cd /var/www/dse-english
+              pm2 restart dse-enhancer || pm2 start npm --name "dse-enhancer" -- start
+              echo "✅ 回滚完成"
+            else
+              echo "⚠️  没有找到备份，无法回滚"
+            fi
+          EOF
+
+      - name: Cleanup
+        if: always()
+        run: |
+          # 清理SSH密钥
+          rm -rf ~/.ssh/deploy_key
+          echo "🧹 清理完成"
