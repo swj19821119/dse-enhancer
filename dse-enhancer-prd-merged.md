@@ -4,7 +4,7 @@
 **定位**: 香港DSE英语AI自适应学习平台，专为在港大陆学生设计
 **核心 slogan**: 每天40分钟，精准提高DSE英语成绩
 **MVP阶段**: 2026-Q1
-**版本**: v2.3 (优化无注册体验流程 + 效率得分制)
+**版本**: v2.4 (香港学制 + 艾宾浩斯记忆法 + 完整API设计)
 **最后更新**: 2026-03-25
 **产品负责人**: 梅
 **技术负责人**: 兰
@@ -47,13 +47,14 @@
 
 ### 差异化
 - ✅ 垂直只做DSE英语，完全贴合考纲
-- ✅ **无注册体验** - 用户不注册也能进行首次测试评估和练习体验，降低使用门槛
+- ✅ **访客模式** - 用户不注册也能进行入学测试和体验学习，降低使用门槛
 - ✅ AI自适应学习，每天自动安排针对性练习
 - ✅ 一键开始，40分钟完成，碎片化设计贴合课后场景
 - ✅ AI评分写作口语，即时反馈，不需要等老师批改
 - ✅ 游戏化PK排行榜，激励坚持学习
 - ✅ 大陆学生针对性弱项强化，完全不同于香港本地平台
 - ✅ 繁简体切换，阅读体验友好
+- ✅ 支持香港学制（P1-P6, F1-F6），Pre Level为小学生铺垫
 
 ---
 
@@ -62,66 +63,85 @@
 ### 整体流程
 
 ```
-用户访问 → 【无注册体验】→ 可完整进行入学自适应测试（15题）→ 能力定级
+用户访问 → 【访客模式】→ 选择年级（P1-P6, F1-F6）→ 入学测试（15题）→ 能力定级显示
     ↓                                           ↓
-    ↓                              进入每日学习（随机题目，结果不保存）
+    ↓                              进入每日学习（访客使用相同学习入口）
     ↓                                           ↓
-    ↓                              体验结束 → 弹出注册引导
+    ↓                              首次学习体验 → 弹出注册引导（数据不保存）
     ↓                                           ↓
-注册/登录 → 选择年级（小三~中六）→ 完整入学自适应测试（15题）→ 能力定级
+注册/登录 → 选择年级（P1-P6, F1-F6）→ 入学测试（15题）→ 能力定级
     → 输入目标等级 + 考试日期 → 生成初始学习计划
     ↓
-每日访问 → 点击【一键开始今日40分钟】→ 系统自动组合内容 → 按顺序完成四个模块
+每日访问 → 点击【一键开始今日学习】→ 系统自动组合内容 → 按顺序完成四个模块
     ↓
-每日结算 → 各模块计分（效率得分制）→ 生成总分 → 分析弱项 → 调整明日练习 → 打卡完成
+每日结算 → 各模块计分 → 生成总分（满分100）→ 分析弱项 → 调整明日练习 → 打卡完成
     ↓
-持续迭代 → 能力提升 → 调整难度 → 直到达到目标分数
+持续迭代 → 能力提升（难度系数1.0→1.9）→ 达到目标等级 → 完成学习目标
 ```
 
-### 无注册体验说明
+### 访客模式说明
+
+**年级选择（香港学制）**：
+| 年级范围 | 对应学制 | 能力等级范围 |
+|---------|---------|-------------|
+| P1-P6 | 小学一至六年级 | Pre Level（预备级，不计入DSE 1-5级）|
+| F1-F3 | 中一至中三 | Level 1-2（基础级）|
+| F4-F6 | 中四至中六 | Level 2-5（DSE备考级）|
+
+**注意**：P1-P6小学生使用Pre Level难度体系，为将来DSE学习打基础；F1-F6学生按DSE标准评定Level 1-5。
 
 | 用户类型 | 可以做 | 不能做 |
 | --- | --- | --- |
-| 未注册访客 | 完整入学自适应测试（15题）、每日学习（随机题目）、查看当日得分 | 成绩保存、自适应学习推送、错题本、能力图谱、排行榜、PK对战 |
+| 访客模式 | 选择年级、入学测试（15题）、查看能力等级、每日学习体验、查看当日得分 | 成绩持久化保存、自适应学习推送、错题本、能力图谱、排行榜、跨会话数据 |
 | 免费注册（试用期内） | 全部功能，每日练习题量有限制 | 超出题量限制的内容 |
-| 免费注册（试用到期） | 每日10题词汇、查看能力图谱、查看错题本 | 完整40分钟流程、AI写作/口语评分、PK对战 |
+| 免费注册（试用到期） | 每日10题词汇、查看能力图谱、查看错题本 | 完整学习流程、AI写作/口语评分、PK对战 |
 | 付费会员 | 全部功能，无限制 | — |
 
-**无注册体验流程**：
-1. 访客可完整进行入学自适应测试（15题），系统给出能力定级
-2. 测试完成后可进入每日学习，系统随机推送题目（不做个性化推算）
-3. 学习过程中可查看当日得分，但结果不保存
-4. 由于无学习进度保存，无法进行自适应学习推送
-5. 体验结束后弹出注册引导，告知注册后可保存进度、开启自适应学习
+**访客模式流程**：
+1. 访客进入后选择年级（P1-P6, F1-F6）
+2. 进行入学测试（15题自适应测试），与注册用户相同
+3. 测试完成后显示能力定级结果（P1-P6显示Pre Level，F1-F6显示Level 1-5）
+4. 访客数据临时存储在localStorage，仅本次会话有效
+5. 进入每日学习（使用与注册用户相同的入口和界面）
+6. 学习过程中可查看当日得分（满分100分）
+7. **首次学习结束后**：数据不保存，无法进行后续自适应学习
+8. 体验结束后弹出注册引导
 
-**注册引导话术**：「注册后可保存学习进度，AI会根据你的弱项智能推送练习，帮你更快提分！」
+**访客数据存储**：
+- 入学测试答案和结果 → localStorage（会话级）
+- 单次学习数据 → 内存（页面关闭即丢失）
+- 学习历史、错题本、能力图谱 → ❌ 不支持
+
+**注册引导话术**：「注册后可保存学习进度，AI会根据你的弱项智能推送练习，帮你更快提分！当前进度将丢失，建议立即注册。」
 
 ### 关键设计：两种学习模式自由切换
 
-#### 模式 1：轻松学（35分钟）
-适合时间紧张的用户，快速练习核心内容
+#### 模式 1：轻松学（40分钟）
+适合时间紧张的用户，快速练习核心内容。MVP阶段包含词汇、语法、阅读三个核心模块。
 
-| 模块 | 用时 | 频率 | 具体内容 |
-|------|------|------|----------|
-| 单词闯关 | 5分钟 | ✅ 每天都有 | 闯关背单词/生词本复习 |
-| 词汇(Part A) | 5分钟 | ✅ 每天都有 | 词汇测试练习 |
-| 语法(Part A) | 5分钟 | ✅ 每天都有 | 语法测试练习 |
-| 阅读(Part A) | 5分钟 | ✅ 每天都有 | 阅读测试练习 |
-| 听力(Part A) | 5分钟 | ✅ 每天都有 | 听力测试练习 |
-| 写作(Part A) | 5分钟 | ✅ 每天都有 | 写作测试练习 |
-| 口语(Part A) | 5分钟 | ✅ 每天都有 | 口语测试练习 |
-| 错题复习 | 5分钟 | ✅ 每天都有 | 错题间隔重复复习 |
+| 模块 | 用时 | 默认题量 | 具体内容 |
+|------|------|----------|----------|
+| 单词闯关 | 10分钟 | 15-20题 | 闯关背单词/生词本复习 |
+| 词汇(Part A) | 10分钟 | 10-15题 | 词汇测试练习 |
+| 语法(Part A) | 10分钟 | 10-15题 | 语法测试练习 |
+| 阅读(Part A) | 10分钟 | 2-3篇 | 阅读测试练习 |
+| **总计** | **40分钟** | **约40题** | MVP核心模块 |
+
+**说明**：MVP阶段暂不含听力、写作、口语模块。用户可在固定时间内完成更多题目，正确率达标可获额外加分（边际递减）。
 
 ---
 
-#### 模式 2：勤奋学（45分钟）
-适合想多学习的用户，包含 Part B 深度练习
+#### 模式 2：勤奋学（60分钟）
+适合想多学习的用户，在轻松学基础上增加Part B深度练习和错题复习。
 
 | 模块 | 用时 | 说明 |
 |------|------|------|
-| 轻松学部分 | 35分钟 | 包含错题复习（5分钟） |
-| Part B 补充安排 | 10分钟 | 见下方轮换表 |
-| **总计** | **45分钟** |  |
+| 轻松学核心模块 | 40分钟 | 单词闯关 + 词汇 + 语法 + 阅读 |
+| Part B 补充 | 15分钟 | 专项深度练习（见下方轮换表） |
+| 错题复习 | 5分钟 | 艾宾浩斯间隔重复复习 |
+| **总计** | **60分钟** | 深度学习模式 |
+
+**Part B 每周轮换安排**：
 
 **勤奋学每周轮换安排**：
 
@@ -205,17 +225,52 @@
 - 家庭会员：支持最多 3 个孩子（优惠价）
 - 这样满足多孩家庭需求，也增加ARPU
 
-### 3.2 入学自适应测试
+### 3.2 入学测试
+
+**测试目标**：根据学生年级和答题表现，评定当前能力等级，建立个性化学习起点。
+
+#### 年级与能力等级对应
+
+| 选择年级 | 学制 | 能力等级范围 | 测试题难度范围 |
+|---------|------|-------------|---------------|
+| P1-P3 | 小学低年級 | Pre Level (0.5-0.9) | 基础词汇、简单句型 |
+| P4-P6 | 小学高年級 | Pre Level (0.7-1.0) | KET/PET水平 |
+| F1-F3 | 中一至中三 | Level 1-2 (1.0-2.0) | DSE基础难度 |
+| F4-F6 | 中四至中六 | Level 1-5 (1.0-5.0) | DSE全范围难度 |
+
+#### 测试流程
 
 ```
-流程：
-1. 用户选择年级（中三/中四/中五/中六）
-2. 15分钟，15题，从难度适中开始
-3. 答对 → 下一题难度提升；答错 → 难度降低
-4. 完成后算法计算出用户水平（Level 1-5，对应DSE等级）
-5. 输出能力报告：强项/弱项分析
-6. 生成个性化学习路径
+1. 用户选择年级（P1-P6, F1-F6）
+2. 15分钟，15题自适应测试
+   - 起始难度根据年级设定
+   - 答对 → 下一题难度提升（增幅0.1-0.2）
+   - 答错 → 下一题难度降低（降幅0.1-0.2）
+   - 连续答对/答错会加速调整
+3. 计算最终等级：
+   - 基于答题正确率和题目难度加权计算
+   - 公式：等级 = 基准等级 + Σ(题目难度×答题结果权重)/15
+4. 输出能力报告：
+   - 当前等级显示（如：Level 2.3）
+   - 各题型表现分析
+   - 与目标等级的差距
+5. 生成个性化学习路径（注册用户）
 ```
+
+#### 能力等级体系
+
+**总等级范围**：Pre Level (0.5-1.0) → Level 1 (1.0-1.9) → Level 5 (5.0-5.9)
+
+- **Pre Level**：0.5-1.0（P1-P6小学生，DSE预备阶段）
+- **Level 1**：1.0-1.9（DSE Level 1水平）
+- **Level 2**：2.0-2.9（DSE Level 2水平）
+- **Level 3**：3.0-3.9（DSE Level 3水平）
+- **Level 4**：4.0-4.9（DSE Level 4水平）
+- **Level 5**：5.0-5.9（DSE Level 5*水平）
+
+**学习目标**：无论初始等级是多少，通过每日学习逐步提升至 Level 5.9。
+
+**重测机制**：学生可以随时选择重做入学测试重新评定等级，建议每2-3个月重测一次。
 
 ### 3.3 首页数据看板
 
@@ -565,15 +620,58 @@ DSE英语口语考试为 **Paper 4 Speaking**，分为两部分：
 ```
 进入错题本
   ├─ 支持按题型/知识点筛选
+  ├─ 显示今日需复习错题（根据艾宾浩斯曲线计算）
   └─ 开始复习
        ↓
        错题重现 → 再做一次
        ↓
-       做对 → 从错题本移除
-       做错 → 保留，下次继续复习
+       做对 → 进入下一阶段复习/从错题本移除
+       做错 → 重置复习阶段，下次间隔缩短
 ```
 
-**算法**：间隔重复，做错的题增加复习频率
+**艾宾浩斯间隔重复算法**：
+
+基于艾宾浩斯遗忘曲线，设置8个复习阶段：
+
+| 阶段 | 间隔时间 | 记忆保持率目标 |
+|------|---------|---------------|
+| 第1次复习 | 5分钟后 | 短期记忆巩固 |
+| 第2次复习 | 30分钟后 | 短期→中期过渡 |
+| 第3次复习 | 12小时后 | 中期记忆建立 |
+| 第4次复习 | 1天后 | 长期记忆开始 |
+| 第5次复习 | 2天后 | 长期记忆巩固 |
+| 第6次复习 | 4天后 | 深度记忆 |
+| 第7次复习 | 7天后 | 永久记忆形成 |
+| 第8次复习 | 15天后 | 完全掌握 |
+
+**算法逻辑**：
+```
+错题录入：
+1. 首次做错 → 加入错题本，设置阶段=1，下次复习时间=当前+5分钟
+
+复习调度：
+2. 每日凌晨计算今日需复习错题
+   今日复习列表 = 所有 next_review ≤ 今天的错题
+
+复习反馈：
+3. 用户复习错题：
+   IF 做对：
+     stage = stage + 1
+     IF stage > 8：从错题本移除（已掌握）
+     ELSE：按阶段设置下次复习时间
+   IF 做错：
+     stage = max(stage - 2, 1)  【回退2个阶段，最少到1】
+     设置下次复习时间为5分钟后（立即强化）
+
+难度调整：
+4. 连续2次在同一阶段做错 → 标记为"顽固错题"，增加提示和讲解
+5. 同一知识点错题>3道 → 推送相关知识点练习
+```
+
+**勤奋学模式中的错题复习**：
+- 每日固定5分钟错题复习时间
+- 优先复习阶段1-3的近期错题（遗忘临界点）
+- 复习完成自动进入当日学习统计
 
 ### 3.11 词汇PK对战模块
 
@@ -618,43 +716,109 @@ DSE英语口语考试为 **Paper 4 Speaking**，分为两部分：
 
 ### 3.13 计分逻辑与自适应调整算法
 
-#### 计分逻辑：效率得分制
+#### 计分逻辑：边际递减得分制
 
-**设计原则**：轻松学和勤奋学模式下，学习时间是固定的，不限制做题数量。做题数量越多，正确率越高，得分越高。
+**设计原则**：
+- 每个模块有固定时间和默认题量
+- 学生可在固定时间内完成更多题目
+- 多做题且正确率达标可获额外加分，但边际效果递减
+- 督促学生尽力多完成题目的同时，也要保证足够的思考时间和准确率
 
+**基础得分计算**：
 ```
-模块得分 = 正确率 × 做题数量 × 难度系数 × 时间效率系数
+基础得分 = 基础分 × 正确率系数 × 难度系数
 
 其中：
-- 正确率 = 答对题数 / 总做题数
-- 做题数量 = 该模块完成的题目总数
-- 难度系数 = 题目难度等级（1-5级对应1.0-1.5系数）
-- 时间效率系数 = 实际用时 / 模块规定时间（鼓励高效完成）
-
-示例：
-- 用户A：10分钟做20题，答对15题，正确率75%，难度3级
-  得分 = 0.75 × 20 × 1.2 × 1.0 = 18分
-- 用户B：10分钟做30题，答对20题，正确率67%，难度3级
-  得分 = 0.67 × 30 × 1.2 × 1.0 = 24分
-
-每日总分 = Σ(各模块得分)
+- 基础分 = 60分（完成默认题量即可获得）
+- 正确率系数 = min(正确率 / 0.6, 1.0)  【正确率60%为基准线】
+- 难度系数 = 当前等级对应系数（Level 1: 1.0, Level 5: 1.5）
 ```
 
-**激励逻辑**：
-- 做题越多，得分上限越高
-- 正确率越高，得分越高
-- 鼓励在保证正确率的前提下多做题
+**额外加分（边际递减）**：
+```
+额外加分 = 额外做题数 × 正确率奖励系数 × 边际递减系数
+
+其中：
+- 额外做题数 = 实际做题数 - 默认题量
+- 正确率奖励系数：
+  * 正确率 ≥ 80%：1.0（全额奖励）
+  * 正确率 60-79%：0.7（部分奖励）
+  * 正确率 < 60%：0（无奖励）
+- 边际递减系数 = 1 / (1 + 0.1 × 额外做题数)
+  【每多做1题，边际效益递减10%】
+
+示例：
+- 词汇模块：默认15题，学生完成25题（额外10题）
+- 正确率85%（≥80%，系数1.0）
+- 边际递减系数 = 1 / (1 + 0.1 × 10) = 0.5
+- 额外加分 = 10 × 1.0 × 0.5 = 5分
+- 模块总分 = 60 + 5 = 65分
+
+再做多10题（共额外20题）：
+- 边际递减系数 = 1 / (1 + 0.1 × 20) = 0.33
+- 额外加分 = 20 × 1.0 × 0.33 = 6.6分（边际效益明显降低）
+```
+
+**模块满分**：100分
+- 基础分：60分（完成默认题量+60%正确率）
+- 额外分：最高40分（需做大量题目且保持高正确率）
+
+**每日总分计算**：
+```
+每日总分 = Σ(各模块得分) / 模块数
+
+轻松学（4个模块）：
+总分 = (单词得分 + 词汇得分 + 语法律分 + 阅读得分) / 4
+
+勤奋学（5个模块，含错题复习）：
+总分 = (单词得分 + 词汇得分 + 语法律分 + 阅读得分 + 错题得分) / 5
+```
+
+**每日总分满分**：100分
+
+#### 难度系数体系
+
+**难度等级与系数对应表**：
+
+| 能力等级 | 难度系数范围 | 说明 |
+|---------|-------------|------|
+| Pre Level | 0.8 - 1.0 | 小学阶段，预备级 |
+| Level 1 | 1.0 - 1.9 | DSE Level 1，从1.0开始 |
+| Level 2 | 2.0 - 2.9 | DSE Level 2 |
+| Level 3 | 3.0 - 3.9 | DSE Level 3 |
+| Level 4 | 4.0 - 4.9 | DSE Level 4 |
+| Level 5 | 5.0 - 5.9 | DSE Level 5*，最高5.9 |
+
+**难度提升机制**：
+- 入学测试定级后，默认从该等级的最低值开始（如Level 1 → 1.0）
+- 通过每日学习和良好表现，难度系数逐步提升（每次+0.05至+0.1）
+- 达到当前等级上限（如1.9）后，自动晋升到下一等级
+- 学生可随时重做入学测试重新定级
 
 #### 自适应调整规则
 
+**推送难度计算**：
 ```
-调整规则：
-1. 某模块正确率 < 60% → 明日增加该模块练习权重，推送更多基础题
-2. 某模块正确率 > 85% → 明日升高难度，减少基础练习
-3. 错题知识点 → 自动加入第二天错题复习
-4. 做题数量过少（< 10题/模块）→ 提示"多做题可获得更高分数"
-5. 保持每日总时长约40分钟（轻松学35分钟，勤奋学45分钟）
+题目难度范围 = [当前难度系数 - 0.3, 当前难度系数 + 0.2]
+
+约束条件：
+1. 不会推送远超出当前水平的题目（上限：当前难度 + 0.5）
+2. 优先推送薄弱知识点的题目
+3. 新知识点题目占20%，巩固题目占80%
 ```
+
+**"远超出当前水平"判定**：
+- 题目难度 > 用户当前难度系数 + 0.5 → 判定为"过难"
+- 例如：用户当前2.3，不会推送难度 > 2.8 的题目
+- 过难的题目会导致挫败感，影响学习动力
+
+**每日调整规则**：
+1. **正确率 < 60%**：降低难度系数（-0.1），增加基础题比例
+2. **正确率 60-80%**：保持当前难度，微调知识点分布
+3. **正确率 > 80% 且完成额外题目**：提升难度系数（+0.05至+0.1）
+4. **错题知识点**：根据艾宾浩斯记忆曲线安排复习
+5. **做题数量 < 默认题量**：提示"多做题可获得更高分数"
+6. **连续3天正确率>85%**：建议重做入学测试，可能跳级
 
 ---
 
@@ -909,9 +1073,12 @@ DSE英语口语考试为 **Paper 4 Speaking**，分为两部分：
 | phone | VARCHAR(20) | 手机号 |
 | password_hash | VARCHAR(255) | 密码哈希 |
 | name | VARCHAR(100) | 用户昵称 |
-| grade | VARCHAR(20) | 年级：form3/form4/form5/form6 |
-| target_level | INT | 目标DSE等级 1-5 |
-| current_level | INT | 当前预估DSE等级 1-5 |
+| grade | VARCHAR(10) | 年级：P1-P6（小学）, F1-F6（中学） |
+| target_level | FLOAT | 目标等级 0.5-5.9（Pre Level: 0.5-1.0, Level 1-5: 1.0-5.9） |
+| current_level | FLOAT | 当前等级 0.5-5.9 |
+| study_mode | ENUM | 学习模式：relaxed（轻松学）/ diligent（勤奋学） |
+| phone | VARCHAR(20) | 手机号（可选） |
+| is_active | BOOLEAN | 账号是否激活 |
 | is_vip | BOOLEAN | 是否会员 |
 | vip_expire_at | TIMESTAMP | 会员过期时间 |
 | created_at | TIMESTAMP | 创建时间 |
@@ -933,12 +1100,12 @@ DSE英语口语考试为 **Paper 4 Speaking**，分为两部分：
 |------|------|------|
 | id | UUID | 主键 |
 | user_id | UUID | 关联用户 |
-| reading_level | INT | 阅读等级 1-5 |
-| listening_level | INT | 听力等级 1-5 |
-| writing_level | INT | 写作等级 1-5 |
-| speaking_level | INT | 口语等级 1-5 |
-| vocabulary_level | INT | 词汇等级 1-5 |
-| grammar_level | INT | 语法等级 1-5 |
+| reading_level | FLOAT | 阅读等级 0.5-5.9 |
+| listening_level | FLOAT | 听力等级 0.5-5.9 |
+| writing_level | FLOAT | 写作等级 0.5-5.9 |
+| speaking_level | FLOAT | 口语等级 0.5-5.9 |
+| vocabulary_level | FLOAT | 词汇等级 0.5-5.9 |
+| grammar_level | FLOAT | 语法等级 0.5-5.9 |
 | updated_at | TIMESTAMP | 更新时间 |
 
 ### 10.4 词汇表 `vocabulary`
@@ -978,7 +1145,7 @@ DSE英语口语考试为 **Paper 4 Speaking**，分为两部分：
 | sub_type | VARCHAR(50) | 子题型 |
 | part | ENUM | part_a/part_b |
 | topic | VARCHAR(100) | 知识点/主题 |
-| difficulty | INT | 难度 1-5 |
+| difficulty | FLOAT | 难度系数 0.5-5.9 |
 | content | JSONB | 题目内容（结构化存储选项/文章等）|
 | answer | JSONB | 参考答案 |
 | explanation | TEXT | 解析 |
@@ -1007,7 +1174,10 @@ DSE英语口语考试为 **Paper 4 Speaking**，分为两部分：
 | user_id | UUID | 用户 |
 | question_id | UUID | 错题 |
 | error_count | INT | 错了几次 |
+| stage | INT | 艾宾浩斯阶段（1-8）|
+| next_review | DATE | 下次复习日期 |
 | last_wrong_at | TIMESTAMP | 上次做错时间 |
+| is_mastered | BOOLEAN | 是否已掌握（阶段8后）|
 | created_at | TIMESTAMP | 创建时间 |
 
 ### 10.9 每日学习记录表 `daily_study_records`
@@ -1019,28 +1189,24 @@ DSE英语口语考试为 **Paper 4 Speaking**，分为两部分：
 | study_date | DATE | 学习日期 |
 | study_mode | ENUM | relaxed/diligent（轻松学/勤奋学）|
 | total_minutes | INT | 学习时长（分钟）|
-| total_score | INT | 今日总分（效率得分制）|
+| total_score | INT | 今日总分（满分100）|
 | total_questions | INT | 今日总做题数 |
 | total_correct | INT | 今日总答对数 |
 | total_accuracy | FLOAT | 今日总正确率 |
-| vocabulary_score | INT | 词汇得分 |
+| vocabulary_score | INT | 词汇得分（满分100）|
 | vocabulary_questions | INT | 词汇做题数 |
 | vocabulary_correct | INT | 词汇答对数 |
-| grammar_score | INT | 语法得分 |
+| vocabulary_extra | INT | 词汇额外做题数 |
+| grammar_score | INT | 语法得分（满分100）|
 | grammar_questions | INT | 语法做题数 |
 | grammar_correct | INT | 语法答对数 |
-| reading_score | INT | 阅读得分 |
+| grammar_extra | INT | 语法额外做题数 |
+| reading_score | INT | 阅读得分（满分100）|
 | reading_questions | INT | 阅读做题数 |
 | reading_correct | INT | 阅读答对数 |
-| listening_score | INT | 听力得分 |
-| listening_questions | INT | 听力做题数 |
-| listening_correct | INT | 听力答对数 |
-| writing_score | INT | 写作得分 |
-| writing_questions | INT | 写作做题数 |
-| writing_correct | INT | 写作答对数 |
-| speaking_score | INT | 口语得分 |
-| speaking_questions | INT | 口语做题数 |
-| speaking_correct | INT | 口语答对数 |
+| reading_extra | INT | 阅读额外做题数 |
+| error_review_score | INT | 错题复习得分（勤奋学模式）|
+| error_review_count | INT | 错题复习数量 |
 | completed | BOOLEAN | 是否完成 |
 | created_at | TIMESTAMP | 创建时间 |
 
@@ -1049,90 +1215,646 @@ DSE英语口语考试为 **Paper 4 Speaking**，分为两部分：
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | id | UUID | 主键 |
-| user_id | UUID | 用户 |
-| current_module | INT | 当前到第几个模块 |
-| modules | JSONB | 预生成的模块列表题目 |
-| started_at | TIMESTAMP | 开始时间 |
-| finished_at | TIMESTAMP | 结束时间 |
+| user_id | UUID | 用户（访客为null）|
+| is_guest | BOOLEAN | 是否访客会话 |
+| mode | ENUM | relaxed/diligent |
+| current_module | VARCHAR(50) | 当前模块名称 |
+| modules_data | JSONB | 模块数据（含题目）|
+| start_time | TIMESTAMP | 开始时间 |
+| end_time | TIMESTAMP | 结束时间 |
+| status | ENUM | active/completed/expired |
 | created_at | TIMESTAMP | 创建时间 |
 
-### 10.11 词汇PK对战表 `vocabulary_pk_games`
+---
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| id | UUID | 主键 |
-| user1_id | UUID | 玩家1 |
-| user2_id | UUID | 玩家2 |
-| score1 | INT | 玩家1得分 |
-| score2 | INT | 玩家2得分 |
-| status | ENUM | waiting/playing/finished |
-| started_at | TIMESTAMP | 开始时间 |
-| finished_at | TIMESTAMP | 结束时间 |
+## MVP阶段暂不实现的数据库表
 
-### 10.12 语音记录表 `audio_records`
+以下表在MVP阶段不创建，预留后续迭代：
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| id | UUID | 主键 |
-| user_id | UUID | 用户 |
-| question_id | UUID | 关联题目 |
-| audio_url | VARCHAR(255) | 音频文件地址 |
-| duration | INT | 时长（秒）|
-| asr_text | TEXT | ASR识别结果 |
-| pronunciation_score | FLOAT | 发音得分 |
-| content_score | FLOAT | 内容得分 |
-| created_at | TIMESTAMP | 创建时间 |
+### ~~词汇PK对战表~~ `vocabulary_pk_games` (MVP+2)
+玩家对战相关数据，需要Redis支持实时匹配。
+
+### ~~语音记录表~~ `audio_records` (MVP+2)
+口语练习录音和AI评分结果，需要ASR和AI服务。
+
+### ~~亲子账号表~~ `family_accounts` (MVP+3)
+家长-子账号关系，多孩家庭管理。
 
 ---
 
 ## 11. API接口设计
 
+### 统一响应格式
+
+所有API返回统一格式：
+```json
+{
+  "code": 200,
+  "data": {},
+  "message": "success"
+}
+```
+
+**错误码定义**：
+| 错误码 | 说明 | 场景 |
+|--------|------|------|
+| 200 | 成功 | 请求成功处理 |
+| 400 | 参数错误 | 缺少必填参数或格式错误 |
+| 401 | 未授权 | Token无效或过期 |
+| 403 | 禁止访问 | 权限不足 |
+| 404 | 资源不存在 | 请求的资源不存在 |
+| 409 | 冲突 | 资源已存在（如重复注册）|
+| 422 | 业务逻辑错误 | 业务规则校验失败 |
+| 429 | 请求过于频繁 | 限流触发 |
+| 500 | 服务器错误 | 服务器内部错误 |
+
+**认证机制**：JWT Token
+- 登录成功后返回 `accessToken` 和 `refreshToken`
+- 请求头携带：`Authorization: Bearer <accessToken>`
+- Token有效期：accessToken 2小时，refreshToken 7天
+
+---
+
 ### 认证相关
-- `POST /api/auth/register` - 注册
-- `POST /api/auth/login` - 登录
-- `POST /api/auth/logout` - 登出
+
+#### POST /api/auth/register - 注册
+
+**请求参数**：
+```json
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "name": "张三",
+  "grade": "F4",
+  "targetLevel": 4.0
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "user": {
+      "id": "uuid",
+      "email": "user@example.com",
+      "name": "张三",
+      "grade": "F4",
+      "currentLevel": null,
+      "targetLevel": 4.0,
+      "isVip": false
+    },
+    "accessToken": "eyJhbGc...",
+    "refreshToken": "eyJhbGc..."
+  },
+  "message": "注册成功"
+}
+```
+
+**错误场景**：
+- 409：邮箱已注册
+- 400：密码长度不足（<6位）
+- 400：年级格式错误（必须是P1-P6或F1-F6）
+
+---
+
+#### POST /api/auth/login - 登录
+
+**请求参数**：
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "user": {
+      "id": "uuid",
+      "email": "user@example.com",
+      "name": "张三",
+      "grade": "F4",
+      "currentLevel": 2.3,
+      "targetLevel": 4.0,
+      "isVip": false,
+      "studyMode": "relaxed"
+    },
+    "accessToken": "eyJhbGc...",
+    "refreshToken": "eyJhbGc..."
+  },
+  "message": "登录成功"
+}
+```
+
+**错误场景**：
+- 401：邮箱或密码错误
+- 403：账号已被禁用
+
+---
+
+#### POST /api/auth/logout - 登出
+
+**请求头**：`Authorization: Bearer <token>`
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": null,
+  "message": "登出成功"
+}
+```
+
+---
+
+#### POST /api/auth/refresh - 刷新Token
+
+**请求参数**：
+```json
+{
+  "refreshToken": "eyJhbGc..."
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "accessToken": "eyJhbGc...",
+    "refreshToken": "eyJhbGc..."
+  },
+  "message": "刷新成功"
+}
+```
+
+---
 
 ### 用户相关
-- `GET /api/user/me` - 获取当前用户信息
-- `GET /api/user/abilities` - 获取用户能力图谱
-- `PUT /api/user/profile` - 更新个人信息
 
-### 亲子账号相关
-- `POST /api/family/create-child` - 创建子账号
-- `GET /api/family/children` - 获取子账号列表
-- `POST /api/family/switch` - 切换到子账号
+#### GET /api/user/me - 获取当前用户信息
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "id": "uuid",
+    "email": "user@example.com",
+    "name": "张三",
+    "grade": "F4",
+    "currentLevel": 2.3,
+    "targetLevel": 4.0,
+    "targetDate": "2026-04-01",
+    "studyMode": "relaxed",
+    "studyDays": 7,
+    "totalScore": 1450,
+    "isVip": false,
+    "vipExpireAt": null
+  },
+  "message": "success"
+}
+```
+
+---
+
+#### GET /api/user/abilities - 获取用户能力图谱
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "overallLevel": 2.3,
+    "vocabulary": 2.5,
+    "grammar": 2.0,
+    "reading": 2.8,
+    "weakPoints": ["grammar", "tenses"],
+    "strongPoints": ["reading", "comprehension"],
+    "progressToTarget": 35
+  },
+  "message": "success"
+}
+```
+
+---
+
+#### PUT /api/user/profile - 更新个人信息
+
+**请求参数**（可选字段）：
+```json
+{
+  "name": "李四",
+  "grade": "F5",
+  "targetLevel": 5.0,
+  "targetDate": "2026-04-01"
+}
+```
+
+**响应数据**：更新后的用户信息
+
+---
+
+#### PUT /api/user/study-mode - 切换学习模式
+
+**请求参数**：
+```json
+{
+  "mode": "diligent"
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "studyMode": "diligent"
+  },
+  "message": "切换成功"
+}
+```
+
+---
 
 ### 入学测试
-- `POST /api/placement/start` - 开始入学测试
-- `POST /api/placement/submit` - 提交答案，计算结果
+
+#### POST /api/placement/start - 开始入学测试
+
+**请求参数**：
+```json
+{
+  "grade": "F4"
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "sessionId": "uuid",
+    "questions": [
+      {
+        "id": "q1",
+        "type": "vocabulary",
+        "difficulty": 2.5,
+        "content": "...",
+        "options": ["A", "B", "C", "D"]
+      }
+    ],
+    "timeLimit": 900
+  },
+  "message": "success"
+}
+```
+
+---
+
+#### POST /api/placement/submit - 提交答案
+
+**请求参数**：
+```json
+{
+  "sessionId": "uuid",
+  "answers": [
+    {"questionId": "q1", "answer": "A"},
+    {"questionId": "q2", "answer": "B"}
+  ]
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "level": 2.3,
+    "correctCount": 10,
+    "totalCount": 15,
+    "accuracy": 66.7,
+    "breakdown": {
+      "vocabulary": {"correct": 4, "total": 5},
+      "grammar": {"correct": 3, "total": 5},
+      "reading": {"correct": 3, "total": 5}
+    },
+    "recommendations": ["加强语法学习", "多练习时态题"]
+  },
+  "message": "测试完成"
+}
+```
+
+---
+
+#### POST /api/placement/retake - 重新测试
+
+**说明**：学生可主动重新进行入学测试
+
+**响应数据**：同 `/start`
+
+---
 
 ### 每日学习
-- `POST /api/study/start-daily` - 一键开始今日学习，生成会话
-- `GET /api/study/current-session` - 获取当前会话
-- `POST /api/study/next-module` - 进入下一个模块
-- `POST /api/study/finish-daily` - 完成今日学习，结算
-- `PUT /api/study/mode` - 切换学习模式（轻松学/勤奋学）
+
+#### POST /api/study/start-daily - 开始今日学习
+
+**请求参数**：
+```json
+{
+  "mode": "relaxed"
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "sessionId": "uuid",
+    "mode": "relaxed",
+    "modules": [
+      {
+        "name": "vocabulary",
+        "timeLimit": 600,
+        "defaultQuestions": 15,
+        "questions": [...]
+      }
+    ],
+    "startTime": "2026-03-25T10:00:00Z"
+  },
+  "message": "success"
+}
+```
+
+---
+
+#### GET /api/study/current-session - 获取当前会话
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "sessionId": "uuid",
+    "mode": "relaxed",
+    "currentModule": "vocabulary",
+    "modules": [...],
+    "progress": 25,
+    "startTime": "2026-03-25T10:00:00Z"
+  },
+  "message": "success"
+}
+```
+
+---
+
+#### POST /api/study/submit-module - 提交模块答案
+
+**请求参数**：
+```json
+{
+  "sessionId": "uuid",
+  "module": "vocabulary",
+  "answers": [
+    {"questionId": "q1", "answer": "A", "timeSpent": 45}
+  ],
+  "timeSpent": 580
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "module": "vocabulary",
+    "score": 75,
+    "correctCount": 12,
+    "totalCount": 15,
+    "extraQuestions": 3,
+    "accuracy": 80,
+    "nextModule": "grammar"
+  },
+  "message": "success"
+}
+```
+
+---
+
+#### POST /api/study/finish-daily - 完成今日学习
+
+**请求参数**：
+```json
+{
+  "sessionId": "uuid"
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "date": "2026-03-25",
+    "totalScore": 82,
+    "modules": {
+      "vocabulary": {"score": 85, "questions": 18, "correct": 15},
+      "grammar": {"score": 78, "questions": 15, "correct": 12},
+      "reading": {"score": 80, "questions": 3, "correct": 3}
+    },
+    "studyTime": 2400,
+    "streakDays": 8,
+    "weakPoints": ["grammar"],
+    "suggestions": ["明日增加语法练习"]
+  },
+  "message": "学习完成"
+}
+```
+
+---
 
 ### 词汇模块
-- `GET /api/vocabulary/daily-words` - 获取今日单词
-- `POST /api/vocabulary/pronunciation-check` - 检查发音
-- `POST /api/vocabulary/update-status` - 更新单词会/不会状态
-- `GET /api/vocabulary/pk/start` - 开始PK
-- `POST /api/vocabulary/pk/submit-answer` - 提交PK答案
+
+#### GET /api/vocabulary/daily - 获取今日单词
+
+**查询参数**：`?limit=20`
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "words": [
+      {
+        "id": "w1",
+        "word": "analyse",
+        "phonetic": "/ˈænəlaɪz/",
+        "definition": "v. 分析",
+        "example": "The data can be analysed to find patterns.",
+        "difficulty": 2.5,
+        "part": "part_a"
+      }
+    ]
+  },
+  "message": "success"
+}
+```
+
+---
+
+#### POST /api/vocabulary/status - 更新单词状态
+
+**请求参数**：
+```json
+{
+  "wordId": "w1",
+  "status": "learned"
+}
+```
+
+**status可选值**：`unknown`, `learning`, `learned`
+
+---
+
+#### GET /api/vocabulary/unknown-list - 获取生词本
+
+**响应数据**：生词列表
+
+---
 
 ### 答题
-- `POST /api/questions/submit` - 提交答案，返回批改结果
 
-### 写作口语
-- `POST /api/writing/score` - 提交作文，AI评分
-- `POST /api/speaking/score` - 提交录音，AI评分
+#### POST /api/questions/submit - 提交答案
+
+**请求参数**：
+```json
+{
+  "sessionId": "uuid",
+  "questionId": "q1",
+  "answer": "A",
+  "timeSpent": 45
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "isCorrect": true,
+    "correctAnswer": "A",
+    "explanation": "...",
+    "knowledgePoint": "grammar/tenses"
+  },
+  "message": "success"
+}
+```
+
+---
 
 ### 错题本
-- `GET /api/errors/list` - 获取错题列表
-- `POST /api/errors/review` - 错题复习提交
 
-### 排行榜
-- `GET /api/rankings/weekly` - 每周排行榜
+#### GET /api/errors/list - 获取错题列表
+
+**查询参数**：`?type=grammar&page=1&limit=20`
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "total": 45,
+    "todayReviewCount": 8,
+    "errors": [
+      {
+        "id": "e1",
+        "questionId": "q1",
+        "question": {...},
+        "errorCount": 3,
+        "stage": 4,
+        "nextReview": "2026-03-25",
+        "lastWrongAt": "2026-03-24"
+      }
+    ]
+  },
+  "message": "success"
+}
+```
+
+---
+
+#### POST /api/errors/review - 错题复习提交
+
+**请求参数**：
+```json
+{
+  "errorId": "e1",
+  "isCorrect": true
+}
+```
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "stage": 5,
+    "nextReview": "2026-03-27",
+    "isMastered": false
+  },
+  "message": "复习记录已更新"
+}
+```
+
+---
+
+### 学习记录
+
+#### GET /api/study/history - 获取学习历史
+
+**查询参数**：`?startDate=2026-03-01&endDate=2026-03-25`
+
+**响应数据**：
+```json
+{
+  "code": 200,
+  "data": {
+    "records": [
+      {
+        "date": "2026-03-25",
+        "score": 82,
+        "studyTime": 2400,
+        "completed": true
+      }
+    ],
+    "statistics": {
+      "totalDays": 30,
+      "completedDays": 25,
+      "averageScore": 78,
+      "levelProgress": 2.3
+    }
+  },
+  "message": "success"
+}
+```
+
+---
+
+### MVP阶段暂不实现的API（后续迭代）
+
+以下API在MVP阶段不实现，预留接口定义：
+
+| 接口 | 说明 | 计划版本 |
+|------|------|---------|
+| `POST /api/writing/score` | AI作文评分 | MVP+1 |
+| `POST /api/speaking/score` | AI口语评分 | MVP+2 |
+| `GET /api/vocabulary/pk/start` | 词汇PK对战 | MVP+2 |
+| `GET /api/rankings/weekly` | 排行榜 | MVP+2 |
+| `POST /api/family/create-child` | 创建子账号 | MVP+3 |
 
 ---
 
