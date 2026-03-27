@@ -113,8 +113,8 @@ export default function AssessmentPage() {
 
       const result = await response.json();
 
-      if (result.code !== 0) {
-        throw new Error(result.message || '启动测试失败');
+      if (!result.success) {
+        throw new Error(result.error || '启动测试失败');
       }
 
       setSessionId(result.data.sessionId);

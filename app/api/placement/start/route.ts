@@ -24,15 +24,44 @@ const difficultyMap: Record<Grade, number> = {
 };
 
 async function fetchQuestionsByDifficulty(difficulty: number, types: QuestionType[], count: number): Promise<QuestionData[]> {
-  const questions = await prisma.question.findMany({
-    where: {
-      difficulty,
-      type: {
-        in: types,
+  // Search for questions within ±0.5 difficulty range, then expand if needed
+  let minDifficulty = difficulty - 0.5;
+  let maxDifficulty = difficulty + 0.5;
+  
+  let questions: any[] = [];
+  
+  // Try progressively wider ranges until we have enough questions
+  while (questions.length < count && minDifficulty >= 0.5) {
+    questions = await prisma.question.findMany({
+      where: {
+        difficulty: {
+          gte: Math.max(0.5, minDifficulty),
+          lte: Math.min(5.0, maxDifficulty),
+        },
+        type: {
+          in: types,
+        },
       },
-    },
-    take: count * 3,
-  });
+      take: count * 3,
+    });
+    
+    if (questions.length < count) {
+      minDifficulty -= 0.5;
+      maxDifficulty += 0.5;
+    }
+  }
+  
+  // Fallback: if still not enough, get any questions of these types regardless of difficulty
+  if (questions.length < count) {
+    questions = await prisma.question.findMany({
+      where: {
+        type: {
+          in: types,
+        },
+      },
+      take: count * 3,
+    });
+  }
 
   const shuffled = questions.sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count).map((q) => ({

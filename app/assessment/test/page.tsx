@@ -104,8 +104,8 @@ export default function PlacementTestPage() {
 
       const result = await response.json();
 
-      if (result.code !== 0) {
-        throw new Error(result.message || '提交答案失败');
+      if (!result.success) {
+        throw new Error(result.error || '提交答案失败');
       }
 
       const isCorrect = selectedAnswer.toLowerCase() ===
