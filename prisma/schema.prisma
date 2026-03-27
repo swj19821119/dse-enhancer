@@ -31,7 +31,6 @@ model User {
   answers         UserAnswer[]
   errorQuestions  UserErrorQuestion[]
   dailyRecords    DailyStudyRecord[]
-  studySessions   StudySession[]
 }
 
 // 2. 能力等级表
@@ -175,15 +174,13 @@ model DailyStudyRecord {
 
 // 9. 学习会话表
 model StudySession {
-  id            String   @id @default(uuid())
-  userId        String
-  currentModule Int      @default(0)
-  modules       String?  // 预生成的模块列表题目（JSON字符串）
-  startedAt     DateTime @default(now())
+  id            String    @id @default(uuid())
+  userId        String?   // 用户ID（可选，未登录用户为null）
+  currentModule Int       @default(0)
+  modules       String?   // 预生成的模块列表题目（JSON字符串）
+  startedAt     DateTime  @default(now())
   finishedAt    DateTime?
-  createdAt     DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id])
+  createdAt     DateTime  @default(now())
 }
 
 // 10. 入学测试会话表

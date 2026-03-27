@@ -153,7 +153,7 @@ export async function POST(request: NextRequest) {
 
     const session = await prisma.studySession.create({
       data: {
-        userId: userId || 'guest',
+        userId: userId || undefined,
         currentModule: 0,
         modules: JSON.stringify(config),
       },
