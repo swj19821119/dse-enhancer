@@ -102,7 +102,7 @@ export default function AssessmentPage() {
     setError(null);
 
     try {
-      const response = await fetch('/api/placement/start', {
+      const response = await fetch('/api/placement/start/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

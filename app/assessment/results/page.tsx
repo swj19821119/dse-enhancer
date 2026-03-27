@@ -60,8 +60,8 @@ function PlacementResultsContent() {
 
       const data = await response.json();
 
-      if (data.code !== 0) {
-        throw new Error(data.message || '获取结果失败');
+      if (!data.success) {
+        throw new Error(data.error || '获取结果失败');
       }
 
       setResult(data.data);

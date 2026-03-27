@@ -86,7 +86,7 @@ export default function PlacementTestPage() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/placement/submit', {
+      const response = await fetch('/api/placement/submit/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -49,7 +49,7 @@ export default function ErrorDetailPage() {
 
       const data = await response.json();
 
-      if (data.code === 0) {
+      if (data.success) {
         const error = data.data.errors.find((e: ErrorDetail) => e.id === errorId);
         if (error) {
           setErrorDetail(error);
@@ -69,7 +69,7 @@ export default function ErrorDetailPage() {
 
     setResetting(true);
     try {
-      const response = await fetch('/api/errors/review', {
+      const response = await fetch('/api/errors/review/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export default function ErrorDetailPage() {
 
       const data = await response.json();
 
-      if (data.code === 0) {
+      if (data.success) {
         loadErrorDetail();
       } else {
         alert('重置失败：' + data.message);
