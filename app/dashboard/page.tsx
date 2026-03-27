@@ -5,14 +5,38 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/auth';
-import { BookOpen, Trophy, GraduationCap, Clock, LogOut, BrainCircuit, XCircle, BarChart3 } from 'lucide-react';
+import { BookOpen, Trophy, GraduationCap, Clock, LogOut, BrainCircuit, BarChart3, XCircle, ArrowUp, ArrowDown, TrendingUp, TrendingDown } from 'lucide-react';
 import Link from 'next/link';
+
+interface AbilityData {
+  reading: number;
+  listening: number;
+  writing: number;
+  speaking: number;
+}
+
+interface TrendData {
+  date: string;
+  score: string;
+}
 
 export default function DashboardPage() {
   const router = useRouter();
   const { user, logout, isGuest, setGuest } = useAuthStore();
   const [studyMode, setStudyMode] = useState<'relaxed' | 'diligent'>('relaxed');
   const [todayCompleted, setTodayCompleted] = useState(false);
+  
+  const [abilityData, setAbilityData] = useState<AbilityData | null>(null);
+  const [trendData, setTrendData] = useState<TrendData[] | null>(null);
+  const [stats, setStats] = useState({
+    studyDays: 0,
+    vocabulary: 0,
+    consecutiveDays: 0,
+    level: 'Level 1',
+    averageScore: 0,
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const checkTodayStatus = () => {
@@ -35,6 +59,46 @@ export default function DashboardPage() {
     }
   }, [user, router, setGuest]);
 
+  useEffect(() => {
+    if (!user || isGuest) return;
+
+    const fetchDashboardData = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const [abilityRes, trendRes] = await Promise.all([
+          fetch(`/api/dashboard/ability?user_id=${user.id}`),
+          fetch(`/api/dashboard/trend?user_id=${user.id}&timeframe=7d`),
+        ]);
+
+        const abilityData = await abilityRes.json();
+        const trendData = await trendRes.json();
+
+        if (abilityData.success) {
+          setAbilityData(abilityData.data);
+        }
+
+        if (trendData.success) {
+          setTrendData(trendData.data.dailyProgress || []);
+          setStats({
+            studyDays: trendData.data.statistics?.totalDays || 0,
+            vocabulary: abilityData.data.reading || 1,
+            consecutiveDays: 0,
+            level: `Level ${abilityData.data.reading || 1}`,
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load dashboard data:', err);
+        setError('加载数据失败，请稍后重试');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [user, isGuest]);
+
   if (!user && !isGuest) {
     return null;
   }
@@ -44,9 +108,19 @@ export default function DashboardPage() {
     router.push('/');
   };
 
+  const getLevelLabel = (level: number) => {
+    const labels: Record<number, string> = {
+      1: '基础',
+      2: '初级',
+      3: '中级',
+      4: '进阶',
+      5: '高级',
+    };
+    return labels[level] || 'Level 1';
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
-      {/* Header */}
       <header className="bg-white/10 backdrop-blur-lg border-b border-white/10">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
           <div>
@@ -91,9 +165,7 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 py-10">
-        {/* 游客提示 */}
         {isGuest && (
           <div className="mb-10">
             <Card className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30">
@@ -117,155 +189,109 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Quick Actions */}
-        <div className="mb-10">
-          {isGuest ? (
-            <Link href="/assessment">
-              <Button className="text-xl px-10 py-8 w-full md:w-auto bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-xl shadow-blue-500/30">
-                <Clock className="w-6 h-6 mr-3" />
-                开始体验测试
-              </Button>
-            </Link>
-          ) : (
-            <div className="space-y-4">
-              {todayCompleted ? (
-                <Card className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30">
-                  <CardContent className="pt-8 pb-8 text-center">
-                    <h3 className="text-2xl font-bold text-white mb-4">
-                      🎉 今日学习已完成！
-                    </h3>
-                    <p className="text-white/80 mb-6">
-                      太棒了！你已完成今日{studyMode === 'relaxed' ? '40' : '60'}分钟学习目标
-                    </p>
-                    <Link href="/study">
-                      <Button className="w-full h-14 text-lg bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600">
-                        开始新的一轮学习
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              ) : (
-                <>
-                  <div className="flex items-center justify-center gap-4 mb-4">
-                    <button
-                      onClick={() => setStudyMode('relaxed')}
-                      className={`flex-1 py-4 px-6 rounded-xl border-2 transition-all ${
-                        studyMode === 'relaxed'
-                          ? 'bg-blue-500/20 border-blue-500 text-white'
-                          : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'
-                      }`}
-                    >
-                      <div className="text-2xl mb-1">☕</div>
-                      <div className="font-semibold">轻松学</div>
-                      <div className="text-sm opacity-70">40分钟</div>
-                    </button>
-                    <button
-                      onClick={() => setStudyMode('diligent')}
-                      className={`flex-1 py-4 px-6 rounded-xl border-2 transition-all ${
-                        studyMode === 'diligent'
-                          ? 'bg-purple-500/20 border-purple-500 text-white'
-                          : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'
-                      }`}
-                    >
-                      <div className="text-2xl mb-1">🔥</div>
-                      <div className="font-semibold">勤奋学</div>
-                      <div className="text-sm opacity-70">60分钟</div>
-                    </button>
-                  </div>
+        {error && (
+          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
+            <p className="text-white font-medium">{error}</p>
+          </div>
+        )}
 
-                  <Link href={`/study?mode=${studyMode}`}>
-                    <Button className="text-xl px-10 py-8 w-full md:w-auto bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-xl shadow-blue-500/30">
-                      <Clock className="w-6 h-6 mr-3" />
-                      一键开始今日{studyMode === 'relaxed' ? '40' : '60'}分钟学习
-                    </Button>
-                  </Link>
-                </>
-              )}
+        <div className="mb-10">
+          {!user || isGuest ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-white/70">学习天数</CardTitle>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center">
+                    <GraduationCap className="w-5 h-5 text-blue-400" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-extrabold text-white">{loading ? '...' : stats.studyDays} 天</div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-white/70">当前等级</CardTitle>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-500/20 flex items-center justify-center">
+                    <Trophy className="w-5 h-5 text-yellow-400" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-extrabold text-white">
+                    {loading ? '...' : stats.level}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-white/70">阅读能力</CardTitle>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
+                    <BrainCircuit className="w-5 h-5 text-green-400" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-extrabold text-white">
+                    {loading ? '...' : `Level ${abilityData?.reading || 1}`}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-white/70">听力能力</CardTitle>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-teal-500/20 flex items-center justify-center">
+                    <BrainCircuit className="w-5 h-5 text-cyan-400" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-extrabold text-white">
+                    {loading ? '...' : `Level ${abilityData?.listening || 1}`}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-white/70">写作能力</CardTitle>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center">
+                    <BookOpen className="w-5 h-5 text-orange-400" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-extrabold text-white">
+                    {loading ? '...' : `Level ${abilityData?.writing || 1}`}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
+          ) : (
+            <p className="text-white/80 text-center py-10">
+              请先登录查看学习数据
+            </p>
           )}
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-white/70">学习天数</CardTitle>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center">
-                <GraduationCap className="w-5 h-5 text-blue-400" />
+        <div className="mb-10">
+          {loading && (
+            <div className="text-center py-20">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-t-white/20"></div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-extrabold text-white">0 天</div>
-            </CardContent>
-          </Card>
+          )}
 
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-white/70">当前等级</CardTitle>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-500/20 flex items-center justify-center">
-                <Trophy className="w-5 h-5 text-yellow-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-extrabold text-white">
-                Level {user?.currentLevel || 1}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-white/70">累计词汇</CardTitle>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
-                <BookOpen className="w-5 h-5 text-green-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-extrabold text-white">0 词</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-white/70">连续学习</CardTitle>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center">
-                <Clock className="w-5 h-5 text-orange-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-extrabold text-white">0 天</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Access */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Link href="/assessment">
-            <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
-              <CardHeader>
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mb-3">
-                  <BrainCircuit className="w-7 h-7 text-purple-400" />
-                </div>
-                <CardTitle className="text-white text-xl">入学测试</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-white/70">15分钟精准评估你的DSE英语水平</p>
-              </CardContent>
-            </Card>
-          </Link>
-
-          {!isGuest && (
-            <>
-              <Link href="/vocabulary">
+          {!loading && !isGuest && user && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Link href="/assessment">
                 <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
                   <CardHeader>
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center mb-3">
-                      <BookOpen className="w-7 h-7 text-blue-400" />
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mb-3">
+                      <BrainCircuit className="w-7 h-7 text-purple-400" />
                     </div>
-                    <CardTitle className="text-white text-xl">词汇闯关</CardTitle>
+                    <CardTitle className="text-white text-xl">入学测试</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-white/70">背单词、生词本、间隔重复</p>
+                    <p className="text-white/70">15分钟精准评估你的DSE英语水平</p>
                   </CardContent>
                 </Card>
               </Link>
@@ -298,20 +324,60 @@ export default function DashboardPage() {
                 </Card>
               </Link>
 
-              <Link href="/ability-chart">
+              <Link href="/vocabulary">
                 <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
                   <CardHeader>
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-teal-500/20 flex items-center justify-center mb-3">
-                      <BarChart3 className="w-7 h-7 text-cyan-400" />
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center mb-3">
+                      <BookOpen className="w-7 h-7 text-blue-400" />
                     </div>
-                    <CardTitle className="text-white text-xl">能力图谱</CardTitle>
+                    <CardTitle className="text-white text-xl">词汇闯关</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-white/70">可视化展示听说读写能力</p>
+                    <p className="text-white/70">背单词、生词本、间隔重复</p>
                   </CardContent>
                 </Card>
               </Link>
-            </>
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+          {trendData && trendData.length > 0 && (
+            <Card className="col-span-full bg-white/10 backdrop-blur-lg border-white/20">
+              <CardHeader>
+                <CardTitle className="text-white text-lg font-semibold">学习趋势（近7天）</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-white/60 mb-2 text-sm">平均分数</p>
+                    <p className="text-3xl font-extrabold text-white">
+                      {trendData.statistics?.averageScore || 0}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-7 gap-2 text-center">
+                    {trendData.dailyProgress.map((day, index) => {
+                      const date = new Date(day.date);
+                      const dayLabel = `${date.getMonth() + 1}/${date.getDate()}`;
+                      return (
+                        <div key={index} className="flex flex-col items-center">
+                          <span className="text-white/60 text-xs mb-1">{dayLabel}</span>
+                          <div 
+                            className="w-8 h-8 rounded-full flex items-center justify-center ${
+                              day.score > Number(trendData.data.statistics?.averageScore || 0)
+                                ? 'bg-green-500/20 border-2 border-green-400'
+                                : 'bg-red-500/20 border-2 border-red-400'
+                            }"
+                          >
+                            <span className="text-white text-sm font-semibold">{day.score}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           )}
         </div>
       </main>
