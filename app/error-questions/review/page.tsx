@@ -61,7 +61,7 @@ export default function ErrorReviewPage() {
           <CardContent className="pt-8 pb-8 text-center">
             {isLoading ? (
               <>
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-white/20 mx-auto mb-4" aria-label="Loading"></div>
                 <p className="text-white/70">加载中...</p>
               </>
             ) : (

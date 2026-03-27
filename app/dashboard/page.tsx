@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/auth';
-import { BookOpen, Trophy, GraduationCap, Clock, LogOut, BrainCircuit, BarChart3, XCircle, ArrowUp, ArrowDown, TrendingUp, TrendingDown } from 'lucide-react';
+import { BookOpen, Trophy, GraduationCap, Clock, LogOut, BrainCircuit, BarChart3, XCircle, ArrowUp, ArrowDown, TrendingUp, TrendingDown, FileText, Mic, User, RefreshCw, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { AbilityRadarChart } from '@/components/charts/AbilityRadarChart';
+import { LearningTrendChart } from '@/components/charts/LearningTrendChart';
 
 interface AbilityData {
   reading: number;
@@ -16,8 +18,21 @@ interface AbilityData {
 }
 
 interface TrendData {
-  date: string;
-  score: string;
+  timeframe: string;
+  dailyProgress: { date: string; score: number }[];
+  statistics: {
+    totalDays: number;
+    averageScore: number;
+    averageMinutes: number;
+    highestScore: number;
+    lowestScore: number;
+  };
+}
+
+interface ErrorStats {
+  totalErrors: number;
+  dueTodayCount: number;
+  masteredCount: number;
 }
 
 export default function DashboardPage() {
@@ -27,7 +42,8 @@ export default function DashboardPage() {
   const [todayCompleted, setTodayCompleted] = useState(false);
   
   const [abilityData, setAbilityData] = useState<AbilityData | null>(null);
-  const [trendData, setTrendData] = useState<TrendData[] | null>(null);
+  const [trendData, setTrendData] = useState<TrendData | null>(null);
+  const [errorStats, setErrorStats] = useState<ErrorStats | null>(null);
   const [stats, setStats] = useState({
     studyDays: 0,
     vocabulary: 0,
@@ -62,42 +78,60 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!user || isGuest) return;
 
-    const fetchDashboardData = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const [abilityRes, trendRes] = await Promise.all([
-          fetch(`/api/dashboard/ability?user_id=${user.id}`),
-          fetch(`/api/dashboard/trend?user_id=${user.id}&timeframe=7d`),
-        ]);
-
-        const abilityData = await abilityRes.json();
-        const trendData = await trendRes.json();
-
-        if (abilityData.success) {
-          setAbilityData(abilityData.data);
-        }
-
-        if (trendData.success) {
-          setTrendData(trendData.data.dailyProgress || []);
-          setStats({
-            studyDays: trendData.data.statistics?.totalDays || 0,
-            vocabulary: abilityData.data.reading || 1,
-            consecutiveDays: 0,
-            level: `Level ${abilityData.data.reading || 1}`,
-          });
-        }
-      } catch (err) {
-        console.error('Failed to load dashboard data:', err);
-        setError('加载数据失败，请稍后重试');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchDashboardData();
   }, [user, isGuest]);
+
+  const fetchDashboardData = useCallback(async () => {
+    if (!user) return;
+    
+    setLoading(true);
+    setError(null);
+
+    try {
+      const token = localStorage.getItem('token');
+      const [abilityRes, trendRes, errorStatsRes] = await Promise.all([
+        fetch(`/api/dashboard/ability?user_id=${user.id}`),
+        fetch(`/api/dashboard/trend?user_id=${user.id}&timeframe=7d`),
+        token ? fetch('/api/errors/stats', {
+          headers: { Authorization: `Bearer ${token}` }
+        }) : Promise.resolve(null),
+      ]);
+
+      const abilityData = await abilityRes.json();
+      const trendData = await trendRes.json();
+
+      if (abilityData.success) {
+        setAbilityData(abilityData.data);
+      }
+
+      if (trendData.success) {
+        setTrendData(trendData.data);
+        setStats({
+          studyDays: trendData.data.statistics?.totalDays || 0,
+          vocabulary: abilityData.data.reading || 1,
+          consecutiveDays: 0,
+          level: `Level ${abilityData.data.reading || 1}`,
+          averageScore: trendData.data.statistics?.averageScore || 0,
+        });
+      }
+
+      if (errorStatsRes) {
+        const errorStatsData = await errorStatsRes.json();
+        if (errorStatsData.success) {
+          setErrorStats({
+            totalErrors: errorStatsData.data.total_errors,
+            dueTodayCount: errorStatsData.data.due_today_count,
+            masteredCount: errorStatsData.data.mastered_count,
+          });
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load dashboard data:', err);
+      setError('加载数据失败，请稍后重试');
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
 
   if (!user && !isGuest) {
     return null;
@@ -153,14 +187,25 @@ export default function DashboardPage() {
               </Button>
             </div>
           ) : (
-            <Button
-              variant="secondary"
-              className="bg-white/10 text-white hover:bg-white/20 border border-white/30"
-              onClick={handleLogout}
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              退出
-            </Button>
+<div className="flex gap-2">
+                <Link href="/profile">
+                  <Button
+                    variant="secondary"
+                    className="bg-white/10 text-white hover:bg-white/20 border border-white/30"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    资料
+                  </Button>
+                </Link>
+                <Button
+                  variant="secondary"
+                  className="bg-white/10 text-white hover:bg-white/20 border border-white/30"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  退出
+                </Button>
+              </div>
           )}
         </div>
       </header>
@@ -190,8 +235,70 @@ export default function DashboardPage() {
         )}
 
         {error && (
-          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
+          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center justify-between">
             <p className="text-white font-medium">{error}</p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => fetchDashboardData()}
+              disabled={loading}
+              className="border-red-400/50 text-red-300 hover:bg-red-500/20"
+              aria-label="重试加载数据"
+            >
+              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+              重试
+            </Button>
+          </div>
+        )}
+
+        {errorStats && errorStats.dueTodayCount > 0 && !isGuest && (
+          <div className="mb-8">
+            <Link href="/error-questions/review">
+              <Card className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30 cursor-pointer hover:from-orange-500/30 hover:to-red-500/30 transition-all">
+                <CardContent className="pt-6 pb-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-2xl bg-orange-500/30 flex items-center justify-center">
+                        <AlertTriangle className="w-7 h-7 text-orange-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-1">
+                          {errorStats.dueTodayCount} 道错题待复习
+                        </h3>
+                        <p className="text-white/70 text-sm">
+                          按艾宾浩斯遗忘曲线，今日需要复习这些错题
+                        </p>
+                      </div>
+                    </div>
+                    <Button className="bg-orange-500 hover:bg-orange-600 text-white">
+                      开始复习
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        )}
+
+        {errorStats && errorStats.dueTodayCount === 0 && errorStats.totalErrors > 0 && !isGuest && (
+          <div className="mb-8">
+            <Card className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30">
+              <CardContent className="pt-6 pb-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-green-500/30 flex items-center justify-center">
+                    <CheckCircle2 className="w-7 h-7 text-green-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-1">
+                      太棒了！今日没有待复习的错题
+                    </h3>
+                    <p className="text-white/70 text-sm">
+                      已掌握 {errorStats.masteredCount}/{errorStats.totalErrors} 道错题
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
 
@@ -276,7 +383,7 @@ export default function DashboardPage() {
         <div className="mb-10">
           {loading && (
             <div className="text-center py-20">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-t-white/20"></div>
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-t-white/20" aria-label="Loading"></div>
               </div>
           )}
 
@@ -337,45 +444,65 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               </Link>
+
+              <Link href="/writing">
+                <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
+                  <CardHeader>
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mb-3">
+                      <FileText className="w-7 h-7 text-purple-400" />
+                    </div>
+                    <CardTitle className="text-white text-xl">写作练习</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-white/70">范文对比、自评清单</p>
+                  </CardContent>
+                </Card>
+              </Link>
+
+              <Link href="/speaking">
+                <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all cursor-pointer hover:scale-[1.02]">
+                  <CardHeader>
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500/20 to-orange-500/20 flex items-center justify-center mb-3">
+                      <Mic className="w-7 h-7 text-rose-400" />
+                    </div>
+                    <CardTitle className="text-white text-xl">口语练习</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-white/70">录音对比、自评清单</p>
+                  </CardContent>
+                </Card>
+              </Link>
             </div>
           )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-          {trendData && trendData.length > 0 && (
+          {abilityData && !isGuest && (
+            <Card className="bg-white/10 backdrop-blur-lg border-white/20">
+              <CardContent className="pt-6">
+                <AbilityRadarChart data={abilityData} />
+              </CardContent>
+            </Card>
+          )}
+
+          {trendData && trendData.dailyProgress && trendData.dailyProgress.length > 0 && !isGuest && (
+            <Card className="bg-white/10 backdrop-blur-lg border-white/20">
+              <CardContent className="pt-6">
+                <LearningTrendChart
+                  data={trendData.dailyProgress}
+                  averageScore={trendData.statistics?.averageScore}
+                  timeframe={trendData.timeframe}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          {(!trendData || !trendData.dailyProgress || trendData.dailyProgress.length === 0) && !isGuest && user && (
             <Card className="col-span-full bg-white/10 backdrop-blur-lg border-white/20">
-              <CardHeader>
-                <CardTitle className="text-white text-lg font-semibold">学习趋势（近7天）</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-white/60 mb-2 text-sm">平均分数</p>
-                    <p className="text-3xl font-extrabold text-white">
-                      {trendData.statistics?.averageScore || 0}
-                    </p>
-                  </div>
-                  <div className="grid grid-cols-7 gap-2 text-center">
-                    {trendData.dailyProgress.map((day, index) => {
-                      const date = new Date(day.date);
-                      const dayLabel = `${date.getMonth() + 1}/${date.getDate()}`;
-                      return (
-                        <div key={index} className="flex flex-col items-center">
-                          <span className="text-white/60 text-xs mb-1">{dayLabel}</span>
-                          <div 
-                            className="w-8 h-8 rounded-full flex items-center justify-center ${
-                              day.score > Number(trendData.data.statistics?.averageScore || 0)
-                                ? 'bg-green-500/20 border-2 border-green-400'
-                                : 'bg-red-500/20 border-2 border-red-400'
-                            }"
-                          >
-                            <span className="text-white text-sm font-semibold">{day.score}</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+              <CardContent className="pt-8 pb-8 text-center">
+                <BarChart3 className="w-12 h-12 text-white/30 mx-auto mb-4" />
+                <p className="text-white/60">暂无学习数据</p>
+                <p className="text-white/40 text-sm mt-1">开始学习后即可查看趋势图表</p>
               </CardContent>
             </Card>
           )}

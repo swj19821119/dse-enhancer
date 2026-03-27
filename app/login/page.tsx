@@ -16,9 +16,29 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const validateForm = () => {
+    if (!email.trim()) {
+      setError('请输入邮箱');
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('请输入有效的邮箱地址');
+      return false;
+    }
+    if (!password) {
+      setError('请输入密码');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (!validateForm()) return;
+
     setLoading(true);
 
      try {
@@ -78,11 +98,16 @@ export default function LoginPage() {
               />
             </div>
             {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
+              <div className="text-red-500 text-sm text-center" role="alert" aria-live="polite">{error}</div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? '登录中...' : '登录'}
             </Button>
+            <div className="text-center">
+              <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                忘记密码？
+              </Link>
+            </div>
           </form>
           <div className="mt-4 text-center text-sm">
             还没有账号？{' '}

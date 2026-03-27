@@ -12,6 +12,7 @@ import GrammarModule from './modules/GrammarModule';
 import ReadingModule from './modules/ReadingModule';
 import ListeningModule from './modules/ListeningModule';
 import ErrorReviewModule from './modules/ErrorReviewModule';
+import PartBModule from './modules/PartBModule';
 import { Play, Pause, Clock, CheckCircle2, ArrowLeft, AlertCircle, Star, TrendingUp } from 'lucide-react';
 
 const MODULE_CONFIG = {
@@ -240,6 +241,17 @@ function StudyContent() {
             isLastQuestion={isLastQuestion}
           />
         );
+      case 'part_b':
+        return (
+          <PartBModule
+            question={current_question}
+            questionIndex={current_question_index}
+            totalQuestions={questions_in_module.length}
+            onAnswer={handleAnswer}
+            onNext={handleNextQuestion}
+            isLastQuestion={isLastQuestion}
+          />
+        );
       default:
         return null;
     }
@@ -248,7 +260,7 @@ function StudyContent() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">正在加载...</div>
+        <div className="text-white text-xl" aria-live="polite">正在加载...</div>
       </div>
     );
   }
@@ -323,6 +335,7 @@ function StudyContent() {
             }}
             variant="secondary"
             className="bg-white/10 text-white hover:bg-white/20 border border-white/30"
+            aria-label="返回首页"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             返回

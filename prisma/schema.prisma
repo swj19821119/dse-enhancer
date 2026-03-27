@@ -7,189 +7,173 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-// 1. 用户表
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  password     String
-  nickname     String
-  avatarUrl    String?
-  grade        String?  // form3/form4/form5/form6
-  targetLevel  Int?     // 目标DSE等级 1-5
-  currentLevel Int?     // 当前预估DSE等级 1-5
-  isVip        Boolean  @default(false)
-  vipExpireAt  DateTime?
-  phone        String?  // 手机号
-  parentId     String?  // 父级用户ID
-  studyMode    String?  // 学习模式
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  // 关系
-  abilities       UserAbility?
-  vocabulary      UserVocabulary[]
-  answers         UserAnswer[]
-  errorQuestions  UserErrorQuestion[]
-  dailyRecords    DailyStudyRecord[]
+  id                      String              @id @default(uuid())
+  email                   String              @unique
+  password                String
+  nickname                String
+  avatarUrl               String?
+  grade                   String?
+  targetLevel             Int?
+  currentLevel            Int?
+  isVip                   Boolean             @default(false)
+  vipExpireAt             DateTime?
+  phone                   String?
+  parentId                String?
+  studyMode               String?
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  emailVerified           DateTime?
+  resetToken              String?
+  resetTokenExpiry        DateTime?
+  verificationToken       String?
+  verificationTokenExpiry DateTime?
+  dailyRecords            DailyStudyRecord[]
+  abilities               UserAbility?
+  answers                 UserAnswer[]
+  errorQuestions          UserErrorQuestion[]
+  vocabulary              UserVocabulary[]
 }
 
-// 2. 能力等级表
 model UserAbility {
   id              String   @id @default(uuid())
   userId          String   @unique
-  readingLevel    Int      @default(1)  // 阅读等级 1-5
-  listeningLevel  Int      @default(1)  // 听力等级 1-5
-  writingLevel    Int      @default(1)  // 写作等级 1-5
-  speakingLevel   Int      @default(1)  // 口语等级 1-5
-  vocabularyLevel Int      @default(1)  // 词汇等级 1-5
-  grammarLevel    Int      @default(1)  // 语法等级 1-5
+  readingLevel    Int      @default(1)
+  listeningLevel  Int      @default(1)
+  writingLevel    Int      @default(1)
+  speakingLevel   Int      @default(1)
+  vocabularyLevel Int      @default(1)
+  grammarLevel    Int      @default(1)
   updatedAt       DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id])
+  user            User     @relation(fields: [userId], references: [id])
 }
 
-// 3. 词汇表
 model Vocabulary {
-  id         String   @id @default(uuid())
-  word       String
-  phonetic   String?
-  definition String
-  part       String?  // part_a/part_b
-  frequency  Int?     // DSE考频
-  topic      String?  // 主题分类
-  example    String?  // 真题例句
-  difficulty Int      @default(1)  // 难度 1-5
-  createdAt  DateTime @default(now())
-
+  id             String           @id @default(uuid())
+  word           String
+  phonetic       String?
+  definition     String
+  part           String?
+  frequency      Int?
+  topic          String?
+  example        String?
+  difficulty     Int              @default(1)
+  createdAt      DateTime         @default(now())
   userVocabulary UserVocabulary[]
 }
 
-// 4. 用户单词记忆表
 model UserVocabulary {
-  id               String   @id @default(uuid())
+  id               String     @id @default(uuid())
   userId           String
   vocabularyId     String
-  status           String   @default("unknown")  // learned/unknown/learning
+  status           String     @default("unknown")
   lastReviewed     DateTime?
-  nextReview       DateTime?  // 间隔重复
-  difficultyFactor Float    @default(2.5)  // SR算法难度因子
-  createdAt        DateTime @default(now())
-
-  user       User       @relation(fields: [userId], references: [id])
-  vocabulary Vocabulary @relation(fields: [vocabularyId], references: [id])
+  nextReview       DateTime?
+  difficultyFactor Float      @default(2.5)
+  createdAt        DateTime   @default(now())
+  vocabulary       Vocabulary @relation(fields: [vocabularyId], references: [id])
+  user             User       @relation(fields: [userId], references: [id])
 
   @@unique([userId, vocabularyId])
 }
 
-// 5. 题库表
 model Question {
-  id          String   @id @default(uuid())
-  type        String   // vocabulary/grammar/reading/listening/writing/speaking
-  subType     String?  // 子题型
-  part        String?  // part_a/part_b
-  topic       String?  // 知识点/主题
-  difficulty  Int      @default(1)  // 难度 1-5
-  content     String   // 题目内容
-  options     String?  // 选项（JSON字符串）
-  answer      String?  // 参考答案
-  explanation String?  // 解析
-  source      String?  // 来源：dse-20xx/ai-generated
-  year        Int?     // DSE年份（如果是真题）
-  isApproved  Boolean  @default(false)
-  createdAt   DateTime @default(now())
-
+  id             String              @id @default(uuid())
+  type           String
+  subType        String?
+  part           String?
+  topic          String?
+  difficulty     Int                 @default(1)
+  content        String
+  options        String?
+  answer         String?
+  explanation    String?
+  source         String?
+  year           Int?
+  isApproved     Boolean             @default(false)
+  createdAt      DateTime            @default(now())
   answers        UserAnswer[]
   errorQuestions UserErrorQuestion[]
 }
 
-// 6. 用户答题记录表
 model UserAnswer {
   id         String   @id @default(uuid())
   userId     String
   questionId String
-  userAnswer String?  // 用户答案（JSON字符串）
+  userAnswer String?
   isCorrect  Boolean?
   score      Int?
   createdAt  DateTime @default(now())
-
-  user     User     @relation(fields: [userId], references: [id])
-  question Question @relation(fields: [questionId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 }
 
-// 7. 错题本表
 model UserErrorQuestion {
-  id           String   @id @default(uuid())
-  userId       String
-  questionId   String
-  errorCount   Int      @default(1)
-  stage        Int      @default(1)  // Ebbinghaus stage 1-8
-  nextReview   DateTime                // 下次复习时间
-  lastReview   DateTime?               // 上次复习时间
-  isMastered   Boolean  @default(false) // 是否已掌握
-  lastWrongAt  DateTime @default(now())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  user     User         @relation(fields: [userId], references: [id])
-  question Question     @relation(fields: [questionId], references: [id])
-  reviews  ErrorReview[]
+  id          String        @id @default(uuid())
+  userId      String
+  questionId  String
+  errorCount  Int           @default(1)
+  stage       Int           @default(1)
+  nextReview  DateTime
+  lastReview  DateTime?
+  isMastered  Boolean       @default(false)
+  lastWrongAt DateTime      @default(now())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  reviews     ErrorReview[]
+  question    Question      @relation(fields: [questionId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
 
   @@unique([userId, questionId])
   @@index([userId, nextReview])
 }
 
-// 11. 错题复习记录表
 model ErrorReview {
-  id             String   @id @default(uuid())
-  errorId        String
-  stageAtReview  Int      // 复习时的阶段
-  isCorrect      Boolean  // 是否回答正确
-  reviewedAt     DateTime @default(now())
-
-  error UserErrorQuestion @relation(fields: [errorId], references: [id])
+  id            String            @id @default(uuid())
+  errorId       String
+  stageAtReview Int
+  isCorrect     Boolean
+  reviewedAt    DateTime          @default(now())
+  error         UserErrorQuestion @relation(fields: [errorId], references: [id])
 
   @@index([errorId])
 }
 
-// 8. 每日学习记录表
 model DailyStudyRecord {
-  id               String   @id @default(uuid())
-  userId           String
-  studyDate        DateTime @unique
-  studyMode        String?  // 学习模式
-  totalMinutes     Int      @default(0)
-  totalScore       Float    @default(0)      // 每日总分 (0-100)
-  accuracy         Float?   // 总体正确率
-  nextDifficulty   Float?   // 明日的难度系数
-  modulesData      String?  // 模块得分和明细（JSON字符串）
-  recommendations  String?  // 个性化建议
-  completed        Boolean  @default(false)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id])
+  id              String   @id @default(uuid())
+  userId          String
+  studyDate       DateTime @unique
+  studyMode       String?
+  totalMinutes    Int      @default(0)
+  totalScore      Float    @default(0)
+  accuracy        Float?
+  nextDifficulty  Float?
+  modulesData     String?
+  recommendations String?
+  completed       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id])
 
   @@index([userId, studyDate])
 }
 
-// 9. 学习会话表
 model StudySession {
   id            String    @id @default(uuid())
-  userId        String?   // 用户ID（可选，未登录用户为null）
+  userId        String?
   currentModule Int       @default(0)
-  modules       String?   // 预生成的模块列表题目（JSON字符串）
+  modules       String?
   startedAt     DateTime  @default(now())
   finishedAt    DateTime?
   createdAt     DateTime  @default(now())
 }
 
-// 10. 入学测试会话表
 model PlacementSession {
   id                   String   @id @default(uuid())
   userId               String?
-  grade                String   // form3/form4/form5/form6
-  questions            String   // 题目列表（JSON字符串）
-  answers              String   // 答题记录（JSON字符串）
+  grade                String
+  questions            String
+  answers              String
   currentQuestionIndex Int      @default(0)
   createdAt            DateTime @default(now())
 }

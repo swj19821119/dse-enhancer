@@ -18,19 +18,44 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
+  const validateForm = () => {
+    if (!nickname.trim()) {
+      setError('请输入昵称');
+      return false;
+    }
+    if (nickname.trim().length < 2) {
+      setError('昵称至少需要2个字符');
+      return false;
+    }
+    if (!email.trim()) {
+      setError('请输入邮箱');
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('请输入有效的邮箱地址');
+      return false;
+    }
+    if (!password) {
+      setError('请输入密码');
+      return false;
+    }
+    if (password.length < 6) {
+      setError('密码至少需要6位');
+      return false;
+    }
+    if (password !== confirmPassword) {
+      setError('两次输入的密码不一致');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    if (password !== confirmPassword) {
-      setError('两次输入的密码不一致');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('密码至少需要6位');
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
 
@@ -114,7 +139,7 @@ export default function RegisterPage() {
               />
             </div>
             {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
+              <div className="text-red-500 text-sm text-center" role="alert" aria-live="polite">{error}</div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? '注册中...' : '注册'}

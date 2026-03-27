@@ -24,7 +24,7 @@ const MODE_CONFIG: Record<Mode, ModuleConfig[]> = {
     { type: 'reading', questionsCount: 2, timeMinutes: 10 },
     { type: 'listening', questionsCount: 2, timeMinutes: 10 },
     { type: 'error_review', questionsCount: 5, timeMinutes: 5 },
-    { type: 'part_b', questionsCount: 0, timeMinutes: 15 },
+    { type: 'part_b', questionsCount: 5, timeMinutes: 15 },
   ],
 };
 
@@ -112,6 +112,46 @@ async function fetchErrorReviewQuestions(
     .slice(0, count);
 }
 
+async function fetchPartBQuestions(
+  userId: string | null,
+  count: number
+) {
+  const partBTypes: ModuleType[] = ['vocabulary', 'grammar', 'reading', 'listening'];
+  const questionsPerType = Math.ceil(count / partBTypes.length);
+  const minDifficulty = 4;
+  const maxDifficulty = 5;
+
+  const allQuestions: any[] = [];
+
+  for (const type of partBTypes) {
+    const questions = await prisma.question.findMany({
+      where: {
+        type,
+        difficulty: {
+          gte: minDifficulty,
+          lte: maxDifficulty,
+        },
+        isApproved: true,
+      },
+      take: questionsPerType * 2,
+    });
+
+    const shuffled = questions.sort(() => Math.random() - 0.5);
+    allQuestions.push(...shuffled.slice(0, questionsPerType).map((q) => ({
+      id: q.id,
+      type: q.type,
+      content: q.content,
+      options: q.options ? JSON.parse(q.options) : null,
+      answer: q.answer,
+      explanation: q.explanation,
+      difficulty: q.difficulty,
+      topic: q.topic,
+    })));
+  }
+
+  return allQuestions.sort(() => Math.random() - 0.5).slice(0, count);
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -143,6 +183,8 @@ export async function POST(request: NextRequest) {
 
     if (firstModule.type === 'error_review') {
       firstModuleQuestions = await fetchErrorReviewQuestions(userId, firstModule.questionsCount);
+    } else if (firstModule.type === 'part_b') {
+      firstModuleQuestions = await fetchPartBQuestions(userId, firstModule.questionsCount);
     } else {
       firstModuleQuestions = await fetchQuestionsForModule(
         userId,

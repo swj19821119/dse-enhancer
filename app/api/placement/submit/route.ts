@@ -88,9 +88,9 @@ export async function POST(request: NextRequest) {
 
     let nextDifficulty = currentDifficulty;
     if (isCorrect) {
-      nextDifficulty = Math.min(currentDifficulty + 1, 5);
+      nextDifficulty = Math.min(Math.round((currentDifficulty + 0.1) * 10) / 10, 5.0);
     } else {
-      nextDifficulty = Math.max(currentDifficulty - 1, 1);
+      nextDifficulty = Math.max(Math.round((currentDifficulty - 0.1) * 10) / 10, 1.0);
     }
 
     if (session.userId) {

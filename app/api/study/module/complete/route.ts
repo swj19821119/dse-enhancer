@@ -80,6 +80,46 @@ async function fetchErrorReviewQuestions(
     .slice(0, count);
 }
 
+async function fetchPartBQuestions(
+  userId: string | null,
+  count: number
+) {
+  const partBTypes: ModuleType[] = ['vocabulary', 'grammar', 'reading', 'listening'];
+  const questionsPerType = Math.ceil(count / partBTypes.length);
+  const minDifficulty = 4;
+  const maxDifficulty = 5;
+
+  const allQuestions: any[] = [];
+
+  for (const type of partBTypes) {
+    const questions = await prisma.question.findMany({
+      where: {
+        type,
+        difficulty: {
+          gte: minDifficulty,
+          lte: maxDifficulty,
+        },
+        isApproved: true,
+      },
+      take: questionsPerType * 2,
+    });
+
+    const shuffled = questions.sort(() => Math.random() - 0.5);
+    allQuestions.push(...shuffled.slice(0, questionsPerType).map((q) => ({
+      id: q.id,
+      type: q.type,
+      content: q.content,
+      options: q.options ? JSON.parse(q.options) : null,
+      answer: q.answer,
+      explanation: q.explanation,
+      difficulty: q.difficulty,
+      topic: q.topic,
+    })));
+  }
+
+  return allQuestions.sort(() => Math.random() - 0.5).slice(0, count);
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -204,6 +244,8 @@ export async function POST(request: NextRequest) {
 
     if (nextModule.type === 'error_review') {
       nextQuestions = await fetchErrorReviewQuestions(userId, nextModule.questionsCount);
+    } else if (nextModule.type === 'part_b') {
+      nextQuestions = await fetchPartBQuestions(userId, nextModule.questionsCount);
     } else if (nextModule.questionsCount > 0) {
       nextQuestions = await fetchQuestionsForModule(
         userId,

@@ -133,8 +133,8 @@ export default function PlacementTestPage() {
         setShowFeedback(true);
 
         const nextDifficulty = isCorrect
-          ? Math.min(currentDifficulty + 1, 5)
-          : Math.max(currentDifficulty - 1, 1);
+          ? Math.min(Math.round((currentDifficulty + 0.1) * 10) / 10, 5.0)
+          : Math.max(Math.round((currentDifficulty - 0.1) * 10) / 10, 1.0);
 
         setCurrentDifficulty(nextDifficulty);
 
@@ -159,6 +159,7 @@ export default function PlacementTestPage() {
   };
 
   const getDifficultyColor = (diff: number) => {
+    const level = Math.round(diff);
     const colors = {
       1: 'bg-green-100 text-green-800',
       2: 'bg-blue-100 text-blue-800',
@@ -166,7 +167,7 @@ export default function PlacementTestPage() {
       4: 'bg-orange-100 text-orange-800',
       5: 'bg-red-100 text-red-800',
     };
-    return colors[diff as keyof typeof colors] || colors[2];
+    return colors[level as keyof typeof colors] || colors[2];
   };
 
   const getQuestionTypeLabel = (type: string) => {

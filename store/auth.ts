@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface User {
   id: string;
@@ -22,15 +23,28 @@ interface AuthStore {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  user: null,
-  token: null,
-  isLoading: false,
-  isGuest: false,
-  guestId: null,
-  setUser: (user) => set({ user }),
-  setToken: (token) => set({ token }),
-  setLoading: (loading) => set({ isLoading: loading }),
-  setGuest: (isGuest, guestId) => set({ isGuest, guestId: guestId || null }),
-  logout: () => set({ user: null, token: null, isGuest: false, guestId: null }),
-}));
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      isLoading: false,
+      isGuest: false,
+      guestId: null,
+      setUser: (user) => set({ user }),
+      setToken: (token) => set({ token }),
+      setLoading: (loading) => set({ isLoading: loading }),
+      setGuest: (isGuest, guestId) => set({ isGuest, guestId: guestId || null }),
+      logout: () => set({ user: null, token: null, isGuest: false, guestId: null }),
+    }),
+    {
+      name: 'dse-auth-storage',
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        isGuest: state.isGuest,
+        guestId: state.guestId,
+      }),
+    }
+  )
+);

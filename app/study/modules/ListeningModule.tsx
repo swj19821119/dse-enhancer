@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle, Headphones } from 'lucide-react';
 import type { Question } from '@/store/study';
+import { toast } from '@/store/toast';
 
 interface ListeningModuleProps {
   question: Question;
@@ -40,7 +41,7 @@ export default function ListeningModule({
       window.speechSynthesis.speak(utterance);
     } else {
       setIsPlaying(false);
-      alert('您的浏览器不支持语音播放');
+      toast.error('您的浏览器不支持语音播放');
     }
   };
 

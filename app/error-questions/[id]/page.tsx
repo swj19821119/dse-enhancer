@@ -5,8 +5,9 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, AlertCircle, RotateCcw } from 'lucide-react';
+import { ArrowLeft, AlertCircle, RotateCcw, History, CheckCircle2, XCircle } from 'lucide-react';
 import { getStageDescription, getStageIntervalText, getMasteryProgress } from '@/lib/ebbinghaus';
+import { toast } from '@/store/toast';
 
 interface ErrorDetail {
   id: string;
@@ -26,11 +27,19 @@ interface ErrorDetail {
   created_at: string;
 }
 
+interface ReviewHistory {
+  id: string;
+  stageAtReview: number;
+  isCorrect: boolean;
+  reviewedAt: string;
+}
+
 export default function ErrorDetailPage() {
   const params = useParams();
   const router = useRouter();
   const errorId = params.id as string;
   const [errorDetail, setErrorDetail] = useState<ErrorDetail | null>(null);
+  const [reviewHistory, setReviewHistory] = useState<ReviewHistory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [resetting, setResetting] = useState(false);
 
@@ -41,13 +50,17 @@ export default function ErrorDetailPage() {
   const loadErrorDetail = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/errors/list`, {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('token'),
-        },
-      });
+      const token = localStorage.getItem('token');
+      const [errorRes, historyRes] = await Promise.all([
+        fetch(`/api/errors/list`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch(`/api/errors/${errorId}/history`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }).catch(() => ({ json: () => ({ success: false }) })),
+      ]);
 
-      const data = await response.json();
+      const data = await errorRes.json();
 
       if (data.success) {
         const error = data.data.errors.find((e: ErrorDetail) => e.id === errorId);
@@ -55,6 +68,13 @@ export default function ErrorDetailPage() {
           setErrorDetail(error);
         } else {
           console.error('Error not found');
+        }
+      }
+
+      if (historyRes && 'json' in historyRes) {
+        const historyData = await historyRes.json();
+        if (historyData.success) {
+          setReviewHistory(historyData.data.reviews);
         }
       }
     } catch (error) {
@@ -86,14 +106,19 @@ export default function ErrorDetailPage() {
       if (data.success) {
         loadErrorDetail();
       } else {
-        alert('重置失败：' + data.message);
+        toast.error('重置失败：' + data.message);
       }
     } catch (error) {
       console.error('Failed to reset error:', error);
-      alert('重置失败，请稍后重试');
+      toast.error('重置失败，请稍后重试');
     } finally {
       setResetting(false);
     }
+  };
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('zh-CN') + ' ' + date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
   };
 
   if (isLoading) {
@@ -260,6 +285,51 @@ export default function ErrorDetailPage() {
             </div>
           </CardContent>
         </Card>
+
+        {reviewHistory.length > 0 && (
+          <Card className="bg-white/10 backdrop-blur-lg border-white/20 mb-6">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <History className="w-5 h-5 text-white/70" />
+                <CardTitle className="text-white text-xl">复习历史</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {reviewHistory.map((review, index) => (
+                  <div
+                    key={review.id}
+                    className={`flex items-center justify-between p-3 rounded-lg ${
+                      index === 0 ? 'bg-white/10 border border-white/20' : 'bg-white/5'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      {review.isCorrect ? (
+                        <CheckCircle2 className="w-5 h-5 text-green-400" />
+                      ) : (
+                        <XCircle className="w-5 h-5 text-red-400" />
+                      )}
+                      <div>
+                        <p className="text-white font-medium">
+                          {review.isCorrect ? '回答正确' : '回答错误'}
+                        </p>
+                        <p className="text-white/60 text-sm">
+                          阶段 {review.stageAtReview} → {review.isCorrect ? review.stageAtReview + 1 : Math.max(1, review.stageAtReview - 2)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-white/80 text-sm">{formatDate(review.reviewedAt)}</p>
+                      {index === 0 && (
+                        <span className="text-xs text-white/50">最近</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="flex gap-4">
           {!errorDetail.is_mastered && (
