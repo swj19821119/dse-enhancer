@@ -45,14 +45,20 @@ export async function GET(
     const modules = session.modules ? JSON.parse(session.modules) : [];
     const currentModuleData = modules[session.currentModule];
 
-    const answers = await prisma.userAnswer.findMany({
+    const answersQuery: any = {
       where: {
-        userId: session.userId,
         createdAt: {
           gte: session.startedAt,
         },
       },
-    });
+    };
+    
+    // Only filter by userId if it exists (for logged-in users)
+    if (session.userId) {
+      answersQuery.where.userId = session.userId;
+    }
+    
+    const answers = await prisma.userAnswer.findMany(answersQuery);
 
     const totalAnswered = answers.length;
     const correctAnswers = answers.filter((a) => a.isCorrect).length;
