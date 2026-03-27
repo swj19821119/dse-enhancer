@@ -16,7 +16,6 @@ jobs:
           node-version: '18'
           cache: 'npm'
       
-      # Generate Prisma Client before build
       - run: npm ci
       - run: npx prisma generate
       - run: npm run build
@@ -26,61 +25,17 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
         run: |
-          # Setup SSH
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
           
-          # Test SSH connection
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "echo 'SSH OK'"
-          
-          # Stop PM2 first
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "pm2 stop dse-enhancer || true"
           
-          # Create directories
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "sudo mkdir -p /var/www/dse-enhancer && sudo chown -R ubuntu:ubuntu /var/www/dse-enhancer"
           
-          # Deploy all necessary files
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r \
-            .next \
-            package.json \
-            package-lock.json \
-            prisma \
-            public \
-            ubuntu@$SERVER_IP:/var/www/dse-enhancer/
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r .next package.json package-lock.json prisma public ubuntu@$SERVER_IP:/var/www/dse-enhancer/
           
-          # Deploy environment file if exists
-          if [ -f ".env" ]; then
-            scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no .env ubuntu@$SERVER_IP:/var/www/dse-enhancer/
-          fi
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "cd /var/www/dse-enhancer && npm install --production && npx prisma generate && pm2 restart dse-enhancer || pm2 start npm --name dse-enhancer -- start"
           
-          # Install dependencies and setup on server
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ubuntu@$SERVER_IP << 'ENDSSH'
-            cd /var/www/dse-enhancer
-            
-            # Install dependencies
-            npm install --production
-            
-            # Generate Prisma Client
-            npx prisma generate
-            
-            # Keep the existing database if exists, or copy the seed database
-            if [ ! -f prisma/prod.db ]; then
-              if [ -f prisma/dev.db ]; then
-                cp prisma/dev.db prisma/prod.db
-              fi
-            fi
-            
-            # Update database schema if needed
-            npx prisma db push --skip-generate || true
-            
-            # Start the application
-            pm2 delete dse-enhancer || true
-            pm2 start npm --name dse-enhancer -- start
-            pm2 save
-          ENDSSH
-          
-          echo "✅ Deployed successfully!"
-          echo "Server: http://$SERVER_IP:3000"
-ENDSSH
+          echo "Deployed to http://$SERVER_IP:3000"
